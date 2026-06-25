@@ -20,13 +20,16 @@ const InputData = {
   },
 
   getFilteredStudents() {
-    if (!this.searchTerm) return this.students;
-    const term = this.searchTerm.toLowerCase();
-    return this.students.filter(s =>
-      s.nama.toLowerCase().includes(term) ||
-      s.nis.toLowerCase().includes(term) ||
-      (s.nisn && s.nisn.toLowerCase().includes(term))
-    );
+    let result = this.students;
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(s =>
+        s.nama.toLowerCase().includes(term) ||
+        s.nis.toLowerCase().includes(term) ||
+        (s.nisn && s.nisn.toLowerCase().includes(term))
+      );
+    }
+    return result.sort((a, b) => a.nama.localeCompare(b.nama));
   },
 
   render() {
