@@ -42,6 +42,9 @@
       case 'input-nilai':
         await InputNilai.init();
         break;
+      case 'ekstrakurikuler':
+        await Ekstrakurikuler.init();
+        break;
       case 'import-data-file':
         ImportData.init();
         break;
