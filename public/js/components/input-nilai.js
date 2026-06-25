@@ -8,6 +8,7 @@ const InputNilai = {
   selectedMapel: '',
   studentList: [],
   nilaiValues: [],
+  showingRekap: false,
 
   async init() { await this.loadData(); this.render(); },
   async loadData() {
@@ -36,10 +37,10 @@ const InputNilai = {
     }).sort((a, b) => a.nama.localeCompare(b.nama));
   },
 
-  onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.selectedMapel = ''; this.studentList = []; this.nilaiValues = []; this.render(); },
-  onKelasChange(val) { this.selectedKelas = val; this.selectedMapel = ''; this.studentList = this.getStudentsInClass(); this.nilaiValues = []; this.render(); },
-  onSemesterChange(val) { this.selectedSemester = val; this.nilaiValues = []; this.render(); if (this.selectedMapel) this.loadExistingNilai(); },
-  onMapelChange(val) { this.selectedMapel = val; this.nilaiValues = []; this.render(); if (val) this.loadExistingNilai(); },
+  onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.selectedMapel = ''; this.studentList = []; this.nilaiValues = []; this.showingRekap = false; this.render(); },
+  onKelasChange(val) { this.selectedKelas = val; this.selectedMapel = ''; this.studentList = this.getStudentsInClass(); this.nilaiValues = []; this.showingRekap = false; this.render(); },
+  onSemesterChange(val) { this.selectedSemester = val; this.nilaiValues = []; this.showingRekap = false; this.render(); if (this.selectedMapel) this.loadExistingNilai(); },
+  onMapelChange(val) { this.selectedMapel = val; this.nilaiValues = []; this.showingRekap = false; this.render(); if (val) this.loadExistingNilai(); },
 
   async loadExistingNilai() {
     if (!this.selectedMapel || !this.selectedSemester || this.studentList.length === 0) return;
@@ -67,12 +68,29 @@ const InputNilai = {
     if (ta) ta.value = this.nilaiValues.join('\n');
   },
 
+  getMapelShortNames() {
+    return {
+      'Pendidikan Agama dan Budi Pekerti': 'PAI',
+      'Pendidikan Pancasila': 'PKn',
+      'Bahasa Indonesia': 'B.ID',
+      'Matematika': 'MTK',
+      'IPA': 'IPA',
+      'IPS': 'IPS',
+      'Bahasa Inggris': 'B.Ing',
+      'PJOK': 'PJOK',
+      'Informatika': 'Info',
+      'Seni Budaya dan Prakarya': 'SBP',
+      'Bahasa Jawa': 'B.Jw'
+    };
+  },
+
   render() {
     const page = document.getElementById('page-input-nilai');
     const tpList = this.getTPList();
     const kelasList = this.getKelasList();
     this.studentList = this.getStudentsInClass();
     const allSelected = this.selectedTP && this.selectedKelas && this.selectedSemester && this.selectedMapel;
+    const canShowRekap = this.selectedTP && this.selectedKelas && this.selectedSemester && this.studentList.length > 0;
 
     page.innerHTML = `
       <div class="page-header"><h2 class="page-title">Input Nilai</h2></div>
@@ -108,11 +126,16 @@ const InputNilai = {
           </div>
         </div>
       </div>
-      ${allSelected && this.studentList.length > 0 ? this.renderInputArea() : this.renderPlaceholder()}`;
+      ${canShowRekap ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekap()" id="btn-rekap-kelas"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Kelas</button></div>' : ''}
+      ${this.showingRekap ? '<div id="rekap-kelas-container"></div>' : (allSelected && this.studentList.length > 0 ? this.renderInputArea() : this.renderPlaceholder())}`;
 
-    if (allSelected && this.studentList.length > 0) {
+    if (!this.showingRekap && allSelected && this.studentList.length > 0) {
       this.updateTableInputs();
       this.updateTextareaFromValues();
+    }
+
+    if (this.showingRekap) {
+      this.renderRekapTable();
     }
   },
 
@@ -156,6 +179,11 @@ const InputNilai = {
     this.updateTableInputs();
     const ta = document.getElementById('paste-nilai-textarea');
     if (ta) ta.value = '';
+    // Remove saved indicators
+    for (let i = 0; i < this.studentList.length; i++) {
+      const input = document.getElementById('nilai-input-' + i);
+      if (input) input.style.background = '';
+    }
   },
 
   parseNilai(raw) {
@@ -164,6 +192,15 @@ const InputNilai = {
     const val = parseFloat(normalized);
     if (isNaN(val)) return null;
     return val;
+  },
+
+  markSavedIndicators() {
+    for (let i = 0; i < this.studentList.length; i++) {
+      const input = document.getElementById('nilai-input-' + i);
+      if (input && this.nilaiValues[i] !== '') {
+        input.style.background = 'var(--emerald-light)';
+      }
+    }
   },
 
   async saveAll() {
@@ -204,5 +241,57 @@ const InputNilai = {
     }
     alert('Berhasil menyimpan nilai ' + this.selectedMapel + ' (Semester ' + this.selectedSemester + ') untuk ' + savedCount + ' siswa!');
     await this.loadExistingNilai();
+    // Mark saved indicators with green background
+    this.markSavedIndicators();
+  },
+
+  async showRekap() {
+    this.showingRekap = true;
+    this.render();
+  },
+
+  hideRekap() {
+    this.showingRekap = false;
+    this.render();
+  },
+
+  async renderRekapTable() {
+    const container = document.getElementById('rekap-kelas-container');
+    if (!container) return;
+    const shortNames = this.getMapelShortNames();
+    const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
+    const field = this.selectedSemester === '1' ? 'nilaiSem1' : 'nilaiSem2';
+
+    // Load all nilai for all students in the class
+    const rekapData = [];
+    for (const student of this.studentList) {
+      const nilaiArr = await DB.getNilaiByAkademik(student.id);
+      const nilaiMap = {};
+      nilaiArr.forEach(n => { nilaiMap[n.mapel] = n; });
+      rekapData.push({ student, nilaiMap });
+    }
+
+    // Build header
+    let headerCols = '<th style="width:40px;position:sticky;left:0;background:var(--bg-primary);z-index:1;">No</th><th style="min-width:150px;position:sticky;left:40px;background:var(--bg-primary);z-index:1;">Nama Siswa</th><th style="width:80px;">NIS</th>';
+    MATA_PELAJARAN.forEach(mp => {
+      const short = shortNames[mp] || mp.substring(0, 4);
+      headerCols += '<th style="width:50px;text-align:center;font-size:11px;">' + escapeHTMLDash(short) + '</th>';
+    });
+
+    // Build rows
+    let rows = '';
+    rekapData.forEach((item, idx) => {
+      let cols = '<td style="position:sticky;left:0;background:#fff;z-index:1;">' + (idx + 1) + '</td>';
+      cols += '<td style="position:sticky;left:40px;background:#fff;z-index:1;white-space:nowrap;">' + escapeHTMLDash(item.student.nama) + '</td>';
+      cols += '<td>' + escapeHTMLDash(item.student.nis) + '</td>';
+      MATA_PELAJARAN.forEach(mp => {
+        const n = item.nilaiMap[mp];
+        const val = n && n[field] != null ? String(n[field]) : '-';
+        cols += '<td style="text-align:center;">' + escapeHTMLDash(val) + '</td>';
+      });
+      rows += '<tr>' + cols + '</tr>';
+    });
+
+    container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Nilai Kelas ' + escapeHTMLDash(this.selectedKelas) + ' - ' + semLabel + '</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekap()">Tutup Rekap</button></div><p class="muted" style="margin-bottom:12px;">Rekap semua mata pelajaran untuk ' + this.studentList.length + ' siswa. Scroll horizontal jika kolom tidak muat.</p><div style="overflow-x:auto;"><table class="data-table" style="min-width:900px;font-size:13px;"><thead><tr>' + headerCols + '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   }
 };
