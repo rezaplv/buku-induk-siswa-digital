@@ -1421,10 +1421,11 @@ const DataAkademik = {
     document.getElementById('da-modal-content').innerHTML = `
       <div class="modal-header"><h3>Assign Batch - Data Akademik</h3><button class="modal-close" onclick="DataAkademik.closeModal()">&times;</button></div>
       <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">Pilih Tahun Pelajaran, Kelas, dan Wali Kelas, lalu centang siswa yang akan di-assign.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
         <div class="form-group" style="margin-bottom:0;"><label>Tahun Pelajaran</label><input type="text" id="da-batch-tp" required placeholder="2025/2026"></div>
         <div class="form-group" style="margin-bottom:0;"><label>Kelas</label><input type="text" id="da-batch-kelas" required placeholder="VII D"></div>
         <div class="form-group" style="margin-bottom:0;"><label>Wali Kelas</label><input type="text" id="da-batch-wali" placeholder="Nama wali kelas"></div>
+        <div class="form-group" style="margin-bottom:0;"><label>Status Akhir Tahun</label><select id="da-batch-status"><option value="">-- Belum ditentukan --</option><option value="Naik">Naik</option><option value="Tidak Naik">Tidak Naik</option></select></div>
       </div>
       <div class="form-group" style="margin-bottom:8px;"><label>Pilih Siswa</label>
         <div style="margin-bottom:8px;"><input type="text" id="da-batch-search" placeholder="Cari siswa..." oninput="DataAkademik.filterBatchStudents(this.value)" style="width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:13px;"></div>
@@ -1449,12 +1450,13 @@ const DataAkademik = {
     const tp = document.getElementById('da-batch-tp').value.trim();
     const kelas = document.getElementById('da-batch-kelas').value.trim();
     const wali = document.getElementById('da-batch-wali').value.trim();
+    const status = document.getElementById('da-batch-status').value;
     if (!tp || !kelas) { alert('Tahun Pelajaran dan Kelas wajib diisi!'); return; }
     const checked = document.querySelectorAll('input[name="da-batch-student"]:checked');
     if (checked.length === 0) { alert('Pilih minimal satu siswa!'); return; }
     let success = 0, failed = 0;
     for (const cb of checked) {
-      try { await DB.addAkademik({ nis: cb.value, tahunPelajaran: tp, kelas, waliKelas: wali, status: '' }); success++; }
+      try { await DB.addAkademik({ nis: cb.value, tahunPelajaran: tp, kelas, waliKelas: wali, status: status }); success++; }
       catch (e) { failed++; }
     }
     alert('Berhasil: ' + success + ' siswa. Gagal: ' + failed);
