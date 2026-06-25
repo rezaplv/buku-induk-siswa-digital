@@ -24,6 +24,7 @@ const DataAkademik = {
     let data = this.allAkademik;
     if (this.filterTP) data = data.filter(a => a.tahunPelajaran === this.filterTP);
     if (this.filterKelas) data = data.filter(a => a.kelas === this.filterKelas);
+    data.sort((a, b) => this.getStudentName(a.nis).localeCompare(this.getStudentName(b.nis)));
     return data;
   },
   getStudentName(nis) {
@@ -86,7 +87,7 @@ const DataAkademik = {
     document.getElementById('da-modal-content').innerHTML = `
       <div class="modal-header"><h3>Tambah Data Akademik</h3><button class="modal-close" onclick="DataAkademik.closeModal()">&times;</button></div>
       <form onsubmit="DataAkademik.saveSingle(event)">
-        <div class="form-group"><label>Pilih Siswa</label><select id="da-siswa" required>${this.students.map(s => '<option value="' + escapeHTMLDash(s.nis) + '">' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>').join('')}</select></div>
+        <div class="form-group"><label>Pilih Siswa</label><select id="da-siswa" required>${[...this.students].sort((a, b) => a.nama.localeCompare(b.nama)).map(s => '<option value="' + escapeHTMLDash(s.nis) + '">' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>').join('')}</select></div>
         <div class="form-group"><label>Tahun Pelajaran</label><input type="text" id="da-tp" required placeholder="2025/2026"></div>
         <div class="form-group"><label>Kelas</label><input type="text" id="da-kelas" required placeholder="VII D"></div>
         <div class="form-group"><label>Wali Kelas</label><input type="text" id="da-wali" placeholder="Nama wali kelas"></div>
@@ -123,7 +124,7 @@ const DataAkademik = {
         <div style="margin-bottom:8px;"><input type="text" id="da-batch-search" placeholder="Cari siswa..." oninput="DataAkademik.filterBatchStudents(this.value)" style="width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:13px;"></div>
         <div style="margin-bottom:8px;"><label style="font-size:12px;cursor:pointer;"><input type="checkbox" id="da-batch-select-all" onchange="DataAkademik.toggleSelectAll(this.checked)"> Pilih Semua</label></div>
         <div class="checkbox-list" id="da-batch-list">
-          ${this.students.map(s => '<label><input type="checkbox" name="da-batch-student" value="' + escapeHTMLDash(s.nis) + '"><span>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</span></label>').join('')}
+          ${[...this.students].sort((a, b) => a.nama.localeCompare(b.nama)).map(s => '<label><input type="checkbox" name="da-batch-student" value="' + escapeHTMLDash(s.nis) + '"><span>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</span></label>').join('')}
         </div>
       </div>
       <div class="form-actions"><button type="button" class="btn btn-outline" onclick="DataAkademik.closeModal()">Batal</button><button type="button" class="btn btn-primary" onclick="DataAkademik.saveBatch()">Assign Semua</button></div>`;
