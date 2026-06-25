@@ -31,7 +31,10 @@ const InputNilai = {
   getStudentsInClass() {
     if (!this.selectedTP || !this.selectedKelas) return [];
     const akademikInClass = this.allAkademik.filter(a => a.tahunPelajaran === this.selectedTP && a.kelas === this.selectedKelas);
-    return akademikInClass.map(a => {
+    // Remove duplicates by NIS (keep last entry)
+    const uniqueByNIS = {};
+    akademikInClass.forEach(a => { uniqueByNIS[a.nis] = a; });
+    return Object.values(uniqueByNIS).map(a => {
       const siswa = this.students.find(s => s.nis === a.nis);
       return { ...a, nama: siswa ? siswa.nama : a.nis, nisn: siswa ? siswa.nisn : '' };
     }).sort((a, b) => a.nama.localeCompare(b.nama));
@@ -46,6 +49,8 @@ const InputNilai = {
     this.nonAkademikData = nonAkadArr.length > 0 ? nonAkadArr[0] : null;
     const p5Arr = await DB.getP5ByAkademik(studentAkad.id);
     this.p5Data = p5Arr.length > 0 ? p5Arr[0] : null;
+    const sel = document.getElementById('in-student-select');
+    if (sel) sel.value = index.toString();
     this.renderStudentForm();
   },
   onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.currentStudentIndex = -1; this.currentAkademik = null; this.render(); },
@@ -78,18 +83,30 @@ const InputNilai = {
           </div>
         </div>
       </div>
-      ${this.selectedTP && this.selectedKelas ? this.renderStudentList() : '<div class="card"><p class="muted">Pilih Tahun Pelajaran dan Kelas untuk menampilkan daftar siswa.</p></div>'}
+      ${this.selectedTP && this.selectedKelas ? this.renderStudentList() : '<div class="card"><p class="muted">Pilih Tahun Pelajaran dan Kelas untuk memilih siswa.</p></div>'}
       <div id="in-student-form-area"></div>`;
 
     if (this.currentStudentIndex >= 0) this.renderStudentForm();
   },
 
+  onStudentSelect(val) {
+    if (val === '') { this.currentStudentIndex = -1; this.currentAkademik = null; this.renderStudentForm(); return; }
+    this.selectStudent(parseInt(val));
+  },
+
   renderStudentList() {
-    if (this.studentList.length === 0) return '<div class="card"><p class="muted">Tidak ada siswa di kelas ini.</p></div>';
-    return `<div class="card"><div class="card-header"><h3>Daftar Siswa - ${escapeHTMLDash(this.selectedKelas)} (${this.studentList.length} siswa)</h3></div>
-      <div class="table-container"><table class="data-table"><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>Aksi</th></tr></thead><tbody>
-        ${this.studentList.map((s, i) => '<tr' + (i === this.currentStudentIndex ? ' style="background:var(--emerald-light);"' : '') + '><td>' + (i+1) + '</td><td><strong>' + escapeHTMLDash(s.nama) + '</strong></td><td>' + escapeHTMLDash(s.nis) + '</td><td><button class="btn btn-sm ' + (i === this.currentStudentIndex ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.selectStudent(' + i + ')">Input Nilai</button></td></tr>').join('')}
-      </tbody></table></div></div>`;
+    if (this.studentList.length === 0) return '<div class="card"><p class="muted">Tidak ada siswa di kelas ini. Tambahkan data akademik terlebih dahulu.</p></div>';
+    return `<div class="card">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+        <div class="form-group" style="margin-bottom:0;flex:1;min-width:250px;">
+          <label>Pilih Siswa (${this.studentList.length} siswa)</label>
+          <select id="in-student-select" onchange="InputNilai.onStudentSelect(this.value)">
+            <option value="">-- Pilih Siswa --</option>
+            ${this.studentList.map((s, i) => '<option value="' + i + '"' + (i === this.currentStudentIndex ? ' selected' : '') + '>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>').join('')}
+          </select>
+        </div>
+      </div>
+    </div>`;
   },
 
   renderStudentForm() {
