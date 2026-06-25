@@ -2,8 +2,7 @@
 const Router = {
   currentPage: 'dashboard',
   currentParams: {},
-
-  pages: ['dashboard', 'input-data', 'student-detail', 'import-data-file'],
+  pages: ['dashboard', 'input-data', 'student-detail', 'data-akademik', 'input-nilai', 'import-data-file'],
 
   navigateTo(page, params = {}) {
     this.currentPage = page;
@@ -26,16 +25,9 @@ const Router = {
     });
 
     // Dispatch custom event
-    window.dispatchEvent(new CustomEvent('page-change', {
-      detail: { page, params }
-    }));
+    window.dispatchEvent(new CustomEvent('page-change', { detail: { page, params } }));
   },
 
-  getCurrentPage() {
-    return this.currentPage;
-  },
-
-  getParams() {
-    return this.currentParams;
-  }
+  getCurrentPage() { return this.currentPage; },
+  getParams() { return this.currentParams; }
 };

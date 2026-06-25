@@ -33,6 +33,7 @@
   --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+
 /* Reset */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -77,9 +78,7 @@ body {
   gap: 12px;
 }
 
-.sidebar-logo {
-  flex-shrink: 0;
-}
+.sidebar-logo { flex-shrink: 0; }
 
 .sidebar-title {
   font-size: 15px;
@@ -87,6 +86,7 @@ body {
   color: #fff;
   line-height: 1.3;
 }
+
 
 .sidebar-nav {
   padding: 12px 0;
@@ -118,9 +118,7 @@ body {
   border-left-color: var(--emerald);
 }
 
-.nav-item svg {
-  flex-shrink: 0;
-}
+.nav-item svg { flex-shrink: 0; }
 
 /* Main Content */
 .main-content {
@@ -134,6 +132,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 
 /* Page Header */
 .page-header {
@@ -172,9 +171,7 @@ body {
   background: transparent;
 }
 
-.search-bar input::placeholder {
-  color: var(--text-muted);
-}
+.search-bar input::placeholder { color: var(--text-muted); }
 
 /* Stats Grid */
 .stats-grid {
@@ -205,6 +202,7 @@ body {
   font-weight: 500;
 }
 
+
 /* Cards */
 .card {
   background: var(--bg-white);
@@ -229,9 +227,7 @@ body {
 }
 
 /* Tables */
-.table-container {
-  overflow-x: auto;
-}
+.table-container { overflow-x: auto; }
 
 .data-table {
   width: 100%;
@@ -258,18 +254,14 @@ body {
   vertical-align: middle;
 }
 
-.data-table tbody tr:last-child td {
-  border-bottom: none;
-}
+.data-table tbody tr:last-child td { border-bottom: none; }
 
 .data-table tbody tr.clickable-row {
   cursor: pointer;
   transition: background 0.15s;
 }
 
-.data-table tbody tr.clickable-row:hover {
-  background: var(--bg-primary);
-}
+.data-table tbody tr.clickable-row:hover { background: var(--bg-primary); }
 
 .empty-state {
   text-align: center;
@@ -277,6 +269,7 @@ body {
   padding: 40px 16px !important;
   font-style: italic;
 }
+
 
 /* Buttons */
 .btn {
@@ -295,40 +288,20 @@ body {
   white-space: nowrap;
 }
 
-.btn-primary {
-  background: var(--emerald);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: var(--emerald-dark);
-}
+.btn-primary { background: var(--emerald); color: #fff; }
+.btn-primary:hover { background: var(--emerald-dark); }
 
 .btn-outline {
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
 }
+.btn-outline:hover { background: var(--bg-primary); border-color: var(--text-muted); }
 
-.btn-outline:hover {
-  background: var(--bg-primary);
-  border-color: var(--text-muted);
-}
+.btn-danger { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
+.btn-danger:hover { background: #FECACA; }
 
-.btn-danger {
-  background: #FEE2E2;
-  color: #DC2626;
-  border: 1px solid #FECACA;
-}
-
-.btn-danger:hover {
-  background: #FECACA;
-}
-
-.btn-sm {
-  padding: 6px 12px;
-  font-size: 12px;
-}
+.btn-sm { padding: 6px 12px; font-size: 12px; }
 
 /* Tabs */
 .tabs {
@@ -357,9 +330,7 @@ body {
   font-family: var(--font);
 }
 
-.tab-btn:hover {
-  color: var(--text-primary);
-}
+.tab-btn:hover { color: var(--text-primary); }
 
 .tab-btn.active {
   color: var(--emerald);
@@ -372,40 +343,15 @@ body {
   border-top: none;
 }
 
+
 /* Student Info Header */
-.student-info-header {
-  margin-bottom: 16px;
-}
-
-.student-info-header h2 {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 8px;
-}
-
-.student-meta {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
+.student-info-header { margin-bottom: 16px; }
+.student-info-header h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.student-meta { display: flex; gap: 24px; flex-wrap: wrap; color: var(--text-secondary); font-size: 14px; }
 
 /* Akademik Selector */
-.akademik-selector {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.akademik-selector label {
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
+.akademik-selector { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.akademik-selector label { font-weight: 500; color: var(--text-secondary); }
 .akademik-selector select {
   padding: 8px 12px;
   border: 1px solid var(--border-color);
@@ -417,21 +363,9 @@ body {
 }
 
 /* Forms */
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border-color);
@@ -442,450 +376,114 @@ body {
   background: var(--bg-white);
   transition: border-color 0.2s;
 }
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
   outline: none;
   border-color: var(--emerald);
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-actions { display: flex; gap: 12px; justify-content: flex-end; }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 80px;
-}
 
-.form-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-
-/* Inline inputs in table */
-.input-sm {
-  width: 70px;
-  padding: 6px 8px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: var(--font);
-  text-align: center;
-}
-
-.input-sm:focus {
-  outline: none;
-  border-color: var(--emerald);
-}
-
-.input-md {
-  width: 100%;
-  min-width: 150px;
-  padding: 6px 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: var(--font);
-}
-
-.input-md:focus {
-  outline: none;
-  border-color: var(--emerald);
-}
-
-.input-desc {
-  width: 100%;
-  min-width: 150px;
-  padding: 6px 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 12px;
-  font-family: var(--font);
-  resize: vertical;
-}
-
-.input-desc:focus {
-  outline: none;
-  border-color: var(--emerald);
-}
+/* Inline inputs */
+.input-sm { width: 70px; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-family: var(--font); text-align: center; }
+.input-sm:focus { outline: none; border-color: var(--emerald); }
+.input-md { width: 100%; min-width: 150px; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-family: var(--font); }
+.input-md:focus { outline: none; border-color: var(--emerald); }
+.input-desc { width: 100%; min-width: 150px; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 12px; font-family: var(--font); resize: vertical; }
+.input-desc:focus { outline: none; border-color: var(--emerald); }
 
 /* Section Title */
-.section-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 16px;
-}
+.section-title { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 16px; }
 
 /* Info Grid */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.info-item label {
-  display: block;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
-
-.info-item p {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.muted {
-  color: var(--text-muted);
-  font-size: 13px;
-}
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.info-item label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.info-item p { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+.muted { color: var(--text-muted); font-size: 13px; }
 
 /* Modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); }
+.modal-content { position: relative; background: var(--bg-white); border-radius: var(--radius); box-shadow: var(--shadow-lg); width: 90%; max-width: 480px; padding: 24px; max-height: 90vh; overflow-y: auto; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.modal-header h3 { font-size: 18px; font-weight: 700; color: var(--navy); }
+.modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg-primary); color: var(--text-secondary); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: var(--border-color); }
 
-.modal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.modal-content {
-  position: relative;
-  background: var(--bg-white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
-  width: 90%;
-  max-width: 480px;
-  padding: 24px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.modal-header h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--navy);
-}
-
-.modal-close {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background: var(--bg-primary);
-  color: var(--text-secondary);
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-close:hover {
-  background: var(--border-color);
-}
 
 /* Import Section */
-.import-section {
-  padding: 8px 0;
-}
-
-.upload-area {
-  border: 2px dashed var(--border-color);
-  border-radius: var(--radius);
-  padding: 48px 24px;
-  text-align: center;
-  margin-top: 16px;
-  transition: all 0.2s;
-  background: var(--bg-primary);
-}
-
-.upload-area.drag-over {
-  border-color: var(--emerald);
-  background: var(--emerald-light);
-}
-
-.upload-text {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-top: 16px;
-}
-
-.upload-hint {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 8px 0;
-}
-
-.upload-btn {
-  cursor: pointer;
-}
-
-.upload-format {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 12px;
-}
-
-.upload-filename {
-  font-size: 13px;
-  color: var(--emerald);
-  font-weight: 500;
-  margin-top: 12px;
-}
+.import-section { padding: 8px 0; }
+.upload-area { border: 2px dashed var(--border-color); border-radius: var(--radius); padding: 48px 24px; text-align: center; margin-top: 16px; transition: all 0.2s; background: var(--bg-primary); }
+.upload-area.drag-over { border-color: var(--emerald); background: var(--emerald-light); }
+.upload-text { font-size: 16px; font-weight: 500; color: var(--text-secondary); margin-top: 16px; }
+.upload-hint { font-size: 13px; color: var(--text-muted); margin: 8px 0; }
+.upload-btn { cursor: pointer; }
+.upload-format { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+.upload-filename { font-size: 13px; color: var(--emerald); font-weight: 500; margin-top: 12px; }
 
 /* Progress Bar */
-.progress-bar {
-  height: 6px;
-  background: var(--border-color);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 12px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--emerald);
-  border-radius: 3px;
-  transition: width 0.3s;
-}
+.progress-bar { height: 6px; background: var(--border-color); border-radius: 3px; overflow: hidden; margin-top: 12px; }
+.progress-fill { height: 100%; background: var(--emerald); border-radius: 3px; transition: width 0.3s; }
 
 /* Import Results */
-.import-results-summary {
-  display: flex;
-  gap: 24px;
-  padding: 16px 0;
-}
-
-.result-item {
-  font-size: 14px;
-}
-
-.result-item.success {
-  color: var(--emerald);
-}
-
-.result-item.failed {
-  color: #DC2626;
-}
-
-.error-list {
-  margin-top: 12px;
-  padding: 12px;
-  background: #FEF2F2;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-}
-
-.error-list h4 {
-  font-size: 13px;
-  margin-bottom: 8px;
-  color: #DC2626;
-}
-
-.error-list ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.error-list li {
-  padding: 4px 0;
-  border-bottom: 1px solid #FECACA;
-  word-break: break-all;
-}
+.import-results-summary { display: flex; gap: 24px; padding: 16px 0; }
+.result-item { font-size: 14px; }
+.result-item.success { color: var(--emerald); }
+.result-item.failed { color: #DC2626; }
+.error-list { margin-top: 12px; padding: 12px; background: #FEF2F2; border-radius: var(--radius-sm); font-size: 12px; }
+.error-list h4 { font-size: 13px; margin-bottom: 8px; color: #DC2626; }
+.error-list ul { list-style: none; padding-left: 0; }
+.error-list li { padding: 4px 0; border-bottom: 1px solid #FECACA; word-break: break-all; }
 
 /* Nilai Table */
-.nilai-table th,
-.nilai-table td {
-  padding: 8px 10px;
-  font-size: 12px;
-}
+.nilai-table th, .nilai-table td { padding: 8px 10px; font-size: 12px; }
+
+/* Checkbox list for batch assignment */
+.checkbox-list { max-height: 300px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; }
+.checkbox-list label { display: flex; align-items: center; gap: 8px; padding: 8px 12px; cursor: pointer; border-radius: 6px; transition: background 0.15s; font-size: 13px; }
+.checkbox-list label:hover { background: var(--bg-primary); }
+.checkbox-list input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+/* Student nav for input nilai */
+.student-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.student-nav .btn { min-width: 100px; justify-content: center; }
+
 
 /* Responsive */
 @media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-
-  .main-content {
-    margin-left: 0;
-    padding: 16px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tabs {
-    overflow-x: auto;
-  }
+  .sidebar { display: none; }
+  .main-content { margin-left: 0; padding: 16px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: 1fr; }
+  .tabs { overflow-x: auto; }
 }
 
-/* ============================================
-   PRINT STYLES - PDF Generation
-   ============================================ */
-
-#print-area {
-  display: none;
-}
-
+/* Print Styles */
+#print-area { display: none; }
 @media print {
-  /* Hide everything except print area */
-  body * {
-    visibility: hidden;
-  }
-
-  #print-area,
-  #print-area * {
-    visibility: visible;
-  }
-
-  #print-area {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
-
-  .app-layout {
-    display: none !important;
-  }
-
-  /* Print Document Styles */
-  .print-document {
-    padding: 20mm;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 11pt;
-    color: #000;
-    line-height: 1.4;
-  }
-
-  .print-header {
-    text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #000;
-  }
-
-  .print-header h1 {
-    font-size: 14pt;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .print-student-info {
-    margin-bottom: 24px;
-  }
-
-  .info-table {
-    border-collapse: collapse;
-    width: auto;
-  }
-
-  .info-table td {
-    padding: 3px 8px 3px 0;
-    font-size: 11pt;
-    vertical-align: top;
-  }
-
-  .label-td {
-    font-weight: bold;
-    width: 200px;
-  }
-
-  .print-section {
-    margin-bottom: 20px;
-  }
-
-  .print-section h2 {
-    font-size: 12pt;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .print-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 10pt;
-  }
-
-  .print-table th,
-  .print-table td {
-    border: 1px solid #000;
-    padding: 6px 8px;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .print-table th {
-    background: #f0f0f0;
-    font-weight: bold;
-    text-align: center;
-    font-size: 9pt;
-  }
-
-  .print-table .center {
-    text-align: center;
-  }
-
-  .print-table .desc-cell {
-    font-size: 9pt;
-    line-height: 1.3;
-    min-width: 150px;
-  }
-
-  .signature-cell {
-    height: 80px;
-    vertical-align: bottom;
-  }
-
-  .signature-line {
-    display: inline-block;
-    margin-top: 40px;
-  }
-
-  .page-break {
-    page-break-before: always;
-  }
-
-  /* Page settings */
-  @page {
-    size: A4;
-    margin: 15mm;
-  }
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { display: block; position: absolute; left: 0; top: 0; width: 100%; }
+  .app-layout { display: none !important; }
+  .print-document { padding: 20mm; font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; line-height: 1.4; }
+  .print-header { text-align: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #000; }
+  .print-header h1 { font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+  .print-student-info { margin-bottom: 24px; }
+  .info-table { border-collapse: collapse; width: auto; }
+  .info-table td { padding: 3px 8px 3px 0; font-size: 11pt; vertical-align: top; }
+  .label-td { font-weight: bold; width: 200px; }
+  .print-section { margin-bottom: 20px; }
+  .print-section h2 { font-size: 12pt; font-weight: bold; margin-bottom: 8px; }
+  .print-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  .print-table th, .print-table td { border: 1px solid #000; padding: 6px 8px; text-align: left; vertical-align: top; }
+  .print-table th { background: #f0f0f0; font-weight: bold; text-align: center; font-size: 9pt; }
+  .print-table .center { text-align: center; }
+  .print-table .desc-cell { font-size: 9pt; line-height: 1.3; min-width: 150px; }
+  .signature-cell { height: 80px; vertical-align: bottom; }
+  .signature-line { display: inline-block; margin-top: 40px; }
+  .page-break { page-break-before: always; }
+  @page { size: A4; margin: 15mm; }
 }
   </style>
 </head>
@@ -896,89 +494,64 @@ body {
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Dashboard Page -->
       <div id="page-dashboard" class="page" style="display:none;"></div>
-
-      <!-- Input Data Page -->
       <div id="page-input-data" class="page" style="display:none;"></div>
-
-      <!-- Student Detail Page -->
       <div id="page-student-detail" class="page" style="display:none;"></div>
-
-      <!-- Import Data Page -->
+      <div id="page-data-akademik" class="page" style="display:none;"></div>
+      <div id="page-input-nilai" class="page" style="display:none;"></div>
       <div id="page-import-data-file" class="page" style="display:none;"></div>
     </main>
   </div>
 
-  <!-- Print Area (hidden, used for PDF generation) -->
+  <!-- Print Area -->
   <div id="print-area"></div>
+
 
   <!-- db.js -->
   <script>
-// IndexedDB Database Layer for Buku Induk Siswa Digital
 const DB_NAME = 'BukuIndukSiswaDB';
 const DB_VERSION = 1;
-
 let db = null;
 
 function openDB() {
   return new Promise((resolve, reject) => {
     if (db) { resolve(db); return; }
     const request = indexedDB.open(DB_NAME, DB_VERSION);
-
     request.onupgradeneeded = (event) => {
       const database = event.target.result;
-
-      // Siswa store
       if (!database.objectStoreNames.contains('siswa')) {
         const siswaStore = database.createObjectStore('siswa', { keyPath: 'nis' });
         siswaStore.createIndex('nama', 'nama', { unique: false });
         siswaStore.createIndex('nisn', 'nisn', { unique: false });
       }
-
-      // Akademik store
       if (!database.objectStoreNames.contains('akademik')) {
         const akademikStore = database.createObjectStore('akademik', { keyPath: 'id', autoIncrement: true });
         akademikStore.createIndex('nis', 'nis', { unique: false });
         akademikStore.createIndex('tahunPelajaran', 'tahunPelajaran', { unique: false });
       }
-
-      // Nilai store
       if (!database.objectStoreNames.contains('nilai')) {
         const nilaiStore = database.createObjectStore('nilai', { keyPath: 'id', autoIncrement: true });
         nilaiStore.createIndex('akademikId', 'akademikId', { unique: false });
       }
-
-      // NonAkademik store
       if (!database.objectStoreNames.contains('nonAkademik')) {
         const nonAkademikStore = database.createObjectStore('nonAkademik', { keyPath: 'id', autoIncrement: true });
         nonAkademikStore.createIndex('akademikId', 'akademikId', { unique: false });
       }
-
-      // P5 store
       if (!database.objectStoreNames.contains('p5')) {
         const p5Store = database.createObjectStore('p5', { keyPath: 'id', autoIncrement: true });
         p5Store.createIndex('akademikId', 'akademikId', { unique: false });
       }
     };
-
-    request.onsuccess = (event) => {
-      db = event.target.result;
-      resolve(db);
-    };
-
-    request.onerror = (event) => {
-      reject(event.target.error);
-    };
+    request.onsuccess = (event) => { db = event.target.result; resolve(db); };
+    request.onerror = (event) => { reject(event.target.error); };
   });
 }
 
-// Generic CRUD helpers
+
 function getStore(storeName, mode) {
   const tx = db.transaction(storeName, mode || 'readonly');
   return tx.objectStore(storeName);
 }
-
 function addRecord(storeName, data) {
   return new Promise((resolve, reject) => {
     const store = getStore(storeName, 'readwrite');
@@ -987,7 +560,6 @@ function addRecord(storeName, data) {
     request.onerror = () => reject(request.error);
   });
 }
-
 function putRecord(storeName, data) {
   return new Promise((resolve, reject) => {
     const store = getStore(storeName, 'readwrite');
@@ -996,7 +568,6 @@ function putRecord(storeName, data) {
     request.onerror = () => reject(request.error);
   });
 }
-
 function getRecord(storeName, key) {
   return new Promise((resolve, reject) => {
     const store = getStore(storeName, 'readonly');
@@ -1005,7 +576,6 @@ function getRecord(storeName, key) {
     request.onerror = () => reject(request.error);
   });
 }
-
 function getAllRecords(storeName) {
   return new Promise((resolve, reject) => {
     const store = getStore(storeName, 'readonly');
@@ -1014,7 +584,6 @@ function getAllRecords(storeName) {
     request.onerror = () => reject(request.error);
   });
 }
-
 function deleteRecord(storeName, key) {
   return new Promise((resolve, reject) => {
     const store = getStore(storeName, 'readwrite');
@@ -1023,7 +592,6 @@ function deleteRecord(storeName, key) {
     request.onerror = () => reject(request.error);
   });
 }
-
 function getByIndex(storeName, indexName, value) {
   return new Promise((resolve, reject) => {
     const store = getStore(storeName, 'readonly');
@@ -1033,717 +601,286 @@ function getByIndex(storeName, indexName, value) {
     request.onerror = () => reject(request.error);
   });
 }
-
-// Atomic replace: delete all records matching an index value, then insert new ones in one transaction
 function replaceByIndex(storeName, indexName, indexValue, newRecords) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(storeName, 'readwrite');
     const store = tx.objectStore(storeName);
     const index = store.index(indexName);
     const getReq = index.getAll(indexValue);
-
     getReq.onsuccess = () => {
       const existing = getReq.result || [];
-      for (const rec of existing) {
-        store.delete(rec.id);
-      }
-      for (const rec of newRecords) {
-        store.add(rec);
-      }
+      for (const rec of existing) store.delete(rec.id);
+      for (const rec of newRecords) store.add(rec);
     };
     getReq.onerror = () => reject(getReq.error);
-
     tx.oncomplete = () => resolve();
     tx.onerror = () => reject(tx.error);
   });
 }
 
-// Domain-specific queries
+
 const DB = {
   init: openDB,
-
-  // Siswa
   addSiswa: (siswa) => addRecord('siswa', siswa),
   updateSiswa: (siswa) => putRecord('siswa', siswa),
   getSiswa: (nis) => getRecord('siswa', nis),
   getAllSiswa: () => getAllRecords('siswa'),
   deleteSiswa: (nis) => deleteRecord('siswa', nis),
-
-  // Akademik
   addAkademik: (data) => addRecord('akademik', data),
   updateAkademik: (data) => putRecord('akademik', data),
   getAkademik: (id) => getRecord('akademik', id),
   getAllAkademik: () => getAllRecords('akademik'),
   getAkademikBySiswa: (nis) => getByIndex('akademik', 'nis', nis),
   deleteAkademik: (id) => deleteRecord('akademik', id),
-
-  // Nilai
   addNilai: (data) => addRecord('nilai', data),
   updateNilai: (data) => putRecord('nilai', data),
   getNilai: (id) => getRecord('nilai', id),
   getNilaiByAkademik: (akademikId) => getByIndex('nilai', 'akademikId', akademikId),
   deleteNilai: (id) => deleteRecord('nilai', id),
-
-  // NonAkademik
   addNonAkademik: (data) => addRecord('nonAkademik', data),
   updateNonAkademik: (data) => putRecord('nonAkademik', data),
   getNonAkademik: (id) => getRecord('nonAkademik', id),
   getNonAkademikByAkademik: (akademikId) => getByIndex('nonAkademik', 'akademikId', akademikId),
   deleteNonAkademik: (id) => deleteRecord('nonAkademik', id),
-
-  // P5
   addP5: (data) => addRecord('p5', data),
   updateP5: (data) => putRecord('p5', data),
   getP5: (id) => getRecord('p5', id),
   getP5ByAkademik: (akademikId) => getByIndex('p5', 'akademikId', akademikId),
   deleteP5: (id) => deleteRecord('p5', id),
-
-  // Atomic replace operations
   replaceNilaiByAkademik: (akademikId, newRecords) => replaceByIndex('nilai', 'akademikId', akademikId, newRecords),
   replaceNonAkademikByAkademik: (akademikId, newRecords) => replaceByIndex('nonAkademik', 'akademikId', akademikId, newRecords),
   replaceP5ByAkademik: (akademikId, newRecords) => replaceByIndex('p5', 'akademikId', akademikId, newRecords),
-
-  // Bulk operations
   bulkAddSiswa: async (records) => {
     const results = { success: 0, failed: 0, errors: [] };
     for (const record of records) {
-      try {
-        await addRecord('siswa', record);
-        results.success++;
-      } catch (e) {
-        // Try update if duplicate
-        try {
-          await putRecord('siswa', record);
-          results.success++;
-        } catch (e2) {
-          results.failed++;
-          results.errors.push({ record, error: e2.message });
-        }
-      }
+      try { await addRecord('siswa', record); results.success++; }
+      catch (e) { try { await putRecord('siswa', record); results.success++; } catch (e2) { results.failed++; results.errors.push({ record, error: e2.message }); } }
     }
     return results;
   },
-
-  // Get complete student data
   getCompleteStudentData: async (nis) => {
     const siswa = await getRecord('siswa', nis);
     if (!siswa) return null;
-
     const akademikRecords = await getByIndex('akademik', 'nis', nis);
     const completeAkademik = [];
-
     for (const akad of akademikRecords) {
       const nilai = await getByIndex('nilai', 'akademikId', akad.id);
       const nonAkademik = await getByIndex('nonAkademik', 'akademikId', akad.id);
       const p5 = await getByIndex('p5', 'akademikId', akad.id);
-      completeAkademik.push({
-        ...akad,
-        nilai: nilai || [],
-        nonAkademik: nonAkademik[0] || null,
-        p5: p5[0] || null,
-      });
+      completeAkademik.push({ ...akad, nilai: nilai || [], nonAkademik: nonAkademik[0] || null, p5: p5[0] || null });
     }
-
     return { ...siswa, akademik: completeAkademik };
   }
 };
   </script>
 
+
   <!-- router.js -->
   <script>
-// Simple SPA Router - show/hide page sections
 const Router = {
   currentPage: 'dashboard',
   currentParams: {},
-
-  pages: ['dashboard', 'input-data', 'student-detail', 'import-data-file'],
-
+  pages: ['dashboard', 'input-data', 'student-detail', 'data-akademik', 'input-nilai', 'import-data-file'],
   navigateTo(page, params = {}) {
     this.currentPage = page;
     this.currentParams = params;
-
-    // Hide all pages
     this.pages.forEach(p => {
       const el = document.getElementById('page-' + p);
       if (el) el.style.display = 'none';
     });
-
-    // Show target page
     const target = document.getElementById('page-' + page);
     if (target) target.style.display = 'block';
-
-    // Update active sidebar item
     document.querySelectorAll('.nav-item').forEach(item => {
       item.classList.remove('active');
       if (item.dataset.page === page) item.classList.add('active');
     });
-
-    // Dispatch custom event
-    window.dispatchEvent(new CustomEvent('page-change', {
-      detail: { page, params }
-    }));
+    window.dispatchEvent(new CustomEvent('page-change', { detail: { page, params } }));
   },
-
-  getCurrentPage() {
-    return this.currentPage;
-  },
-
-  getParams() {
-    return this.currentParams;
-  }
+  getCurrentPage() { return this.currentPage; },
+  getParams() { return this.currentParams; }
 };
   </script>
 
   <!-- csv-parser.js -->
   <script>
-// Custom CSV Parser - handles quoted fields, commas within quotes, newlines, UTF-8 BOM
-// Supports both comma and semicolon delimiters (auto-detected)
 const CSVParser = {
   parse(text) {
-    // Remove UTF-8 BOM if present
-    if (text.charCodeAt(0) === 0xFEFF) {
-      text = text.substring(1);
-    }
-
-    // Detect delimiter from the first line (header)
+    if (text.charCodeAt(0) === 0xFEFF) text = text.substring(1);
     const delimiter = this.detectDelimiter(text);
-
     const rows = this.parseRows(text, delimiter);
     if (rows.length < 2) return [];
-
     const headers = rows[0].map(h => h.trim());
     const data = [];
-
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
       if (row.length === 0 || (row.length === 1 && row[0].trim() === '')) continue;
-
       const obj = {};
-      for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = (row[j] || '').trim();
-      }
+      for (let j = 0; j < headers.length; j++) obj[headers[j]] = (row[j] || '').trim();
       data.push(obj);
     }
-
     return data;
   },
-
   detectDelimiter(text) {
-    // Look at the first line to determine delimiter
     const firstLineEnd = text.indexOf('\n');
     const firstLine = firstLineEnd >= 0 ? text.substring(0, firstLineEnd) : text;
-
-    // Count commas and semicolons outside of quotes
-    let commas = 0;
-    let semicolons = 0;
-    let inQuotes = false;
-
+    let commas = 0, semicolons = 0, inQuotes = false;
     for (let i = 0; i < firstLine.length; i++) {
       const ch = firstLine[i];
-      if (ch === '"') {
-        inQuotes = !inQuotes;
-      } else if (!inQuotes) {
-        if (ch === ',') commas++;
-        else if (ch === ';') semicolons++;
-      }
+      if (ch === '"') inQuotes = !inQuotes;
+      else if (!inQuotes) { if (ch === ',') commas++; else if (ch === ';') semicolons++; }
     }
-
-    // Use semicolons if they outnumber commas (common in Indonesian/European locale exports)
     return semicolons > commas ? ';' : ',';
   },
-
   parseRows(text, delimiter) {
-    const rows = [];
-    let currentRow = [];
-    let currentField = '';
-    let inQuotes = false;
-    let i = 0;
-
+    const rows = []; let currentRow = []; let currentField = ''; let inQuotes = false; let i = 0;
     while (i < text.length) {
       const char = text[i];
-
       if (inQuotes) {
-        if (char === '"') {
-          // Check for escaped quote
-          if (i + 1 < text.length && text[i + 1] === '"') {
-            currentField += '"';
-            i += 2;
-          } else {
-            inQuotes = false;
-            i++;
-          }
-        } else {
-          currentField += char;
-          i++;
-        }
+        if (char === '"') { if (i + 1 < text.length && text[i + 1] === '"') { currentField += '"'; i += 2; } else { inQuotes = false; i++; } }
+        else { currentField += char; i++; }
       } else {
-        if (char === '"') {
-          inQuotes = true;
-          i++;
-        } else if (char === delimiter) {
-          currentRow.push(currentField);
-          currentField = '';
-          i++;
-        } else if (char === '\r') {
-          // Handle CRLF
-          if (i + 1 < text.length && text[i + 1] === '\n') {
-            i++;
-          }
-          currentRow.push(currentField);
-          currentField = '';
-          rows.push(currentRow);
-          currentRow = [];
-          i++;
-        } else if (char === '\n') {
-          currentRow.push(currentField);
-          currentField = '';
-          rows.push(currentRow);
-          currentRow = [];
-          i++;
-        } else {
-          currentField += char;
-          i++;
-        }
+        if (char === '"') { inQuotes = true; i++; }
+        else if (char === delimiter) { currentRow.push(currentField); currentField = ''; i++; }
+        else if (char === '\r') { if (i + 1 < text.length && text[i + 1] === '\n') i++; currentRow.push(currentField); currentField = ''; rows.push(currentRow); currentRow = []; i++; }
+        else if (char === '\n') { currentRow.push(currentField); currentField = ''; rows.push(currentRow); currentRow = []; i++; }
+        else { currentField += char; i++; }
       }
     }
-
-    // Handle last field/row
-    if (currentField !== '' || currentRow.length > 0) {
-      currentRow.push(currentField);
-      rows.push(currentRow);
-    }
-
+    if (currentField !== '' || currentRow.length > 0) { currentRow.push(currentField); rows.push(currentRow); }
     return rows;
   }
 };
   </script>
 
+
   <!-- xlsx-parser.js -->
   <script>
-// XLSX Parser - Basic detection and CSV fallback prompt
-// XLSX files are ZIP archives containing XML files
-// Without external libraries, we provide basic detection and guide users to use CSV
 const XLSXParser = {
   async parse(file) {
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
-
-    // Check for ZIP signature (PK..)
     if (bytes[0] === 0x50 && bytes[1] === 0x4B) {
-      // This is a ZIP file (likely XLSX)
-      try {
-        return await this.parseXLSX(buffer);
-      } catch (e) {
-        alert(
-          'File Excel (.xlsx) terdeteksi. Untuk hasil terbaik, silakan:\n\n' +
-          '1. Buka file di Microsoft Excel atau Google Sheets\n' +
-          '2. Simpan sebagai CSV (File > Save As > CSV)\n' +
-          '3. Upload file CSV tersebut\n\n' +
-          'Atau gunakan format CSV sejak awal untuk import data.'
-        );
-        return null;
-      }
+      try { return await this.parseXLSX(buffer); }
+      catch (e) { alert('File Excel (.xlsx) terdeteksi. Untuk hasil terbaik, simpan sebagai CSV terlebih dahulu.'); return null; }
     }
-
-    alert('Format file tidak dikenali. Silakan gunakan file CSV.');
-    return null;
+    alert('Format file tidak dikenali. Silakan gunakan file CSV.'); return null;
   },
-
   async parseXLSX(buffer) {
-    // Basic XLSX parser using ZIP structure
-    // XLSX = ZIP containing xl/sharedStrings.xml and xl/worksheets/sheet1.xml
     const files = await this.unzip(buffer);
-    
-    if (!files) {
-      throw new Error('Cannot parse ZIP structure');
-    }
-
-    // Warn user if some entries were skipped during decompression
-    if (this._lastSkippedEntries > 0) {
-      alert(
-        'Peringatan: ' + this._lastSkippedEntries + ' bagian file tidak dapat dibaca.\n' +
-        'Data yang ditampilkan mungkin tidak lengkap.\n\n' +
-        'Untuk hasil terbaik, simpan file sebagai CSV sebelum import.'
-      );
-    }
-
-    // Get shared strings
+    if (!files) throw new Error('Cannot parse ZIP structure');
     const sharedStrings = this.parseSharedStrings(files['xl/sharedStrings.xml'] || '');
-    
-    // Get first sheet
     const sheetXml = files['xl/worksheets/sheet1.xml'] || '';
     if (!sheetXml) throw new Error('No sheet found');
-
     return this.parseSheet(sheetXml, sharedStrings);
   },
-
   async unzip(buffer) {
-    const bytes = new Uint8Array(buffer);
-    const files = {};
-    let offset = 0;
-    let skippedEntries = 0;
-
+    const bytes = new Uint8Array(buffer); const files = {}; let offset = 0; let skippedEntries = 0;
     try {
       while (offset < bytes.length - 4) {
-        // Look for local file header signature
-        if (bytes[offset] !== 0x50 || bytes[offset + 1] !== 0x4B ||
-            bytes[offset + 2] !== 0x03 || bytes[offset + 3] !== 0x04) {
-          break;
-        }
-
+        if (bytes[offset] !== 0x50 || bytes[offset + 1] !== 0x4B || bytes[offset + 2] !== 0x03 || bytes[offset + 3] !== 0x04) break;
         const compressionMethod = bytes[offset + 8] | (bytes[offset + 9] << 8);
-        const compressedSize = bytes[offset + 18] | (bytes[offset + 19] << 8) | 
-                              (bytes[offset + 20] << 16) | (bytes[offset + 21] << 24);
-        const uncompressedSize = bytes[offset + 22] | (bytes[offset + 23] << 8) |
-                                (bytes[offset + 24] << 16) | (bytes[offset + 25] << 24);
+        const compressedSize = bytes[offset + 18] | (bytes[offset + 19] << 8) | (bytes[offset + 20] << 16) | (bytes[offset + 21] << 24);
         const fileNameLength = bytes[offset + 26] | (bytes[offset + 27] << 8);
         const extraLength = bytes[offset + 28] | (bytes[offset + 29] << 8);
-
         const fileName = new TextDecoder().decode(bytes.slice(offset + 30, offset + 30 + fileNameLength));
         const dataStart = offset + 30 + fileNameLength + extraLength;
         const dataEnd = dataStart + compressedSize;
-
-        if (compressionMethod === 0) {
-          // Stored (not compressed)
-          const content = new TextDecoder().decode(bytes.slice(dataStart, dataEnd));
-          files[fileName] = content;
-        } else if (compressionMethod === 8) {
-          // Deflate - try using DecompressionStream if available
+        if (compressionMethod === 0) { files[fileName] = new TextDecoder().decode(bytes.slice(dataStart, dataEnd)); }
+        else if (compressionMethod === 8) {
           try {
             const compressed = bytes.slice(dataStart, dataEnd);
             const rawStream = new Blob([compressed]).stream();
             const decompressed = rawStream.pipeThrough(new DecompressionStream('raw'));
-            const reader = decompressed.getReader();
-            const chunks = [];
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              chunks.push(value);
-            }
+            const reader = decompressed.getReader(); const chunks = [];
+            while (true) { const { done, value } = await reader.read(); if (done) break; chunks.push(value); }
             const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
-            const result = new Uint8Array(totalLength);
-            let pos = 0;
-            for (const chunk of chunks) {
-              result.set(chunk, pos);
-              pos += chunk.length;
-            }
+            const result = new Uint8Array(totalLength); let pos = 0;
+            for (const chunk of chunks) { result.set(chunk, pos); pos += chunk.length; }
             files[fileName] = new TextDecoder().decode(result);
-          } catch (e) {
-            // Skip files we cannot decompress
-            skippedEntries++;
-          }
-        } else {
-          skippedEntries++;
-        }
-
+          } catch (e) { skippedEntries++; }
+        } else { skippedEntries++; }
         offset = dataEnd;
       }
-    } catch (e) {
-      return null;
-    }
-
-    if (skippedEntries > 0) {
-      console.warn(`XLSX parser: ${skippedEntries} ZIP entries could not be decompressed and were skipped.`);
-      this._lastSkippedEntries = skippedEntries;
-    } else {
-      this._lastSkippedEntries = 0;
-    }
-
+    } catch (e) { return null; }
+    this._lastSkippedEntries = skippedEntries;
     return Object.keys(files).length > 0 ? files : null;
   },
-
-  parseSharedStrings(xml) {
-    const strings = [];
-    const regex = /<t[^>]*>([\s\S]*?)<\/t>/g;
-    let match;
-    while ((match = regex.exec(xml)) !== null) {
-      strings.push(this.decodeXMLEntities(match[1]));
-    }
-    return strings;
-  },
-
+  parseSharedStrings(xml) { const strings = []; const regex = /<t[^>]*>([\s\S]*?)<\/t>/g; let match; while ((match = regex.exec(xml)) !== null) strings.push(this.decodeXMLEntities(match[1])); return strings; },
   parseSheet(xml, sharedStrings) {
-    const rows = [];
-    const rowRegex = /<row[^>]*>([\s\S]*?)<\/row>/g;
-    const cellRegex = /<c\s+r="([A-Z]+)(\d+)"[^>]*(?:t="([^"]*)")?[^>]*>(?:<v>([\s\S]*?)<\/v>)?/g;
-    
-    let rowMatch;
+    const rows = []; const rowRegex = /<row[^>]*>([\s\S]*?)<\/row>/g; let rowMatch;
     while ((rowMatch = rowRegex.exec(xml)) !== null) {
-      const rowContent = rowMatch[1];
-      const cells = {};
-      let cellMatch;
+      const rowContent = rowMatch[1]; const cells = {};
       const localCellRegex = /<c\s+r="([A-Z]+)(\d+)"[^>]*?(?: t="([^"]*)")?[^>]*?>(?:[\s\S]*?<v>([\s\S]*?)<\/v>)?[\s\S]*?<\/c>/g;
-      
+      let cellMatch;
       while ((cellMatch = localCellRegex.exec(rowContent)) !== null) {
-        const col = cellMatch[1];
-        const type = cellMatch[3];
-        const value = cellMatch[4] || '';
-        
+        const col = cellMatch[1]; const type = cellMatch[3]; const value = cellMatch[4] || '';
         let cellValue = value;
-        if (type === 's' && sharedStrings.length > 0) {
-          const idx = parseInt(value);
-          cellValue = sharedStrings[idx] || '';
-        }
-        
-        const colIndex = this.colToIndex(col);
-        cells[colIndex] = cellValue;
+        if (type === 's' && sharedStrings.length > 0) { const idx = parseInt(value); cellValue = sharedStrings[idx] || ''; }
+        cells[this.colToIndex(col)] = cellValue;
       }
       rows.push(cells);
     }
-
     if (rows.length < 2) return [];
-
-    // First row is headers
-    const headers = {};
-    const maxCol = Math.max(...rows.map(r => Math.max(...Object.keys(r).map(Number), 0)));
-    
-    for (let c = 0; c <= maxCol; c++) {
-      headers[c] = (rows[0][c] || `Column${c}`).toString().trim();
-    }
-
+    const headers = {}; const maxCol = Math.max(...rows.map(r => Math.max(...Object.keys(r).map(Number), 0)));
+    for (let c = 0; c <= maxCol; c++) headers[c] = (rows[0][c] || `Column${c}`).toString().trim();
     const data = [];
-    for (let i = 1; i < rows.length; i++) {
-      const obj = {};
-      let hasData = false;
-      for (let c = 0; c <= maxCol; c++) {
-        const val = (rows[i][c] || '').toString().trim();
-        obj[headers[c]] = val;
-        if (val) hasData = true;
-      }
-      if (hasData) data.push(obj);
-    }
-
+    for (let i = 1; i < rows.length; i++) { const obj = {}; let hasData = false; for (let c = 0; c <= maxCol; c++) { const val = (rows[i][c] || '').toString().trim(); obj[headers[c]] = val; if (val) hasData = true; } if (hasData) data.push(obj); }
     return data;
   },
-
-  colToIndex(col) {
-    let index = 0;
-    for (let i = 0; i < col.length; i++) {
-      index = index * 26 + (col.charCodeAt(i) - 64);
-    }
-    return index - 1;
-  },
-
-  decodeXMLEntities(text) {
-    return text
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&apos;/g, "'");
-  }
+  colToIndex(col) { let index = 0; for (let i = 0; i < col.length; i++) index = index * 26 + (col.charCodeAt(i) - 64); return index - 1; },
+  decodeXMLEntities(text) { return text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'"); }
 };
   </script>
 
+
   <!-- pdf-generator.js -->
   <script>
-// PDF Generator - Uses window.print() with print-ready HTML
 const PDFGenerator = {
-  escapeHTML(str) {
-    if (str == null) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  },
-
+  escapeHTML(str) { if (str == null) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); },
   generate(studentData, akademikData) {
-    const s = studentData;
-    const akad = akademikData;
-    const nilaiRecords = akad.nilai || [];
-    const nonAkad = akad.nonAkademik || {};
-    const p5 = akad.p5 || {};
-    const esc = this.escapeHTML;
-
-    // Build nilai map
-    const nilaiMap = {};
-    nilaiRecords.forEach(n => { nilaiMap[n.mapel] = n; });
-
-    const printContent = `
-      <div class="print-document">
-        <div class="print-header">
-          <h1>LAPORAN HASIL CAPAIAN KOMPETENSI PESERTA DIDIK</h1>
-        </div>
-
-        <div class="print-student-info">
-          <table class="info-table">
-            <tr><td class="label-td">NAMA PESERTA DIDIK</td><td>: ${esc(s.nama)}</td></tr>
-            <tr><td class="label-td">NIS</td><td>: ${esc(s.nis)}</td></tr>
-            <tr><td class="label-td">NISN</td><td>: ${esc(s.nisn || '-')}</td></tr>
-            <tr><td class="label-td">TAHUN PELAJARAN</td><td>: ${esc(akad.tahunPelajaran || '-')}</td></tr>
-            <tr><td class="label-td">KELAS</td><td>: ${esc(akad.kelas || '-')}</td></tr>
-          </table>
-        </div>
-
-        <div class="print-section">
-          <h2>A. NILAI AKHIR</h2>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th>NO</th>
-                <th>MATA PELAJARAN</th>
-                <th>NILAI AKHIR<br>Semester 1</th>
-                <th>NILAI AKHIR<br>Semester 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${MATA_PELAJARAN.map((mp, i) => {
-                const n = nilaiMap[mp] || {};
-                return `
-                  <tr>
-                    <td class="center">${i + 1}</td>
-                    <td>${esc(mp)}</td>
-                    <td class="center">${esc(n.nilaiSem1 || '-')}</td>
-                    <td class="center">${esc(n.nilaiSem2 || '-')}</td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="print-section">
-          <h2>B. EKSTRAKURIKULER</h2>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th>SEMESTER</th>
-                <th>KEGIATAN EKSTRAKURIKULER</th>
-                <th>KETERANGAN</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="center">1</td>
-                <td>${esc(nonAkad.ekskulKegiatan1 || '-')}</td>
-                <td>${esc(nonAkad.ekskulKet1 || '-')}</td>
-              </tr>
-              <tr>
-                <td class="center">2</td>
-                <td>${esc(nonAkad.ekskulKegiatan2 || '-')}</td>
-                <td>${esc(nonAkad.ekskulKet2 || '-')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="print-section">
-          <h2>C. KETIDAKHADIRAN</h2>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th>SEMESTER</th>
-                <th>SAKIT (Hari)</th>
-                <th>IZIN (Hari)</th>
-                <th>TANPA KETERANGAN (Hari)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="center">1</td>
-                <td class="center">${esc(nonAkad.sakit1 || 0)}</td>
-                <td class="center">${esc(nonAkad.izin1 || 0)}</td>
-                <td class="center">${esc(nonAkad.alpha1 || 0)}</td>
-              </tr>
-              <tr>
-                <td class="center">2</td>
-                <td class="center">${esc(nonAkad.sakit2 || 0)}</td>
-                <td class="center">${esc(nonAkad.izin2 || 0)}</td>
-                <td class="center">${esc(nonAkad.alpha2 || 0)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="print-section">
-          <h2>D. STATUS AKHIR TAHUN PELAJARAN</h2>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th>KELAS</th>
-                <th>STATUS</th>
-                <th>WALI KELAS</th>
-                <th>TANDA TANGAN</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="center">${esc(akad.kelas || '-')}</td>
-                <td class="center">${esc(akad.status || '-')}</td>
-                <td class="center">${esc(akad.waliKelas || '-')}</td>
-                <td class="center signature-cell">
-                  <br><br><br>
-                  <span class="signature-line">____________________</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="print-section page-break">
-          <h2>E. DESKRIPSI CAPAIAN KOMPETENSI</h2>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th>NO</th>
-                <th>MATA PELAJARAN</th>
-                <th>CATATAN SEMESTER 1</th>
-                <th>CATATAN SEMESTER 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${MATA_PELAJARAN.map((mp, i) => {
-                const n = nilaiMap[mp] || {};
-                return `
-                  <tr>
-                    <td class="center">${i + 1}</td>
-                    <td>${esc(mp)}</td>
-                    <td class="desc-cell">${esc(n.deskSem1 || '-')}</td>
-                    <td class="desc-cell">${esc(n.deskSem2 || '-')}</td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="print-section">
-          <h2>F. KOKURIKULER (Proyek Penguatan Profil Pelajar Pancasila / P5)</h2>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th>SEMESTER</th>
-                <th>CATATAN PROYEK P5</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="center">1</td>
-                <td class="desc-cell">${esc(p5.catatanSem1 || '-')}</td>
-              </tr>
-              <tr>
-                <td class="center">2</td>
-                <td class="desc-cell">${esc(p5.catatanSem2 || '-')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    `;
-
-    // Set print content and trigger print
-    const printArea = document.getElementById('print-area');
-    printArea.innerHTML = printContent;
+    const s = studentData; const akad = akademikData;
+    const nilaiRecords = akad.nilai || []; const nonAkad = akad.nonAkademik || {}; const p5 = akad.p5 || {};
+    const esc = this.escapeHTML; const nilaiMap = {}; nilaiRecords.forEach(n => { nilaiMap[n.mapel] = n; });
+    const printContent = `<div class="print-document">
+      <div class="print-header"><h1>LAPORAN HASIL CAPAIAN KOMPETENSI PESERTA DIDIK</h1></div>
+      <div class="print-student-info"><table class="info-table">
+        <tr><td class="label-td">NAMA PESERTA DIDIK</td><td>: ${esc(s.nama)}</td></tr>
+        <tr><td class="label-td">NIS</td><td>: ${esc(s.nis)}</td></tr>
+        <tr><td class="label-td">NISN</td><td>: ${esc(s.nisn || '-')}</td></tr>
+        <tr><td class="label-td">TAHUN PELAJARAN</td><td>: ${esc(akad.tahunPelajaran || '-')}</td></tr>
+        <tr><td class="label-td">KELAS</td><td>: ${esc(akad.kelas || '-')}</td></tr>
+      </table></div>
+      <div class="print-section"><h2>A. NILAI AKHIR</h2><table class="print-table"><thead><tr><th>NO</th><th>MATA PELAJARAN</th><th>NILAI AKHIR Semester 1</th><th>NILAI AKHIR Semester 2</th></tr></thead><tbody>
+        ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td class="center">' + (i+1) + '</td><td>' + esc(mp) + '</td><td class="center">' + esc(n.nilaiSem1 || '-') + '</td><td class="center">' + esc(n.nilaiSem2 || '-') + '</td></tr>'; }).join('')}
+      </tbody></table></div>
+      <div class="print-section"><h2>B. EKSTRAKURIKULER</h2><table class="print-table"><thead><tr><th>SEMESTER</th><th>KEGIATAN</th><th>KETERANGAN</th></tr></thead><tbody>
+        <tr><td class="center">1</td><td>${esc(nonAkad.ekskulKegiatan1 || '-')}</td><td>${esc(nonAkad.ekskulKet1 || '-')}</td></tr>
+        <tr><td class="center">2</td><td>${esc(nonAkad.ekskulKegiatan2 || '-')}</td><td>${esc(nonAkad.ekskulKet2 || '-')}</td></tr>
+      </tbody></table></div>
+      <div class="print-section"><h2>C. KETIDAKHADIRAN</h2><table class="print-table"><thead><tr><th>SEMESTER</th><th>SAKIT</th><th>IZIN</th><th>TANPA KET</th></tr></thead><tbody>
+        <tr><td class="center">1</td><td class="center">${esc(nonAkad.sakit1 || 0)}</td><td class="center">${esc(nonAkad.izin1 || 0)}</td><td class="center">${esc(nonAkad.alpha1 || 0)}</td></tr>
+        <tr><td class="center">2</td><td class="center">${esc(nonAkad.sakit2 || 0)}</td><td class="center">${esc(nonAkad.izin2 || 0)}</td><td class="center">${esc(nonAkad.alpha2 || 0)}</td></tr>
+      </tbody></table></div>
+      <div class="print-section"><h2>D. STATUS AKHIR</h2><table class="print-table"><thead><tr><th>KELAS</th><th>STATUS</th><th>WALI KELAS</th><th>TTD</th></tr></thead><tbody>
+        <tr><td class="center">${esc(akad.kelas || '-')}</td><td class="center">${esc(akad.status || '-')}</td><td class="center">${esc(akad.waliKelas || '-')}</td><td class="center signature-cell"><br><br><br><span class="signature-line">____________________</span></td></tr>
+      </tbody></table></div>
+      <div class="print-section page-break"><h2>E. DESKRIPSI CAPAIAN KOMPETENSI</h2><table class="print-table"><thead><tr><th>NO</th><th>MATA PELAJARAN</th><th>CATATAN SEM 1</th><th>CATATAN SEM 2</th></tr></thead><tbody>
+        ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td class="center">' + (i+1) + '</td><td>' + esc(mp) + '</td><td class="desc-cell">' + esc(n.deskSem1 || '-') + '</td><td class="desc-cell">' + esc(n.deskSem2 || '-') + '</td></tr>'; }).join('')}
+      </tbody></table></div>
+      <div class="print-section"><h2>F. KOKURIKULER (P5)</h2><table class="print-table"><thead><tr><th>SEMESTER</th><th>CATATAN PROYEK P5</th></tr></thead><tbody>
+        <tr><td class="center">1</td><td class="desc-cell">${esc(p5.catatanSem1 || '-')}</td></tr>
+        <tr><td class="center">2</td><td class="desc-cell">${esc(p5.catatanSem2 || '-')}</td></tr>
+      </tbody></table></div>
+    </div>`;
+    document.getElementById('print-area').innerHTML = printContent;
     window.print();
   }
 };
   </script>
 
+
   <!-- sidebar.js -->
   <script>
-// Sidebar Navigation Component
 const Sidebar = {
   render() {
     const sidebar = document.getElementById('sidebar');
@@ -1767,10 +904,24 @@ const Sidebar = {
         </a>
         <a class="nav-item" data-page="input-data" onclick="Router.navigateTo('input-data')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Data Siswa</span>
+        </a>
+        <a class="nav-item" data-page="data-akademik" onclick="Router.navigateTo('data-akademik')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>Data Akademik</span>
+        </a>
+        <a class="nav-item" data-page="input-nilai" onclick="Router.navigateTo('input-nilai')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
           </svg>
-          <span>Input Data</span>
+          <span>Input Nilai</span>
         </a>
         <a class="nav-item" data-page="import-data-file" onclick="Router.navigateTo('import-data-file')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1793,457 +944,206 @@ const Sidebar = {
       </div>
     `;
   },
-
-  handleLogout() {
-    if (confirm('Yakin ingin keluar?')) {
-      window.location.reload();
-    }
-  }
+  handleLogout() { if (confirm('Yakin ingin keluar?')) window.location.reload(); }
 };
   </script>
 
+
   <!-- dashboard.js -->
   <script>
-// HTML escape utility to prevent XSS
 function escapeHTMLDash(str) {
   if (str == null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-// Dashboard Component
 const Dashboard = {
   searchTerm: '',
   students: [],
   akademikMap: {},
-
-  async init() {
-    await this.loadData();
-    this.render();
-  },
-
+  async init() { await this.loadData(); this.render(); },
   async loadData() {
     this.students = await DB.getAllSiswa();
     const allAkademik = await DB.getAllAkademik();
     this.akademikMap = {};
-    allAkademik.forEach(a => {
-      if (!this.akademikMap[a.nis]) this.akademikMap[a.nis] = [];
-      this.akademikMap[a.nis].push(a);
-    });
+    allAkademik.forEach(a => { if (!this.akademikMap[a.nis]) this.akademikMap[a.nis] = []; this.akademikMap[a.nis].push(a); });
   },
-
   getFilteredStudents() {
     if (!this.searchTerm) return this.students;
     const term = this.searchTerm.toLowerCase();
-    return this.students.filter(s =>
-      s.nama.toLowerCase().includes(term) ||
-      s.nis.toLowerCase().includes(term) ||
-      (s.nisn && s.nisn.toLowerCase().includes(term))
-    );
+    return this.students.filter(s => s.nama.toLowerCase().includes(term) || s.nis.toLowerCase().includes(term) || (s.nisn && s.nisn.toLowerCase().includes(term)));
   },
-
   render() {
     const page = document.getElementById('page-dashboard');
     const filtered = this.getFilteredStudents();
     const totalSiswa = this.students.length;
-    const kelasSet = new Set();
-    const tpSet = new Set();
-    Object.values(this.akademikMap).flat().forEach(a => {
-      if (a.kelas) kelasSet.add(a.kelas);
-      if (a.tahunPelajaran) tpSet.add(a.tahunPelajaran);
-    });
-
+    const kelasSet = new Set(); const tpSet = new Set();
+    Object.values(this.akademikMap).flat().forEach(a => { if (a.kelas) kelasSet.add(a.kelas); if (a.tahunPelajaran) tpSet.add(a.tahunPelajaran); });
     page.innerHTML = `
-      <div class="page-header">
-        <h2 class="page-title">Dashboard</h2>
-      </div>
-
+      <div class="page-header"><h2 class="page-title">Dashboard</h2></div>
       <div class="search-bar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input type="text" id="global-search" placeholder="Cari siswa berdasarkan NIS atau Nama..." 
-               value="${this.searchTerm}" oninput="Dashboard.onSearch(this.value)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="global-search" placeholder="Cari siswa berdasarkan NIS atau Nama..." value="${this.searchTerm}" oninput="Dashboard.onSearch(this.value)">
       </div>
-
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value">${totalSiswa}</div>
-          <div class="stat-label">Total Siswa</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">${kelasSet.size}</div>
-          <div class="stat-label">Total Kelas</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">${tpSet.size || '-'}</div>
-          <div class="stat-label">Tahun Pelajaran</div>
-        </div>
+        <div class="stat-card"><div class="stat-value">${totalSiswa}</div><div class="stat-label">Total Siswa</div></div>
+        <div class="stat-card"><div class="stat-value">${kelasSet.size}</div><div class="stat-label">Total Kelas</div></div>
+        <div class="stat-card"><div class="stat-value">${tpSet.size || '-'}</div><div class="stat-label">Tahun Pelajaran</div></div>
       </div>
-
       <div class="card">
-        <div class="card-header">
-          <h3>Daftar Siswa</h3>
-        </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>NIS</th>
-                <th>NISN</th>
-                <th>Kelas</th>
-                <th>Tahun Pelajaran</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${filtered.length === 0 ? `
-                <tr><td colspan="7" class="empty-state">Belum ada data siswa. Gunakan menu "Input Data" untuk menambahkan siswa.</td></tr>
-              ` : filtered.map((s, i) => {
-                const akad = this.akademikMap[s.nis];
-                const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
-                return `
-                  <tr>
-                    <td>${i + 1}</td>
-                    <td><strong>${escapeHTMLDash(s.nama)}</strong></td>
-                    <td>${escapeHTMLDash(s.nis)}</td>
-                    <td>${escapeHTMLDash(s.nisn || '-')}</td>
-                    <td>${latest ? escapeHTMLDash(latest.kelas) : '-'}</td>
-                    <td>${latest ? escapeHTMLDash(latest.tahunPelajaran) : '-'}</td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" onclick="Router.navigateTo('student-detail', {nis: '${escapeHTMLDash(s.nis)}'})">Lihat</button>
-                    </td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    `;
+        <div class="card-header"><h3>Daftar Siswa</h3></div>
+        <div class="table-container"><table class="data-table"><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>NISN</th><th>Kelas</th><th>Tahun Pelajaran</th><th>Aksi</th></tr></thead><tbody>
+          ${filtered.length === 0 ? '<tr><td colspan="7" class="empty-state">Belum ada data siswa.</td></tr>' : filtered.map((s, i) => {
+            const akad = this.akademikMap[s.nis]; const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
+            return '<tr><td>' + (i+1) + '</td><td><strong>' + escapeHTMLDash(s.nama) + '</strong></td><td>' + escapeHTMLDash(s.nis) + '</td><td>' + escapeHTMLDash(s.nisn || '-') + '</td><td>' + (latest ? escapeHTMLDash(latest.kelas) : '-') + '</td><td>' + (latest ? escapeHTMLDash(latest.tahunPelajaran) : '-') + '</td><td><button class="btn btn-sm btn-outline" onclick="Router.navigateTo(\'student-detail\', {nis: \'' + escapeHTMLDash(s.nis) + '\'})">Lihat</button></td></tr>';
+          }).join('')}
+        </tbody></table></div>
+      </div>`;
   },
-
-  onSearch(value) {
-    this.searchTerm = value;
-    this.render();
-    // Re-focus input and set cursor position
-    const input = document.getElementById('global-search');
-    if (input) {
-      input.focus();
-      input.setSelectionRange(value.length, value.length);
-    }
-  }
+  onSearch(value) { this.searchTerm = value; this.render(); const input = document.getElementById('global-search'); if (input) { input.focus(); input.setSelectionRange(value.length, value.length); } }
 };
   </script>
 
-  <!-- input-data.js -->
+
+  <!-- input-data.js (Data Siswa) -->
   <script>
-// Input Data Component - handles CRUD operations for students
 const InputData = {
   searchTerm: '',
   students: [],
   akademikMap: {},
-
-  async init() {
-    await this.loadData();
-    this.render();
-  },
-
+  async init() { await this.loadData(); this.render(); },
   async loadData() {
     this.students = await DB.getAllSiswa();
     const allAkademik = await DB.getAllAkademik();
     this.akademikMap = {};
-    allAkademik.forEach(a => {
-      if (!this.akademikMap[a.nis]) this.akademikMap[a.nis] = [];
-      this.akademikMap[a.nis].push(a);
-    });
+    allAkademik.forEach(a => { if (!this.akademikMap[a.nis]) this.akademikMap[a.nis] = []; this.akademikMap[a.nis].push(a); });
   },
-
   getFilteredStudents() {
     if (!this.searchTerm) return this.students;
     const term = this.searchTerm.toLowerCase();
-    return this.students.filter(s =>
-      s.nama.toLowerCase().includes(term) ||
-      s.nis.toLowerCase().includes(term) ||
-      (s.nisn && s.nisn.toLowerCase().includes(term))
-    );
+    return this.students.filter(s => s.nama.toLowerCase().includes(term) || s.nis.toLowerCase().includes(term) || (s.nisn && s.nisn.toLowerCase().includes(term)));
   },
-
   render() {
     const page = document.getElementById('page-input-data');
     const filtered = this.getFilteredStudents();
-
     page.innerHTML = `
       <div class="page-header">
-        <h2 class="page-title">Input Data Siswa</h2>
+        <h2 class="page-title">Data Siswa</h2>
         <div style="display:flex;gap:8px;">
           <button class="btn btn-primary" onclick="InputData.showAddModal()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             Tambah Siswa
           </button>
           <button class="btn btn-outline" onclick="InputData.showBatchModal()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="8.5" cy="7" r="4"></circle>
-              <line x1="20" y1="8" x2="20" y2="14"></line>
-              <line x1="23" y1="11" x2="17" y2="11"></line>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
             Tambah Batch
           </button>
         </div>
       </div>
-
       <div class="search-bar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input type="text" id="input-data-search" placeholder="Cari siswa berdasarkan NIS atau Nama..." 
-               value="${this.searchTerm}" oninput="InputData.onSearch(this.value)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="input-data-search" placeholder="Cari siswa..." value="${this.searchTerm}" oninput="InputData.onSearch(this.value)">
       </div>
-
       <div class="card">
-        <div class="card-header">
-          <h3>Kelola Data Siswa</h3>
-        </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>NIS</th>
-                <th>NISN</th>
-                <th>Kelas</th>
-                <th>Tahun Pelajaran</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${filtered.length === 0 ? `
-                <tr><td colspan="7" class="empty-state">Belum ada data siswa. Klik "Tambah Siswa" atau "Tambah Batch" untuk menambahkan.</td></tr>
-              ` : filtered.map((s, i) => {
-                const akad = this.akademikMap[s.nis];
-                const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
-                return `
-                  <tr>
-                    <td>${i + 1}</td>
-                    <td><strong>${escapeHTMLDash(s.nama)}</strong></td>
-                    <td>${escapeHTMLDash(s.nis)}</td>
-                    <td>${escapeHTMLDash(s.nisn || '-')}</td>
-                    <td>${latest ? escapeHTMLDash(latest.kelas) : '-'}</td>
-                    <td>${latest ? escapeHTMLDash(latest.tahunPelajaran) : '-'}</td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" onclick="InputData.editStudent('${escapeHTMLDash(s.nis)}')">Edit</button>
-                      <button class="btn btn-sm btn-danger" onclick="InputData.deleteStudent('${escapeHTMLDash(s.nis)}')">Hapus</button>
-                    </td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
+        <div class="card-header"><h3>Kelola Data Siswa</h3></div>
+        <div class="table-container"><table class="data-table"><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>NISN</th><th>Kelas</th><th>TP</th><th>Aksi</th></tr></thead><tbody>
+          ${filtered.length === 0 ? '<tr><td colspan="7" class="empty-state">Belum ada data siswa.</td></tr>' : filtered.map((s, i) => {
+            const akad = this.akademikMap[s.nis]; const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
+            return '<tr><td>' + (i+1) + '</td><td><strong>' + escapeHTMLDash(s.nama) + '</strong></td><td>' + escapeHTMLDash(s.nis) + '</td><td>' + escapeHTMLDash(s.nisn || '-') + '</td><td>' + (latest ? escapeHTMLDash(latest.kelas) : '-') + '</td><td>' + (latest ? escapeHTMLDash(latest.tahunPelajaran) : '-') + '</td><td><button class="btn btn-sm btn-outline" onclick="InputData.editStudent(\'' + escapeHTMLDash(s.nis) + '\')">Edit</button> <button class="btn btn-sm btn-danger" onclick="InputData.deleteStudent(\'' + escapeHTMLDash(s.nis) + '\')">Hapus</button></td></tr>';
+          }).join('')}
+        </tbody></table></div>
       </div>
-
-      <!-- Add/Edit Modal -->
       <div id="inputdata-student-modal" class="modal" style="display:none;">
         <div class="modal-overlay" onclick="InputData.closeModal()"></div>
         <div class="modal-content">
-          <div class="modal-header">
-            <h3 id="inputdata-modal-title">Tambah Siswa</h3>
-            <button class="modal-close" onclick="InputData.closeModal()">&times;</button>
-          </div>
+          <div class="modal-header"><h3 id="inputdata-modal-title">Tambah Siswa</h3><button class="modal-close" onclick="InputData.closeModal()">&times;</button></div>
           <form id="inputdata-student-form" onsubmit="InputData.saveStudent(event)">
-            <div class="form-group">
-              <label for="inputdata-input-nama">Nama Peserta Didik</label>
-              <input type="text" id="inputdata-input-nama" required placeholder="Masukkan nama lengkap">
-            </div>
-            <div class="form-group">
-              <label for="inputdata-input-nis">NIS</label>
-              <input type="text" id="inputdata-input-nis" required placeholder="Masukkan NIS">
-            </div>
-            <div class="form-group">
-              <label for="inputdata-input-nisn">NISN</label>
-              <input type="text" id="inputdata-input-nisn" placeholder="Masukkan NISN">
-            </div>
+            <div class="form-group"><label>Nama Peserta Didik</label><input type="text" id="inputdata-input-nama" required placeholder="Masukkan nama lengkap"></div>
+            <div class="form-group"><label>NIS</label><input type="text" id="inputdata-input-nis" required placeholder="Masukkan NIS"></div>
+            <div class="form-group"><label>NISN</label><input type="text" id="inputdata-input-nisn" placeholder="Masukkan NISN"></div>
             <input type="hidden" id="inputdata-input-edit-mode" value="add">
-            <div class="form-actions">
-              <button type="button" class="btn btn-outline" onclick="InputData.closeModal()">Batal</button>
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
+            <div class="form-actions"><button type="button" class="btn btn-outline" onclick="InputData.closeModal()">Batal</button><button type="submit" class="btn btn-primary">Simpan</button></div>
           </form>
         </div>
       </div>
-
-      <!-- Batch Add Modal -->
       <div id="inputdata-batch-modal" class="modal" style="display:none;">
         <div class="modal-overlay" onclick="InputData.closeBatchModal()"></div>
         <div class="modal-content" style="max-width:900px;">
-          <div class="modal-header">
-            <h3>Tambah Siswa Batch</h3>
-            <button class="modal-close" onclick="InputData.closeBatchModal()">&times;</button>
-          </div>
+          <div class="modal-header"><h3>Tambah Siswa Batch</h3><button class="modal-close" onclick="InputData.closeBatchModal()">&times;</button></div>
           <div id="inputdata-batch-content">
-            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">Paste daftar nama, NIS, dan NISN masing-masing di kolom terpisah (satu per baris). Data akan dicocokkan berdasarkan nomor baris.</p>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">Paste daftar nama, NIS, dan NISN masing-masing di kolom terpisah.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-              <div class="form-group" style="margin-bottom:4px;">
-                <label>NAMA (paste list)</label>
-                <textarea id="inputdata-batch-nama" rows="10" placeholder="Ahmad Fauzi\nSiti Aminah\nBudi Santoso" oninput="InputData.updateBatchCounters()"></textarea>
-                <span id="inputdata-batch-nama-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span>
-              </div>
-              <div class="form-group" style="margin-bottom:4px;">
-                <label>NIS (paste list)</label>
-                <textarea id="inputdata-batch-nis" rows="10" placeholder="2401001\n2401002\n2401003" oninput="InputData.updateBatchCounters()"></textarea>
-                <span id="inputdata-batch-nis-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span>
-              </div>
-              <div class="form-group" style="margin-bottom:4px;">
-                <label>NISN (paste list)</label>
-                <textarea id="inputdata-batch-nisn" rows="10" placeholder="0012345601\n0012345602\n0012345603" oninput="InputData.updateBatchCounters()"></textarea>
-                <span id="inputdata-batch-nisn-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span>
-              </div>
+              <div class="form-group" style="margin-bottom:4px;"><label>NAMA</label><textarea id="inputdata-batch-nama" rows="10" placeholder="Ahmad Fauzi\nSiti Aminah" oninput="InputData.updateBatchCounters()"></textarea><span id="inputdata-batch-nama-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span></div>
+              <div class="form-group" style="margin-bottom:4px;"><label>NIS</label><textarea id="inputdata-batch-nis" rows="10" placeholder="2401001\n2401002" oninput="InputData.updateBatchCounters()"></textarea><span id="inputdata-batch-nis-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span></div>
+              <div class="form-group" style="margin-bottom:4px;"><label>NISN</label><textarea id="inputdata-batch-nisn" rows="10" placeholder="0012345601\n0012345602" oninput="InputData.updateBatchCounters()"></textarea><span id="inputdata-batch-nisn-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span></div>
             </div>
             <div style="display:flex;gap:12px;align-items:center;margin:12px 0;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="InputData.previewBatch()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                Preview
-              </button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="InputData.previewBatch()">Preview</button>
               <span id="inputdata-batch-mismatch-warning" style="font-size:12px;color:#DC2626;display:none;"></span>
             </div>
             <div id="inputdata-batch-preview" style="display:none;max-height:220px;overflow-y:auto;border:1px solid var(--border-color);border-radius:var(--radius-sm);margin-bottom:12px;">
-              <table class="data-table" style="font-size:12px;">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>NIS</th>
-                    <th>NISN</th>
-                  </tr>
-                </thead>
-                <tbody id="inputdata-batch-preview-body"></tbody>
-              </table>
+              <table class="data-table" style="font-size:12px;"><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>NISN</th></tr></thead><tbody id="inputdata-batch-preview-body"></tbody></table>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn btn-outline" onclick="InputData.closeBatchModal()">Batal</button>
-              <button type="button" class="btn btn-primary" onclick="InputData.saveBatch()">Simpan Semua</button>
-            </div>
+            <div class="form-actions"><button type="button" class="btn btn-outline" onclick="InputData.closeBatchModal()">Batal</button><button type="button" class="btn btn-primary" onclick="InputData.saveBatch()">Simpan Semua</button></div>
           </div>
           <div id="inputdata-batch-results" style="display:none;"></div>
         </div>
-      </div>
-    `;
+      </div>`;
   },
-
-  onSearch(value) {
-    this.searchTerm = value;
-    this.render();
-    const input = document.getElementById('input-data-search');
-    if (input) {
-      input.focus();
-      input.setSelectionRange(value.length, value.length);
-    }
-  },
-
+  onSearch(value) { this.searchTerm = value; this.render(); const input = document.getElementById('input-data-search'); if (input) { input.focus(); input.setSelectionRange(value.length, value.length); } },
   showAddModal() {
     document.getElementById('inputdata-student-modal').style.display = 'flex';
     document.getElementById('inputdata-modal-title').textContent = 'Tambah Siswa';
     document.getElementById('inputdata-input-nama').value = '';
-    document.getElementById('inputdata-input-nis').value = '';
+    document.getElementById('inputdata-input-nis').value = ''; document.getElementById('inputdata-input-nis').disabled = false;
     document.getElementById('inputdata-input-nisn').value = '';
-    document.getElementById('inputdata-input-nis').disabled = false;
     document.getElementById('inputdata-input-edit-mode').value = 'add';
   },
-
   async editStudent(nis) {
-    const siswa = await DB.getSiswa(nis);
-    if (!siswa) return;
+    const siswa = await DB.getSiswa(nis); if (!siswa) return;
     document.getElementById('inputdata-student-modal').style.display = 'flex';
     document.getElementById('inputdata-modal-title').textContent = 'Edit Siswa';
     document.getElementById('inputdata-input-nama').value = siswa.nama;
-    document.getElementById('inputdata-input-nis').value = siswa.nis;
-    document.getElementById('inputdata-input-nis').disabled = true;
+    document.getElementById('inputdata-input-nis').value = siswa.nis; document.getElementById('inputdata-input-nis').disabled = true;
     document.getElementById('inputdata-input-nisn').value = siswa.nisn || '';
     document.getElementById('inputdata-input-edit-mode').value = 'edit';
   },
-
-  closeModal() {
-    document.getElementById('inputdata-student-modal').style.display = 'none';
-  },
-
+  closeModal() { document.getElementById('inputdata-student-modal').style.display = 'none'; },
   async saveStudent(event) {
     event.preventDefault();
     const nama = document.getElementById('inputdata-input-nama').value.trim();
     const nis = document.getElementById('inputdata-input-nis').value.trim();
     const nisn = document.getElementById('inputdata-input-nisn').value.trim();
     const mode = document.getElementById('inputdata-input-edit-mode').value;
-
-    if (!nama || !nis) {
-      alert('Nama dan NIS wajib diisi!');
-      return;
-    }
-
-    const data = { nama, nis, nisn };
-
+    if (!nama || !nis) { alert('Nama dan NIS wajib diisi!'); return; }
     try {
-      if (mode === 'edit') {
-        await DB.updateSiswa(data);
-      } else {
-        await DB.addSiswa(data);
-      }
-      this.closeModal();
-      await this.loadData();
-      this.render();
-    } catch (e) {
-      alert('Gagal menyimpan: ' + e.message);
-    }
+      if (mode === 'edit') await DB.updateSiswa({ nama, nis, nisn });
+      else await DB.addSiswa({ nama, nis, nisn });
+      this.closeModal(); await this.loadData(); this.render();
+    } catch (e) { alert('Gagal menyimpan: ' + e.message); }
   },
-
   async deleteStudent(nis) {
     if (!confirm('Yakin ingin menghapus siswa ini beserta semua datanya?')) return;
     try {
       const akademikRecords = await DB.getAkademikBySiswa(nis);
       for (const akad of akademikRecords) {
-        const nilaiRecords = await DB.getNilaiByAkademik(akad.id);
-        for (const n of nilaiRecords) await DB.deleteNilai(n.id);
-        const nonAkad = await DB.getNonAkademikByAkademik(akad.id);
-        for (const na of nonAkad) await DB.deleteNonAkademik(na.id);
-        const p5Records = await DB.getP5ByAkademik(akad.id);
-        for (const p of p5Records) await DB.deleteP5(p.id);
+        const nilaiRecords = await DB.getNilaiByAkademik(akad.id); for (const n of nilaiRecords) await DB.deleteNilai(n.id);
+        const nonAkad = await DB.getNonAkademikByAkademik(akad.id); for (const na of nonAkad) await DB.deleteNonAkademik(na.id);
+        const p5Records = await DB.getP5ByAkademik(akad.id); for (const p of p5Records) await DB.deleteP5(p.id);
         await DB.deleteAkademik(akad.id);
       }
-      await DB.deleteSiswa(nis);
-      await this.loadData();
-      this.render();
-    } catch (e) {
-      alert('Gagal menghapus: ' + e.message);
-    }
+      await DB.deleteSiswa(nis); await this.loadData(); this.render();
+    } catch (e) { alert('Gagal menghapus: ' + e.message); }
   },
-
   showBatchModal() {
     document.getElementById('inputdata-batch-modal').style.display = 'flex';
     document.getElementById('inputdata-batch-content').style.display = 'block';
     document.getElementById('inputdata-batch-results').style.display = 'none';
-    document.getElementById('inputdata-batch-nama').value = '';
-    document.getElementById('inputdata-batch-nis').value = '';
-    document.getElementById('inputdata-batch-nisn').value = '';
+    document.getElementById('inputdata-batch-nama').value = ''; document.getElementById('inputdata-batch-nis').value = ''; document.getElementById('inputdata-batch-nisn').value = '';
     document.getElementById('inputdata-batch-preview').style.display = 'none';
     document.getElementById('inputdata-batch-mismatch-warning').style.display = 'none';
     this.updateBatchCounters();
   },
-
-  closeBatchModal() {
-    document.getElementById('inputdata-batch-modal').style.display = 'none';
-  },
-
+  closeBatchModal() { document.getElementById('inputdata-batch-modal').style.display = 'none'; },
   updateBatchCounters() {
     const namaLines = document.getElementById('inputdata-batch-nama').value.split('\n').filter(l => l.trim()).length;
     const nisLines = document.getElementById('inputdata-batch-nis').value.split('\n').filter(l => l.trim()).length;
@@ -2252,7 +1152,6 @@ const InputData = {
     document.getElementById('inputdata-batch-nis-count').textContent = nisLines + ' baris';
     document.getElementById('inputdata-batch-nisn-count').textContent = nisnLines + ' baris';
   },
-
   getBatchData() {
     const namaLines = document.getElementById('inputdata-batch-nama').value.split('\n');
     const nisLines = document.getElementById('inputdata-batch-nis').value.split('\n');
@@ -2260,281 +1159,89 @@ const InputData = {
     const maxLen = Math.max(namaLines.length, nisLines.length, nisnLines.length);
     const rows = [];
     for (let i = 0; i < maxLen; i++) {
-      const nama = (namaLines[i] || '').trim();
-      const nis = (nisLines[i] || '').trim();
-      const nisn = (nisnLines[i] || '').trim();
+      const nama = (namaLines[i] || '').trim(); const nis = (nisLines[i] || '').trim(); const nisn = (nisnLines[i] || '').trim();
       if (!nama && !nis && !nisn) continue;
       rows.push({ nama, nis, nisn, lineNum: i + 1, hasWarning: !nama || !nis });
     }
     return rows;
   },
-
   previewBatch() {
     const rows = this.getBatchData();
     const previewDiv = document.getElementById('inputdata-batch-preview');
     const tbody = document.getElementById('inputdata-batch-preview-body');
     const warningEl = document.getElementById('inputdata-batch-mismatch-warning');
-
-    if (rows.length === 0) {
-      previewDiv.style.display = 'none';
-      warningEl.style.display = 'none';
-      return;
-    }
-
+    if (rows.length === 0) { previewDiv.style.display = 'none'; warningEl.style.display = 'none'; return; }
     const namaCount = document.getElementById('inputdata-batch-nama').value.split('\n').filter(l => l.trim()).length;
     const nisCount = document.getElementById('inputdata-batch-nis').value.split('\n').filter(l => l.trim()).length;
     const nisnCount = document.getElementById('inputdata-batch-nisn').value.split('\n').filter(l => l.trim()).length;
-
-    if (namaCount !== nisCount || namaCount !== nisnCount) {
-      warningEl.textContent = 'Peringatan: Jumlah baris tidak sama (Nama: ' + namaCount + ', NIS: ' + nisCount + ', NISN: ' + nisnCount + ')';
-      warningEl.style.display = 'inline';
-    } else {
-      warningEl.style.display = 'none';
-    }
-
+    if (namaCount !== nisCount || namaCount !== nisnCount) { warningEl.textContent = 'Peringatan: Jumlah baris tidak sama (Nama: ' + namaCount + ', NIS: ' + nisCount + ', NISN: ' + nisnCount + ')'; warningEl.style.display = 'inline'; }
+    else { warningEl.style.display = 'none'; }
     let html = '';
-    rows.forEach((row, idx) => {
-      const bgStyle = row.hasWarning ? 'background:#FEF2F2;' : '';
-      html += '<tr style="' + bgStyle + '">';
-      html += '<td>' + (idx + 1) + '</td>';
-      html += '<td>' + escapeHTMLDash(row.nama || '<span style=color:#DC2626>— kosong —</span>') + '</td>';
-      html += '<td>' + escapeHTMLDash(row.nis || '<span style=color:#DC2626>— kosong —</span>') + '</td>';
-      html += '<td>' + escapeHTMLDash(row.nisn) + '</td>';
-      html += '</tr>';
-    });
-    tbody.innerHTML = html;
-    previewDiv.style.display = 'block';
+    rows.forEach((row, idx) => { const bgStyle = row.hasWarning ? 'background:#FEF2F2;' : ''; html += '<tr style="' + bgStyle + '"><td>' + (idx+1) + '</td><td>' + escapeHTMLDash(row.nama) + '</td><td>' + escapeHTMLDash(row.nis) + '</td><td>' + escapeHTMLDash(row.nisn) + '</td></tr>'; });
+    tbody.innerHTML = html; previewDiv.style.display = 'block';
   },
-
   async saveBatch() {
-    const rows = this.getBatchData();
-    const students = [];
-    const errors = [];
-
-    rows.forEach((row) => {
-      if (!row.nama || !row.nis) {
-        errors.push('Baris ' + row.lineNum + ': Nama dan NIS wajib diisi');
-        return;
-      }
-      students.push({ nama: row.nama, nis: row.nis, nisn: row.nisn });
-    });
-
-    if (students.length === 0 && errors.length === 0) {
-      alert('Tidak ada data yang dimasukkan.');
-      return;
-    }
-
-    let success = 0;
-    let failed = 0;
-    const failDetails = [];
-
-    for (const s of students) {
-      try {
-        await DB.addSiswa(s);
-        success++;
-      } catch (e) {
-        failed++;
-        failDetails.push(s.nama + ' (' + s.nis + '): ' + e.message);
-      }
-    }
-
+    const rows = this.getBatchData(); const students = []; const errors = [];
+    rows.forEach(row => { if (!row.nama || !row.nis) { errors.push('Baris ' + row.lineNum + ': Nama dan NIS wajib'); return; } students.push({ nama: row.nama, nis: row.nis, nisn: row.nisn }); });
+    if (students.length === 0 && errors.length === 0) { alert('Tidak ada data.'); return; }
+    let success = 0, failed = 0; const failDetails = [];
+    for (const s of students) { try { await DB.addSiswa(s); success++; } catch (e) { failed++; failDetails.push(s.nama + ' (' + s.nis + '): ' + e.message); } }
     document.getElementById('inputdata-batch-content').style.display = 'none';
     const resultsDiv = document.getElementById('inputdata-batch-results');
     resultsDiv.style.display = 'block';
-    resultsDiv.innerHTML = `
-      <div style="text-align:center;padding:16px 0;">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="${failed === 0 ? 'var(--emerald)' : '#F59E0B'}" stroke-width="2" style="margin-bottom:12px;">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-          <polyline points="22 4 12 14.01 9 11.01"></polyline>
-        </svg>
-        <h3 style="margin-bottom:8px;color:var(--navy);">Hasil Input Batch</h3>
-        <div class="import-results-summary" style="justify-content:center;">
-          <span class="result-item success"><strong>${success}</strong> berhasil</span>
-          <span class="result-item failed"><strong>${failed}</strong> gagal</span>
-        </div>
-        ${errors.length > 0 ? `
-        <div class="error-list">
-          <h4>Error Parsing:</h4>
-          <ul>${errors.map(e => '<li>' + escapeHTMLDash(e) + '</li>').join('')}</ul>
-        </div>` : ''}
-        ${failDetails.length > 0 ? `
-        <div class="error-list" style="margin-top:8px;">
-          <h4>Gagal Disimpan:</h4>
-          <ul>${failDetails.map(e => '<li>' + escapeHTMLDash(e) + '</li>').join('')}</ul>
-        </div>` : ''}
-        <div class="form-actions" style="margin-top:16px;justify-content:center;">
-          <button type="button" class="btn btn-primary" onclick="InputData.closeBatchModal(); InputData.loadData().then(() => InputData.render());">Selesai</button>
-        </div>
-      </div>
-    `;
+    resultsDiv.innerHTML = '<div style="text-align:center;padding:16px 0;"><h3 style="margin-bottom:8px;color:var(--navy);">Hasil Input Batch</h3><div class="import-results-summary" style="justify-content:center;"><span class="result-item success"><strong>' + success + '</strong> berhasil</span><span class="result-item failed"><strong>' + failed + '</strong> gagal</span></div>' + (errors.length > 0 ? '<div class="error-list"><h4>Error:</h4><ul>' + errors.map(e => '<li>' + escapeHTMLDash(e) + '</li>').join('') + '</ul></div>' : '') + (failDetails.length > 0 ? '<div class="error-list" style="margin-top:8px;"><h4>Gagal Disimpan:</h4><ul>' + failDetails.map(e => '<li>' + escapeHTMLDash(e) + '</li>').join('') + '</ul></div>' : '') + '<div class="form-actions" style="margin-top:16px;justify-content:center;"><button type="button" class="btn btn-primary" onclick="InputData.closeBatchModal(); InputData.loadData().then(() => InputData.render());">Selesai</button></div></div>';
   }
 };
   </script>
 
+
   <!-- student-detail.js -->
   <script>
-// HTML escape utility to prevent XSS
-function escapeHTML(str) {
-  if (str == null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+function escapeHTML(str) { if (str == null) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); }
 
-// Student Detail Component with Tabs
 const MATA_PELAJARAN = [
-  'Pendidikan Agama dan Budi Pekerti',
-  'Pendidikan Pancasila',
-  'Bahasa Indonesia',
-  'Matematika',
-  'IPA',
-  'IPS',
-  'Bahasa Inggris',
-  'PJOK',
-  'Informatika',
-  'Seni Budaya dan Prakarya',
-  'Bahasa Jawa'
+  'Pendidikan Agama dan Budi Pekerti','Pendidikan Pancasila','Bahasa Indonesia','Matematika','IPA','IPS','Bahasa Inggris','PJOK','Informatika','Seni Budaya dan Prakarya','Bahasa Jawa'
 ];
 
 const StudentDetail = {
-  nis: null,
-  studentData: null,
-  currentAkademikId: null,
-  activeTab: 'biodata',
-
-  async init(nis) {
-    this.nis = nis;
-    this.activeTab = 'biodata';
-    await this.loadData();
-    this.render();
-  },
-
-  async loadData() {
-    this.studentData = await DB.getCompleteStudentData(this.nis);
-  },
-
-  setTab(tab) {
-    this.activeTab = tab;
-    this.render();
-  },
-
+  nis: null, studentData: null, currentAkademikId: null, activeTab: 'biodata',
+  async init(nis) { this.nis = nis; this.activeTab = 'biodata'; await this.loadData(); this.render(); },
+  async loadData() { this.studentData = await DB.getCompleteStudentData(this.nis); },
+  setTab(tab) { this.activeTab = tab; this.render(); },
   render() {
     const page = document.getElementById('page-student-detail');
-    if (!this.studentData) {
-      page.innerHTML = '<div class="card"><p>Siswa tidak ditemukan.</p><button class="btn btn-outline" onclick="Router.navigateTo(\'dashboard\')">Kembali</button></div>';
-      return;
-    }
-
-    const s = this.studentData;
-    const akademikRecords = s.akademik || [];
+    if (!this.studentData) { page.innerHTML = '<div class="card"><p>Siswa tidak ditemukan.</p><button class="btn btn-outline" onclick="Router.navigateTo(\'dashboard\')">Kembali</button></div>'; return; }
+    const s = this.studentData; const akademikRecords = s.akademik || [];
     const latestAkademik = akademikRecords.length > 0 ? akademikRecords[akademikRecords.length - 1] : null;
-
-    if (!this.currentAkademikId && latestAkademik) {
-      this.currentAkademikId = latestAkademik.id;
-    }
-
+    if (!this.currentAkademikId && latestAkademik) this.currentAkademikId = latestAkademik.id;
     const currentAkad = akademikRecords.find(a => a.id === this.currentAkademikId) || latestAkademik;
-
     page.innerHTML = `
       <div class="page-header">
-        <button class="btn btn-outline" onclick="Router.navigateTo('dashboard')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Kembali
-        </button>
-        <button class="btn btn-primary" onclick="StudentDetail.printBukuInduk()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-          Cetak Buku Induk
-        </button>
+        <button class="btn btn-outline" onclick="Router.navigateTo('dashboard')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg> Kembali</button>
+        <button class="btn btn-primary" onclick="StudentDetail.printBukuInduk()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Cetak Buku Induk</button>
       </div>
-
-      <div class="student-info-header card">
-        <h2>${escapeHTML(s.nama)}</h2>
-        <div class="student-meta">
-          <span><strong>NIS:</strong> ${escapeHTML(s.nis)}</span>
-          <span><strong>NISN:</strong> ${escapeHTML(s.nisn || '-')}</span>
-          ${currentAkad ? `<span><strong>Kelas:</strong> ${escapeHTML(currentAkad.kelas || '-')}</span>
-          <span><strong>TP:</strong> ${escapeHTML(currentAkad.tahunPelajaran || '-')}</span>` : ''}
-        </div>
-      </div>
-
-      ${akademikRecords.length > 0 ? `
-      <div class="akademik-selector card">
-        <label>Pilih Tahun Pelajaran:</label>
-        <select onchange="StudentDetail.switchAkademik(parseInt(this.value))">
-          ${akademikRecords.map(a => `
-            <option value="${a.id}" ${a.id === this.currentAkademikId ? 'selected' : ''}>
-              ${escapeHTML(a.tahunPelajaran)} - ${escapeHTML(a.kelas)}
-            </option>
-          `).join('')}
-        </select>
-        <button class="btn btn-sm btn-outline" onclick="StudentDetail.showAddAkademikModal()">+ Tahun Baru</button>
-      </div>
-      ` : `
-      <div class="card">
-        <p>Belum ada data akademik. Tambahkan tahun pelajaran untuk memulai.</p>
-        <button class="btn btn-primary" onclick="StudentDetail.showAddAkademikModal()">+ Tambah Tahun Pelajaran</button>
-      </div>
-      `}
-
+      <div class="student-info-header card"><h2>${escapeHTML(s.nama)}</h2><div class="student-meta"><span><strong>NIS:</strong> ${escapeHTML(s.nis)}</span><span><strong>NISN:</strong> ${escapeHTML(s.nisn || '-')}</span>${currentAkad ? '<span><strong>Kelas:</strong> ' + escapeHTML(currentAkad.kelas || '-') + '</span><span><strong>TP:</strong> ' + escapeHTML(currentAkad.tahunPelajaran || '-') + '</span>' : ''}</div></div>
+      ${akademikRecords.length > 0 ? '<div class="akademik-selector card"><label>Pilih Tahun Pelajaran:</label><select onchange="StudentDetail.switchAkademik(parseInt(this.value))">' + akademikRecords.map(a => '<option value="' + a.id + '"' + (a.id === this.currentAkademikId ? ' selected' : '') + '>' + escapeHTML(a.tahunPelajaran) + ' - ' + escapeHTML(a.kelas) + '</option>').join('') + '</select><button class="btn btn-sm btn-outline" onclick="StudentDetail.showAddAkademikModal()">+ Tahun Baru</button></div>' : '<div class="card"><p>Belum ada data akademik.</p><button class="btn btn-primary" onclick="StudentDetail.showAddAkademikModal()">+ Tambah Tahun Pelajaran</button></div>'}
       <div class="tabs">
         <button class="tab-btn ${this.activeTab === 'biodata' ? 'active' : ''}" onclick="StudentDetail.setTab('biodata')">Biodata</button>
         <button class="tab-btn ${this.activeTab === 'nilai' ? 'active' : ''}" onclick="StudentDetail.setTab('nilai')">Nilai & Deskripsi</button>
         <button class="tab-btn ${this.activeTab === 'ekskul' ? 'active' : ''}" onclick="StudentDetail.setTab('ekskul')">Ekskul & Absen</button>
         <button class="tab-btn ${this.activeTab === 'p5' ? 'active' : ''}" onclick="StudentDetail.setTab('p5')">Proyek P5</button>
       </div>
-
-      <div class="tab-content card">
-        ${this.renderTabContent(currentAkad)}
-      </div>
-
-      <!-- Akademik Modal -->
+      <div class="tab-content card">${this.renderTabContent(currentAkad)}</div>
       <div id="akademik-modal" class="modal" style="display:none;">
         <div class="modal-overlay" onclick="StudentDetail.closeAkademikModal()"></div>
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Tambah Data Akademik</h3>
-            <button class="modal-close" onclick="StudentDetail.closeAkademikModal()">&times;</button>
-          </div>
+        <div class="modal-content"><div class="modal-header"><h3>Tambah Data Akademik</h3><button class="modal-close" onclick="StudentDetail.closeAkademikModal()">&times;</button></div>
           <form onsubmit="StudentDetail.saveAkademik(event)">
-            <div class="form-group">
-              <label>Tahun Pelajaran</label>
-              <input type="text" id="akad-tp" required placeholder="Contoh: 2025/2026">
-            </div>
-            <div class="form-group">
-              <label>Kelas</label>
-              <input type="text" id="akad-kelas" required placeholder="Contoh: VII D">
-            </div>
-            <div class="form-group">
-              <label>Wali Kelas</label>
-              <input type="text" id="akad-wali" placeholder="Nama wali kelas">
-            </div>
-            <div class="form-group">
-              <label>Status Akhir Tahun</label>
-              <select id="akad-status">
-                <option value="">-- Pilih --</option>
-                <option value="Naik">Naik</option>
-                <option value="Tidak Naik">Tidak Naik</option>
-              </select>
-            </div>
-            <div class="form-actions">
-              <button type="button" class="btn btn-outline" onclick="StudentDetail.closeAkademikModal()">Batal</button>
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
+            <div class="form-group"><label>Tahun Pelajaran</label><input type="text" id="akad-tp" required placeholder="2025/2026"></div>
+            <div class="form-group"><label>Kelas</label><input type="text" id="akad-kelas" required placeholder="VII D"></div>
+            <div class="form-group"><label>Wali Kelas</label><input type="text" id="akad-wali" placeholder="Nama wali kelas"></div>
+            <div class="form-group"><label>Status Akhir Tahun</label><select id="akad-status"><option value="">-- Pilih --</option><option value="Naik">Naik</option><option value="Tidak Naik">Tidak Naik</option></select></div>
+            <div class="form-actions"><button type="button" class="btn btn-outline" onclick="StudentDetail.closeAkademikModal()">Batal</button><button type="submit" class="btn btn-primary">Simpan</button></div>
           </form>
         </div>
-      </div>
-    `;
+      </div>`;
   },
-
   renderTabContent(akad) {
     switch (this.activeTab) {
       case 'biodata': return this.renderBiodata(akad);
@@ -2544,734 +1251,519 @@ const StudentDetail = {
       default: return '';
     }
   },
-
   renderBiodata(akad) {
     const s = this.studentData;
-    return `
-      <h3 class="section-title">Data Biodata Siswa</h3>
-      <div class="info-grid">
-        <div class="info-item">
-          <label>Nama Peserta Didik</label>
-          <p>${escapeHTML(s.nama)}</p>
-        </div>
-        <div class="info-item">
-          <label>NIS</label>
-          <p>${escapeHTML(s.nis)}</p>
-        </div>
-        <div class="info-item">
-          <label>NISN</label>
-          <p>${escapeHTML(s.nisn || '-')}</p>
-        </div>
-      </div>
-      ${akad ? `
-      <h3 class="section-title" style="margin-top:24px;">Data Akademik (${escapeHTML(akad.tahunPelajaran)})</h3>
-      <div class="info-grid">
-        <div class="info-item">
-          <label>Tahun Pelajaran</label>
-          <p>${escapeHTML(akad.tahunPelajaran)}</p>
-        </div>
-        <div class="info-item">
-          <label>Kelas</label>
-          <p>${escapeHTML(akad.kelas)}</p>
-        </div>
-        <div class="info-item">
-          <label>Wali Kelas</label>
-          <p>${escapeHTML(akad.waliKelas || '-')}</p>
-        </div>
-        <div class="info-item">
-          <label>Status Akhir Tahun</label>
-          <p>${escapeHTML(akad.status || '-')}</p>
-        </div>
-      </div>
-      <button class="btn btn-sm btn-outline" style="margin-top:12px;" onclick="StudentDetail.editAkademik()">Edit Data Akademik</button>
-      ` : '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>'}
-    `;
+    return '<h3 class="section-title">Data Biodata Siswa</h3><div class="info-grid"><div class="info-item"><label>Nama</label><p>' + escapeHTML(s.nama) + '</p></div><div class="info-item"><label>NIS</label><p>' + escapeHTML(s.nis) + '</p></div><div class="info-item"><label>NISN</label><p>' + escapeHTML(s.nisn || '-') + '</p></div></div>' + (akad ? '<h3 class="section-title" style="margin-top:24px;">Data Akademik (' + escapeHTML(akad.tahunPelajaran) + ')</h3><div class="info-grid"><div class="info-item"><label>Tahun Pelajaran</label><p>' + escapeHTML(akad.tahunPelajaran) + '</p></div><div class="info-item"><label>Kelas</label><p>' + escapeHTML(akad.kelas) + '</p></div><div class="info-item"><label>Wali Kelas</label><p>' + escapeHTML(akad.waliKelas || '-') + '</p></div><div class="info-item"><label>Status</label><p>' + escapeHTML(akad.status || '-') + '</p></div></div><button class="btn btn-sm btn-outline" style="margin-top:12px;" onclick="StudentDetail.editAkademik()">Edit Data Akademik</button>' : '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>');
   },
-
   renderNilai(akad) {
     if (!akad) return '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>';
-    const nilaiRecords = akad.nilai || [];
-
-    // Build a map of subject to nilai
-    const nilaiMap = {};
-    nilaiRecords.forEach(n => {
-      nilaiMap[n.mapel] = n;
-    });
-
-    return `
-      <h3 class="section-title">Nilai & Deskripsi Capaian Kompetensi</h3>
-      <p class="muted">Tahun Pelajaran: ${escapeHTML(akad.tahunPelajaran)} | Kelas: ${escapeHTML(akad.kelas)}</p>
-      <form onsubmit="StudentDetail.saveNilai(event)">
-        <div class="table-container">
-          <table class="data-table nilai-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Mata Pelajaran</th>
-                <th>Nilai Sem 1</th>
-                <th>Nilai Sem 2</th>
-                <th>Deskripsi Sem 1</th>
-                <th>Deskripsi Sem 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${MATA_PELAJARAN.map((mp, i) => {
-                const n = nilaiMap[mp] || {};
-                return `
-                  <tr>
-                    <td>${i + 1}</td>
-                    <td>${escapeHTML(mp)}</td>
-                    <td><input type="number" class="input-sm" name="nilai_sem1_${i}" value="${escapeHTML(n.nilaiSem1 || '')}" min="0" max="100"></td>
-                    <td><input type="number" class="input-sm" name="nilai_sem2_${i}" value="${escapeHTML(n.nilaiSem2 || '')}" min="0" max="100"></td>
-                    <td><textarea class="input-desc" name="desc_sem1_${i}" rows="2" placeholder="Catatan...">${escapeHTML(n.deskSem1 || '')}</textarea></td>
-                    <td><textarea class="input-desc" name="desc_sem2_${i}" rows="2" placeholder="Catatan...">${escapeHTML(n.deskSem2 || '')}</textarea></td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-        <div class="form-actions" style="margin-top:16px;">
-          <button type="submit" class="btn btn-primary">Simpan Nilai</button>
-        </div>
-      </form>
-    `;
+    const nilaiMap = {}; (akad.nilai || []).forEach(n => { nilaiMap[n.mapel] = n; });
+    return '<h3 class="section-title">Nilai & Deskripsi</h3><p class="muted">TP: ' + escapeHTML(akad.tahunPelajaran) + ' | Kelas: ' + escapeHTML(akad.kelas) + '</p><form onsubmit="StudentDetail.saveNilai(event)"><div class="table-container"><table class="data-table nilai-table"><thead><tr><th>No</th><th>Mata Pelajaran</th><th>Nilai Sem 1</th><th>Nilai Sem 2</th><th>Deskripsi Sem 1</th><th>Deskripsi Sem 2</th></tr></thead><tbody>' + MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td>' + (i+1) + '</td><td>' + escapeHTML(mp) + '</td><td><input type="number" class="input-sm" name="nilai_sem1_' + i + '" value="' + escapeHTML(n.nilaiSem1 || '') + '" min="0" max="100"></td><td><input type="number" class="input-sm" name="nilai_sem2_' + i + '" value="' + escapeHTML(n.nilaiSem2 || '') + '" min="0" max="100"></td><td><textarea class="input-desc" name="desc_sem1_' + i + '" rows="2">' + escapeHTML(n.deskSem1 || '') + '</textarea></td><td><textarea class="input-desc" name="desc_sem2_' + i + '" rows="2">' + escapeHTML(n.deskSem2 || '') + '</textarea></td></tr>'; }).join('') + '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="submit" class="btn btn-primary">Simpan Nilai</button></div></form>';
   },
-
   renderEkskul(akad) {
     if (!akad) return '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>';
-    const nonAkad = akad.nonAkademik || {};
-
-    return `
-      <h3 class="section-title">Ekstrakurikuler</h3>
-      <form onsubmit="StudentDetail.saveNonAkademik(event)">
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Semester</th>
-                <th>Kegiatan Ekstrakurikuler</th>
-                <th>Keterangan</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><input type="text" class="input-md" name="ekskul_kegiatan_1" value="${escapeHTML(nonAkad.ekskulKegiatan1 || '')}" placeholder="Contoh: Pramuka, Volly"></td>
-                <td><input type="text" class="input-md" name="ekskul_ket_1" value="${escapeHTML(nonAkad.ekskulKet1 || '')}" placeholder="Keterangan"></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><input type="text" class="input-md" name="ekskul_kegiatan_2" value="${escapeHTML(nonAkad.ekskulKegiatan2 || '')}" placeholder="Contoh: Pramuka, Volly"></td>
-                <td><input type="text" class="input-md" name="ekskul_ket_2" value="${escapeHTML(nonAkad.ekskulKet2 || '')}" placeholder="Keterangan"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 class="section-title" style="margin-top:24px;">Rekap Ketidakhadiran</h3>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Semester</th>
-                <th>Sakit (Hari)</th>
-                <th>Izin (Hari)</th>
-                <th>Tanpa Keterangan (Hari)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><input type="number" class="input-sm" name="sakit_1" value="${nonAkad.sakit1 || ''}" min="0"></td>
-                <td><input type="number" class="input-sm" name="izin_1" value="${nonAkad.izin1 || ''}" min="0"></td>
-                <td><input type="number" class="input-sm" name="alpha_1" value="${nonAkad.alpha1 || ''}" min="0"></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><input type="number" class="input-sm" name="sakit_2" value="${nonAkad.sakit2 || ''}" min="0"></td>
-                <td><input type="number" class="input-sm" name="izin_2" value="${nonAkad.izin2 || ''}" min="0"></td>
-                <td><input type="number" class="input-sm" name="alpha_2" value="${nonAkad.alpha2 || ''}" min="0"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="form-actions" style="margin-top:16px;">
-          <button type="submit" class="btn btn-primary">Simpan Data Ekskul & Absensi</button>
-        </div>
-      </form>
-    `;
+    const na = akad.nonAkademik || {};
+    return '<h3 class="section-title">Ekstrakurikuler</h3><form onsubmit="StudentDetail.saveNonAkademik(event)"><div class="table-container"><table class="data-table"><thead><tr><th>Sem</th><th>Kegiatan</th><th>Keterangan</th></tr></thead><tbody><tr><td>1</td><td><input type="text" class="input-md" name="ekskul_kegiatan_1" value="' + escapeHTML(na.ekskulKegiatan1 || '') + '"></td><td><input type="text" class="input-md" name="ekskul_ket_1" value="' + escapeHTML(na.ekskulKet1 || '') + '"></td></tr><tr><td>2</td><td><input type="text" class="input-md" name="ekskul_kegiatan_2" value="' + escapeHTML(na.ekskulKegiatan2 || '') + '"></td><td><input type="text" class="input-md" name="ekskul_ket_2" value="' + escapeHTML(na.ekskulKet2 || '') + '"></td></tr></tbody></table></div><h3 class="section-title" style="margin-top:24px;">Ketidakhadiran</h3><div class="table-container"><table class="data-table"><thead><tr><th>Sem</th><th>Sakit</th><th>Izin</th><th>Tanpa Ket</th></tr></thead><tbody><tr><td>1</td><td><input type="number" class="input-sm" name="sakit_1" value="' + (na.sakit1 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="izin_1" value="' + (na.izin1 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="alpha_1" value="' + (na.alpha1 || '') + '" min="0"></td></tr><tr><td>2</td><td><input type="number" class="input-sm" name="sakit_2" value="' + (na.sakit2 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="izin_2" value="' + (na.izin2 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="alpha_2" value="' + (na.alpha2 || '') + '" min="0"></td></tr></tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="submit" class="btn btn-primary">Simpan</button></div></form>';
   },
-
   renderP5(akad) {
     if (!akad) return '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>';
     const p5 = akad.p5 || {};
-
-    return `
-      <h3 class="section-title">Kokurikuler - Proyek Penguatan Profil Pelajar Pancasila (P5)</h3>
-      <form onsubmit="StudentDetail.saveP5(event)">
-        <div class="form-group">
-          <label>Catatan Proyek P5 Semester 1</label>
-          <textarea name="p5_sem1" rows="5" placeholder="Masukkan catatan proyek P5 semester 1...">${escapeHTML(p5.catatanSem1 || '')}</textarea>
-        </div>
-        <div class="form-group">
-          <label>Catatan Proyek P5 Semester 2</label>
-          <textarea name="p5_sem2" rows="5" placeholder="Masukkan catatan proyek P5 semester 2...">${escapeHTML(p5.catatanSem2 || '')}</textarea>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Simpan Data P5</button>
-        </div>
-      </form>
-    `;
+    return '<h3 class="section-title">Proyek P5</h3><form onsubmit="StudentDetail.saveP5(event)"><div class="form-group"><label>Catatan P5 Semester 1</label><textarea name="p5_sem1" rows="5">' + escapeHTML(p5.catatanSem1 || '') + '</textarea></div><div class="form-group"><label>Catatan P5 Semester 2</label><textarea name="p5_sem2" rows="5">' + escapeHTML(p5.catatanSem2 || '') + '</textarea></div><div class="form-actions"><button type="submit" class="btn btn-primary">Simpan P5</button></div></form>';
   },
-
-  switchAkademik(id) {
-    this.currentAkademikId = id;
-    this.render();
-  },
-
-  showAddAkademikModal() {
-    document.getElementById('akademik-modal').style.display = 'flex';
-  },
-
-  closeAkademikModal() {
-    document.getElementById('akademik-modal').style.display = 'none';
-  },
-
+  switchAkademik(id) { this.currentAkademikId = id; this.render(); },
+  showAddAkademikModal() { document.getElementById('akademik-modal').style.display = 'flex'; },
+  closeAkademikModal() { document.getElementById('akademik-modal').style.display = 'none'; },
   async saveAkademik(event) {
     event.preventDefault();
-    const data = {
-      nis: this.nis,
-      tahunPelajaran: document.getElementById('akad-tp').value.trim(),
-      kelas: document.getElementById('akad-kelas').value.trim(),
-      waliKelas: document.getElementById('akad-wali').value.trim(),
-      status: document.getElementById('akad-status').value,
-    };
-
-    try {
-      const id = await DB.addAkademik(data);
-      this.currentAkademikId = id;
-      this.closeAkademikModal();
-      await this.loadData();
-      this.render();
-    } catch (e) {
-      alert('Gagal menyimpan: ' + e.message);
-    }
+    const data = { nis: this.nis, tahunPelajaran: document.getElementById('akad-tp').value.trim(), kelas: document.getElementById('akad-kelas').value.trim(), waliKelas: document.getElementById('akad-wali').value.trim(), status: document.getElementById('akad-status').value };
+    try { const id = await DB.addAkademik(data); this.currentAkademikId = id; this.closeAkademikModal(); await this.loadData(); this.render(); } catch (e) { alert('Gagal: ' + e.message); }
   },
-
   async editAkademik() {
-    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
-    if (!akad) return;
-
-    const tp = prompt('Tahun Pelajaran:', akad.tahunPelajaran);
-    if (tp === null) return;
-    const kelas = prompt('Kelas:', akad.kelas);
-    if (kelas === null) return;
-    const wali = prompt('Wali Kelas:', akad.waliKelas || '');
-    if (wali === null) return;
-    const status = prompt('Status (Naik/Tidak Naik):', akad.status || '');
-    if (status === null) return;
-
-    try {
-      await DB.updateAkademik({
-        id: akad.id,
-        nis: this.nis,
-        tahunPelajaran: tp,
-        kelas: kelas,
-        waliKelas: wali,
-        status: status,
-      });
-      await this.loadData();
-      this.render();
-    } catch (e) {
-      alert('Gagal update: ' + e.message);
-    }
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId); if (!akad) return;
+    const tp = prompt('Tahun Pelajaran:', akad.tahunPelajaran); if (tp === null) return;
+    const kelas = prompt('Kelas:', akad.kelas); if (kelas === null) return;
+    const wali = prompt('Wali Kelas:', akad.waliKelas || ''); if (wali === null) return;
+    const status = prompt('Status (Naik/Tidak Naik):', akad.status || ''); if (status === null) return;
+    try { await DB.updateAkademik({ id: akad.id, nis: this.nis, tahunPelajaran: tp, kelas, waliKelas: wali, status }); await this.loadData(); this.render(); } catch (e) { alert('Gagal: ' + e.message); }
   },
-
   async saveNilai(event) {
-    event.preventDefault();
-    const form = event.target;
-    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
-    if (!akad) return;
-
-    // Build new records
+    event.preventDefault(); const form = event.target;
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId); if (!akad) return;
     const newRecords = [];
     for (let i = 0; i < MATA_PELAJARAN.length; i++) {
-      const nilaiSem1 = form.elements['nilai_sem1_' + i].value;
-      const nilaiSem2 = form.elements['nilai_sem2_' + i].value;
-      const deskSem1 = form.elements['desc_sem1_' + i].value;
-      const deskSem2 = form.elements['desc_sem2_' + i].value;
-
-      newRecords.push({
-        akademikId: akad.id,
-        mapel: MATA_PELAJARAN[i],
-        nilaiSem1: nilaiSem1 ? parseInt(nilaiSem1) : null,
-        nilaiSem2: nilaiSem2 ? parseInt(nilaiSem2) : null,
-        deskSem1: deskSem1,
-        deskSem2: deskSem2,
-      });
+      const nilaiSem1 = form.elements['nilai_sem1_' + i].value; const nilaiSem2 = form.elements['nilai_sem2_' + i].value;
+      newRecords.push({ akademikId: akad.id, mapel: MATA_PELAJARAN[i], nilaiSem1: nilaiSem1 ? parseInt(nilaiSem1) : null, nilaiSem2: nilaiSem2 ? parseInt(nilaiSem2) : null, deskSem1: form.elements['desc_sem1_' + i].value, deskSem2: form.elements['desc_sem2_' + i].value });
     }
-
-    // Atomic replace in a single transaction
-    await DB.replaceNilaiByAkademik(akad.id, newRecords);
-
-    await this.loadData();
-    this.render();
-    alert('Nilai berhasil disimpan!');
+    await DB.replaceNilaiByAkademik(akad.id, newRecords); await this.loadData(); this.render(); alert('Nilai berhasil disimpan!');
   },
-
   async saveNonAkademik(event) {
-    event.preventDefault();
-    const form = event.target;
-    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
-    if (!akad) return;
-
-    const data = {
-      akademikId: akad.id,
-      ekskulKegiatan1: form.elements['ekskul_kegiatan_1'].value,
-      ekskulKet1: form.elements['ekskul_ket_1'].value,
-      ekskulKegiatan2: form.elements['ekskul_kegiatan_2'].value,
-      ekskulKet2: form.elements['ekskul_ket_2'].value,
-      sakit1: parseInt(form.elements['sakit_1'].value) || 0,
-      izin1: parseInt(form.elements['izin_1'].value) || 0,
-      alpha1: parseInt(form.elements['alpha_1'].value) || 0,
-      sakit2: parseInt(form.elements['sakit_2'].value) || 0,
-      izin2: parseInt(form.elements['izin_2'].value) || 0,
-      alpha2: parseInt(form.elements['alpha_2'].value) || 0,
-    };
-
-    // Atomic replace in a single transaction
-    await DB.replaceNonAkademikByAkademik(akad.id, [data]);
-
-    await this.loadData();
-    this.render();
-    alert('Data ekskul & absensi berhasil disimpan!');
+    event.preventDefault(); const form = event.target;
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId); if (!akad) return;
+    const data = { akademikId: akad.id, ekskulKegiatan1: form.elements['ekskul_kegiatan_1'].value, ekskulKet1: form.elements['ekskul_ket_1'].value, ekskulKegiatan2: form.elements['ekskul_kegiatan_2'].value, ekskulKet2: form.elements['ekskul_ket_2'].value, sakit1: parseInt(form.elements['sakit_1'].value) || 0, izin1: parseInt(form.elements['izin_1'].value) || 0, alpha1: parseInt(form.elements['alpha_1'].value) || 0, sakit2: parseInt(form.elements['sakit_2'].value) || 0, izin2: parseInt(form.elements['izin_2'].value) || 0, alpha2: parseInt(form.elements['alpha_2'].value) || 0 };
+    await DB.replaceNonAkademikByAkademik(akad.id, [data]); await this.loadData(); this.render(); alert('Data ekskul & absensi berhasil disimpan!');
   },
-
   async saveP5(event) {
-    event.preventDefault();
-    const form = event.target;
-    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
-    if (!akad) return;
-
-    const data = {
-      akademikId: akad.id,
-      catatanSem1: form.elements['p5_sem1'].value,
-      catatanSem2: form.elements['p5_sem2'].value,
-    };
-
-    // Atomic replace in a single transaction
-    await DB.replaceP5ByAkademik(akad.id, [data]);
-
-    await this.loadData();
-    this.render();
-    alert('Data P5 berhasil disimpan!');
+    event.preventDefault(); const form = event.target;
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId); if (!akad) return;
+    await DB.replaceP5ByAkademik(akad.id, [{ akademikId: akad.id, catatanSem1: form.elements['p5_sem1'].value, catatanSem2: form.elements['p5_sem2'].value }]);
+    await this.loadData(); this.render(); alert('Data P5 berhasil disimpan!');
   },
-
   async printBukuInduk() {
     await this.loadData();
     const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
-    if (!akad) {
-      alert('Pilih tahun pelajaran terlebih dahulu!');
-      return;
-    }
+    if (!akad) { alert('Pilih tahun pelajaran terlebih dahulu!'); return; }
     PDFGenerator.generate(this.studentData, akad);
   }
 };
   </script>
 
-  <!-- import-data.js -->
-  <script>
-// Import Data Component
-const ImportData = {
-  parsedData: null,
-  importType: 'siswa',
-  fileName: '',
 
-  init() {
-    this.render();
+  <!-- data-akademik.js (NEW) -->
+  <script>
+const DataAkademik = {
+  students: [],
+  allAkademik: [],
+  filterTP: '',
+  filterKelas: '',
+  mode: 'table', // 'table' or 'batch'
+
+  async init() { await this.loadData(); this.render(); },
+  async loadData() {
+    this.students = await DB.getAllSiswa();
+    this.allAkademik = await DB.getAllAkademik();
+  },
+  getTPList() { const s = new Set(); this.allAkademik.forEach(a => { if (a.tahunPelajaran) s.add(a.tahunPelajaran); }); return [...s].sort(); },
+  getKelasList() { const s = new Set(); this.allAkademik.forEach(a => { if (a.kelas) s.add(a.kelas); }); return [...s].sort(); },
+  getFilteredAkademik() {
+    let data = this.allAkademik;
+    if (this.filterTP) data = data.filter(a => a.tahunPelajaran === this.filterTP);
+    if (this.filterKelas) data = data.filter(a => a.kelas === this.filterKelas);
+    return data;
+  },
+  getStudentName(nis) { const s = this.students.find(st => st.nis === nis); return s ? s.nama : nis; },
+
+  render() {
+    const page = document.getElementById('page-data-akademik');
+    const tpList = this.getTPList();
+    const kelasList = this.getKelasList();
+    const filtered = this.getFilteredAkademik();
+
+    page.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Data Akademik</h2>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" onclick="DataAkademik.showSingleForm()">+ Tambah</button>
+          <button class="btn btn-outline" onclick="DataAkademik.showBatchForm()">Assign Batch</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+          <div class="form-group" style="margin-bottom:0;flex:1;min-width:180px;">
+            <label>Filter Tahun Pelajaran</label>
+            <select onchange="DataAkademik.filterTP=this.value;DataAkademik.render()">
+              <option value="">-- Semua --</option>
+              ${tpList.map(tp => '<option value="' + escapeHTMLDash(tp) + '"' + (this.filterTP === tp ? ' selected' : '') + '>' + escapeHTMLDash(tp) + '</option>').join('')}
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;flex:1;min-width:180px;">
+            <label>Filter Kelas</label>
+            <select onchange="DataAkademik.filterKelas=this.value;DataAkademik.render()">
+              <option value="">-- Semua --</option>
+              ${kelasList.map(k => '<option value="' + escapeHTMLDash(k) + '"' + (this.filterKelas === k ? ' selected' : '') + '>' + escapeHTMLDash(k) + '</option>').join('')}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Data Akademik Siswa (${filtered.length} data)</h3></div>
+        <div class="table-container"><table class="data-table"><thead><tr><th>No</th><th>Nama Siswa</th><th>NIS</th><th>Tahun Pelajaran</th><th>Kelas</th><th>Wali Kelas</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+          ${filtered.length === 0 ? '<tr><td colspan="8" class="empty-state">Belum ada data akademik.</td></tr>' : filtered.map((a, i) => '<tr><td>' + (i+1) + '</td><td><strong>' + escapeHTMLDash(this.getStudentName(a.nis)) + '</strong></td><td>' + escapeHTMLDash(a.nis) + '</td><td>' + escapeHTMLDash(a.tahunPelajaran) + '</td><td>' + escapeHTMLDash(a.kelas) + '</td><td>' + escapeHTMLDash(a.waliKelas || '-') + '</td><td>' + escapeHTMLDash(a.status || '-') + '</td><td><button class="btn btn-sm btn-outline" onclick="DataAkademik.editRow(' + a.id + ')">Edit</button> <button class="btn btn-sm btn-danger" onclick="DataAkademik.deleteRow(' + a.id + ')">Hapus</button></td></tr>').join('')}
+        </tbody></table></div>
+      </div>
+      <div id="da-modal" class="modal" style="display:none;">
+        <div class="modal-overlay" onclick="DataAkademik.closeModal()"></div>
+        <div class="modal-content" id="da-modal-content"></div>
+      </div>`;
   },
 
+
+  showSingleForm() {
+    const modal = document.getElementById('da-modal');
+    modal.style.display = 'flex';
+    document.getElementById('da-modal-content').innerHTML = `
+      <div class="modal-header"><h3>Tambah Data Akademik</h3><button class="modal-close" onclick="DataAkademik.closeModal()">&times;</button></div>
+      <form onsubmit="DataAkademik.saveSingle(event)">
+        <div class="form-group"><label>Pilih Siswa</label><select id="da-siswa" required>${this.students.map(s => '<option value="' + escapeHTMLDash(s.nis) + '">' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>').join('')}</select></div>
+        <div class="form-group"><label>Tahun Pelajaran</label><input type="text" id="da-tp" required placeholder="2025/2026"></div>
+        <div class="form-group"><label>Kelas</label><input type="text" id="da-kelas" required placeholder="VII D"></div>
+        <div class="form-group"><label>Wali Kelas</label><input type="text" id="da-wali" placeholder="Nama wali kelas"></div>
+        <div class="form-group"><label>Status Akhir Tahun</label><select id="da-status"><option value="">-- Belum ditentukan --</option><option value="Naik">Naik</option><option value="Tidak Naik">Tidak Naik</option></select></div>
+        <div class="form-actions"><button type="button" class="btn btn-outline" onclick="DataAkademik.closeModal()">Batal</button><button type="submit" class="btn btn-primary">Simpan</button></div>
+      </form>`;
+  },
+  async saveSingle(event) {
+    event.preventDefault();
+    const data = { nis: document.getElementById('da-siswa').value, tahunPelajaran: document.getElementById('da-tp').value.trim(), kelas: document.getElementById('da-kelas').value.trim(), waliKelas: document.getElementById('da-wali').value.trim(), status: document.getElementById('da-status').value };
+    try { await DB.addAkademik(data); this.closeModal(); await this.loadData(); this.render(); } catch (e) { alert('Gagal: ' + e.message); }
+  },
+
+  showBatchForm() {
+    const modal = document.getElementById('da-modal');
+    modal.style.display = 'flex';
+    document.getElementById('da-modal-content').style.maxWidth = '700px';
+    document.getElementById('da-modal-content').innerHTML = `
+      <div class="modal-header"><h3>Assign Batch - Data Akademik</h3><button class="modal-close" onclick="DataAkademik.closeModal()">&times;</button></div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">Pilih Tahun Pelajaran, Kelas, dan Wali Kelas, lalu centang siswa yang akan di-assign.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div class="form-group" style="margin-bottom:0;"><label>Tahun Pelajaran</label><input type="text" id="da-batch-tp" required placeholder="2025/2026"></div>
+        <div class="form-group" style="margin-bottom:0;"><label>Kelas</label><input type="text" id="da-batch-kelas" required placeholder="VII D"></div>
+        <div class="form-group" style="margin-bottom:0;"><label>Wali Kelas</label><input type="text" id="da-batch-wali" placeholder="Nama wali kelas"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:8px;"><label>Pilih Siswa</label>
+        <div style="margin-bottom:8px;"><input type="text" id="da-batch-search" placeholder="Cari siswa..." oninput="DataAkademik.filterBatchStudents(this.value)" style="width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:13px;"></div>
+        <div style="margin-bottom:8px;"><label style="font-size:12px;cursor:pointer;"><input type="checkbox" id="da-batch-select-all" onchange="DataAkademik.toggleSelectAll(this.checked)"> Pilih Semua</label></div>
+        <div class="checkbox-list" id="da-batch-list">
+          ${this.students.map(s => '<label><input type="checkbox" name="da-batch-student" value="' + escapeHTMLDash(s.nis) + '"><span>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</span></label>').join('')}
+        </div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn btn-outline" onclick="DataAkademik.closeModal()">Batal</button><button type="button" class="btn btn-primary" onclick="DataAkademik.saveBatch()">Assign Semua</button></div>`;
+  },
+  filterBatchStudents(term) {
+    const list = document.getElementById('da-batch-list');
+    const labels = list.querySelectorAll('label');
+    const t = term.toLowerCase();
+    labels.forEach(label => { label.style.display = label.textContent.toLowerCase().includes(t) ? '' : 'none'; });
+  },
+  toggleSelectAll(checked) {
+    const checkboxes = document.querySelectorAll('input[name="da-batch-student"]');
+    checkboxes.forEach(cb => { if (cb.closest('label').style.display !== 'none') cb.checked = checked; });
+  },
+  async saveBatch() {
+    const tp = document.getElementById('da-batch-tp').value.trim();
+    const kelas = document.getElementById('da-batch-kelas').value.trim();
+    const wali = document.getElementById('da-batch-wali').value.trim();
+    if (!tp || !kelas) { alert('Tahun Pelajaran dan Kelas wajib diisi!'); return; }
+    const checked = document.querySelectorAll('input[name="da-batch-student"]:checked');
+    if (checked.length === 0) { alert('Pilih minimal satu siswa!'); return; }
+    let success = 0, failed = 0;
+    for (const cb of checked) {
+      try { await DB.addAkademik({ nis: cb.value, tahunPelajaran: tp, kelas, waliKelas: wali, status: '' }); success++; }
+      catch (e) { failed++; }
+    }
+    alert('Berhasil: ' + success + ' siswa. Gagal: ' + failed);
+    this.closeModal(); await this.loadData(); this.render();
+  },
+
+  async editRow(id) {
+    const akad = this.allAkademik.find(a => a.id === id); if (!akad) return;
+    const tp = prompt('Tahun Pelajaran:', akad.tahunPelajaran); if (tp === null) return;
+    const kelas = prompt('Kelas:', akad.kelas); if (kelas === null) return;
+    const wali = prompt('Wali Kelas:', akad.waliKelas || ''); if (wali === null) return;
+    const status = prompt('Status (Naik/Tidak Naik/kosong):', akad.status || ''); if (status === null) return;
+    try { await DB.updateAkademik({ id: akad.id, nis: akad.nis, tahunPelajaran: tp, kelas, waliKelas: wali, status }); await this.loadData(); this.render(); } catch (e) { alert('Gagal: ' + e.message); }
+  },
+  async deleteRow(id) {
+    if (!confirm('Hapus data akademik ini? (Nilai terkait juga akan terhapus)')) return;
+    try {
+      const nilaiRecords = await DB.getNilaiByAkademik(id); for (const n of nilaiRecords) await DB.deleteNilai(n.id);
+      const nonAkad = await DB.getNonAkademikByAkademik(id); for (const na of nonAkad) await DB.deleteNonAkademik(na.id);
+      const p5Records = await DB.getP5ByAkademik(id); for (const p of p5Records) await DB.deleteP5(p.id);
+      await DB.deleteAkademik(id); await this.loadData(); this.render();
+    } catch (e) { alert('Gagal: ' + e.message); }
+  },
+  closeModal() { document.getElementById('da-modal').style.display = 'none'; document.getElementById('da-modal-content').style.maxWidth = '480px'; }
+};
+  </script>
+
+
+  <!-- input-nilai.js (NEW) -->
+  <script>
+const InputNilai = {
+  allAkademik: [],
+  students: [],
+  selectedTP: '',
+  selectedKelas: '',
+  studentList: [],
+  currentStudentIndex: -1,
+  currentAkademik: null,
+  activeTab: 'nilai',
+  nilaiData: [],
+  nonAkademikData: null,
+  p5Data: null,
+
+  async init() { await this.loadData(); this.render(); },
+  async loadData() {
+    this.students = await DB.getAllSiswa();
+    this.allAkademik = await DB.getAllAkademik();
+  },
+  getTPList() { const s = new Set(); this.allAkademik.forEach(a => { if (a.tahunPelajaran) s.add(a.tahunPelajaran); }); return [...s].sort(); },
+  getKelasList() {
+    if (!this.selectedTP) return [];
+    const s = new Set(); this.allAkademik.filter(a => a.tahunPelajaran === this.selectedTP).forEach(a => { if (a.kelas) s.add(a.kelas); });
+    return [...s].sort();
+  },
+  getStudentsInClass() {
+    if (!this.selectedTP || !this.selectedKelas) return [];
+    const akademikInClass = this.allAkademik.filter(a => a.tahunPelajaran === this.selectedTP && a.kelas === this.selectedKelas);
+    return akademikInClass.map(a => {
+      const siswa = this.students.find(s => s.nis === a.nis);
+      return { ...a, nama: siswa ? siswa.nama : a.nis, nisn: siswa ? siswa.nisn : '' };
+    }).sort((a, b) => a.nama.localeCompare(b.nama));
+  },
+  async selectStudent(index) {
+    this.currentStudentIndex = index;
+    const studentAkad = this.studentList[index];
+    if (!studentAkad) return;
+    this.currentAkademik = studentAkad;
+    this.nilaiData = await DB.getNilaiByAkademik(studentAkad.id);
+    const nonAkadArr = await DB.getNonAkademikByAkademik(studentAkad.id);
+    this.nonAkademikData = nonAkadArr.length > 0 ? nonAkadArr[0] : null;
+    const p5Arr = await DB.getP5ByAkademik(studentAkad.id);
+    this.p5Data = p5Arr.length > 0 ? p5Arr[0] : null;
+    this.renderStudentForm();
+  },
+  onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.currentStudentIndex = -1; this.currentAkademik = null; this.render(); },
+  onKelasChange(val) { this.selectedKelas = val; this.currentStudentIndex = -1; this.currentAkademik = null; this.studentList = this.getStudentsInClass(); this.render(); },
+  setTab(tab) { this.activeTab = tab; this.renderStudentForm(); },
+
+
+  render() {
+    const page = document.getElementById('page-input-nilai');
+    const tpList = this.getTPList();
+    const kelasList = this.getKelasList();
+    this.studentList = this.getStudentsInClass();
+
+    page.innerHTML = `
+      <div class="page-header"><h2 class="page-title">Input Nilai</h2></div>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+          <div class="form-group" style="margin-bottom:0;min-width:200px;">
+            <label>Tahun Pelajaran</label>
+            <select id="in-tp" onchange="InputNilai.onTPChange(this.value)">
+              <option value="">-- Pilih TP --</option>
+              ${tpList.map(tp => '<option value="' + escapeHTMLDash(tp) + '"' + (this.selectedTP === tp ? ' selected' : '') + '>' + escapeHTMLDash(tp) + '</option>').join('')}
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;min-width:200px;">
+            <label>Kelas</label>
+            <select id="in-kelas" onchange="InputNilai.onKelasChange(this.value)" ${!this.selectedTP ? 'disabled' : ''}>
+              <option value="">-- Pilih Kelas --</option>
+              ${kelasList.map(k => '<option value="' + escapeHTMLDash(k) + '"' + (this.selectedKelas === k ? ' selected' : '') + '>' + escapeHTMLDash(k) + '</option>').join('')}
+            </select>
+          </div>
+        </div>
+      </div>
+      ${this.selectedTP && this.selectedKelas ? this.renderStudentList() : '<div class="card"><p class="muted">Pilih Tahun Pelajaran dan Kelas untuk menampilkan daftar siswa.</p></div>'}
+      <div id="in-student-form-area"></div>`;
+
+    if (this.currentStudentIndex >= 0) this.renderStudentForm();
+  },
+  renderStudentList() {
+    if (this.studentList.length === 0) return '<div class="card"><p class="muted">Tidak ada siswa di kelas ini. Tambahkan data akademik terlebih dahulu.</p></div>';
+    return '<div class="card"><div class="card-header"><h3>Daftar Siswa - ' + escapeHTMLDash(this.selectedKelas) + ' (' + this.studentList.length + ' siswa)</h3></div><div class="table-container"><table class="data-table"><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>Aksi</th></tr></thead><tbody>' + this.studentList.map((s, i) => '<tr' + (i === this.currentStudentIndex ? ' style="background:var(--emerald-light);"' : '') + '><td>' + (i+1) + '</td><td><strong>' + escapeHTMLDash(s.nama) + '</strong></td><td>' + escapeHTMLDash(s.nis) + '</td><td><button class="btn btn-sm ' + (i === this.currentStudentIndex ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.selectStudent(' + i + ')">Input Nilai</button></td></tr>').join('') + '</tbody></table></div></div>';
+  },
+
+
+  renderStudentForm() {
+    const area = document.getElementById('in-student-form-area');
+    if (!area || this.currentStudentIndex < 0 || !this.currentAkademik) { if (area) area.innerHTML = ''; return; }
+    const s = this.currentAkademik;
+    const hasPrev = this.currentStudentIndex > 0;
+    const hasNext = this.currentStudentIndex < this.studentList.length - 1;
+
+    area.innerHTML = `
+      <div class="card" style="margin-top:16px;">
+        <div class="student-nav">
+          <button class="btn btn-sm btn-outline" onclick="InputNilai.selectStudent(${this.currentStudentIndex - 1})" ${!hasPrev ? 'disabled' : ''}>&#9664; Sebelumnya</button>
+          <strong style="flex:1;text-align:center;font-size:16px;">${escapeHTMLDash(s.nama)} (${escapeHTMLDash(s.nis)})</strong>
+          <button class="btn btn-sm btn-outline" onclick="InputNilai.selectStudent(${this.currentStudentIndex + 1})" ${!hasNext ? 'disabled' : ''}>Berikutnya &#9654;</button>
+        </div>
+        <div class="tabs" style="margin:-24px -24px 0 -24px;padding:0 24px;border-radius:0;">
+          <button class="tab-btn ${this.activeTab === 'nilai' ? 'active' : ''}" onclick="InputNilai.setTab('nilai')">Nilai</button>
+          <button class="tab-btn ${this.activeTab === 'ekskul' ? 'active' : ''}" onclick="InputNilai.setTab('ekskul')">Ekskul & Absen</button>
+          <button class="tab-btn ${this.activeTab === 'p5' ? 'active' : ''}" onclick="InputNilai.setTab('p5')">P5</button>
+        </div>
+        <div style="padding-top:16px;">${this.renderActiveTab()}</div>
+      </div>`;
+  },
+  renderActiveTab() {
+    switch (this.activeTab) {
+      case 'nilai': return this.renderNilaiTab();
+      case 'ekskul': return this.renderEkskulTab();
+      case 'p5': return this.renderP5Tab();
+      default: return '';
+    }
+  },
+  renderNilaiTab() {
+    const nilaiMap = {}; (this.nilaiData || []).forEach(n => { nilaiMap[n.mapel] = n; });
+    return '<form onsubmit="InputNilai.saveNilai(event)"><div class="table-container"><table class="data-table nilai-table"><thead><tr><th>No</th><th>Mata Pelajaran</th><th>Nilai Sem 1</th><th>Nilai Sem 2</th><th>Deskripsi Sem 1</th><th>Deskripsi Sem 2</th></tr></thead><tbody>' + MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td>' + (i+1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td><input type="number" class="input-sm" name="in_nilai_sem1_' + i + '" value="' + escapeHTMLDash(n.nilaiSem1 || '') + '" min="0" max="100"></td><td><input type="number" class="input-sm" name="in_nilai_sem2_' + i + '" value="' + escapeHTMLDash(n.nilaiSem2 || '') + '" min="0" max="100"></td><td><textarea class="input-desc" name="in_desc_sem1_' + i + '" rows="2">' + escapeHTMLDash(n.deskSem1 || '') + '</textarea></td><td><textarea class="input-desc" name="in_desc_sem2_' + i + '" rows="2">' + escapeHTMLDash(n.deskSem2 || '') + '</textarea></td></tr>'; }).join('') + '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="submit" class="btn btn-primary">Simpan Nilai</button></div></form>';
+  },
+  renderEkskulTab() {
+    const na = this.nonAkademikData || {};
+    return '<form onsubmit="InputNilai.saveEkskul(event)"><h3 class="section-title">Ekstrakurikuler</h3><div class="table-container"><table class="data-table"><thead><tr><th>Sem</th><th>Kegiatan</th><th>Keterangan</th></tr></thead><tbody><tr><td>1</td><td><input type="text" class="input-md" name="in_ekskul1" value="' + escapeHTMLDash(na.ekskulKegiatan1 || '') + '"></td><td><input type="text" class="input-md" name="in_ket1" value="' + escapeHTMLDash(na.ekskulKet1 || '') + '"></td></tr><tr><td>2</td><td><input type="text" class="input-md" name="in_ekskul2" value="' + escapeHTMLDash(na.ekskulKegiatan2 || '') + '"></td><td><input type="text" class="input-md" name="in_ket2" value="' + escapeHTMLDash(na.ekskulKet2 || '') + '"></td></tr></tbody></table></div><h3 class="section-title" style="margin-top:24px;">Ketidakhadiran</h3><div class="table-container"><table class="data-table"><thead><tr><th>Sem</th><th>Sakit</th><th>Izin</th><th>Tanpa Ket</th></tr></thead><tbody><tr><td>1</td><td><input type="number" class="input-sm" name="in_sakit1" value="' + (na.sakit1 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="in_izin1" value="' + (na.izin1 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="in_alpha1" value="' + (na.alpha1 || '') + '" min="0"></td></tr><tr><td>2</td><td><input type="number" class="input-sm" name="in_sakit2" value="' + (na.sakit2 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="in_izin2" value="' + (na.izin2 || '') + '" min="0"></td><td><input type="number" class="input-sm" name="in_alpha2" value="' + (na.alpha2 || '') + '" min="0"></td></tr></tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="submit" class="btn btn-primary">Simpan Ekskul & Absensi</button></div></form>';
+  },
+  renderP5Tab() {
+    const p5 = this.p5Data || {};
+    return '<form onsubmit="InputNilai.saveP5(event)"><h3 class="section-title">Proyek P5</h3><div class="form-group"><label>Catatan P5 Semester 1</label><textarea name="in_p5_sem1" rows="5">' + escapeHTMLDash(p5.catatanSem1 || '') + '</textarea></div><div class="form-group"><label>Catatan P5 Semester 2</label><textarea name="in_p5_sem2" rows="5">' + escapeHTMLDash(p5.catatanSem2 || '') + '</textarea></div><div class="form-actions"><button type="submit" class="btn btn-primary">Simpan P5</button></div></form>';
+  },
+
+
+  async saveNilai(event) {
+    event.preventDefault(); const form = event.target;
+    const akadId = this.currentAkademik.id;
+    const newRecords = [];
+    for (let i = 0; i < MATA_PELAJARAN.length; i++) {
+      const v1 = form.elements['in_nilai_sem1_' + i].value;
+      const v2 = form.elements['in_nilai_sem2_' + i].value;
+      newRecords.push({ akademikId: akadId, mapel: MATA_PELAJARAN[i], nilaiSem1: v1 ? parseInt(v1) : null, nilaiSem2: v2 ? parseInt(v2) : null, deskSem1: form.elements['in_desc_sem1_' + i].value, deskSem2: form.elements['in_desc_sem2_' + i].value });
+    }
+    await DB.replaceNilaiByAkademik(akadId, newRecords);
+    this.nilaiData = await DB.getNilaiByAkademik(akadId);
+    alert('Nilai berhasil disimpan!');
+  },
+  async saveEkskul(event) {
+    event.preventDefault(); const form = event.target;
+    const akadId = this.currentAkademik.id;
+    const data = { akademikId: akadId, ekskulKegiatan1: form.elements['in_ekskul1'].value, ekskulKet1: form.elements['in_ket1'].value, ekskulKegiatan2: form.elements['in_ekskul2'].value, ekskulKet2: form.elements['in_ket2'].value, sakit1: parseInt(form.elements['in_sakit1'].value) || 0, izin1: parseInt(form.elements['in_izin1'].value) || 0, alpha1: parseInt(form.elements['in_alpha1'].value) || 0, sakit2: parseInt(form.elements['in_sakit2'].value) || 0, izin2: parseInt(form.elements['in_izin2'].value) || 0, alpha2: parseInt(form.elements['in_alpha2'].value) || 0 };
+    await DB.replaceNonAkademikByAkademik(akadId, [data]);
+    const nonAkadArr = await DB.getNonAkademikByAkademik(akadId);
+    this.nonAkademikData = nonAkadArr.length > 0 ? nonAkadArr[0] : null;
+    alert('Data ekskul & absensi berhasil disimpan!');
+  },
+  async saveP5(event) {
+    event.preventDefault(); const form = event.target;
+    const akadId = this.currentAkademik.id;
+    await DB.replaceP5ByAkademik(akadId, [{ akademikId: akadId, catatanSem1: form.elements['in_p5_sem1'].value, catatanSem2: form.elements['in_p5_sem2'].value }]);
+    const p5Arr = await DB.getP5ByAkademik(akadId);
+    this.p5Data = p5Arr.length > 0 ? p5Arr[0] : null;
+    alert('Data P5 berhasil disimpan!');
+  }
+};
+  </script>
+
+
+  <!-- import-data.js -->
+  <script>
+const ImportData = {
+  parsedData: null, importType: 'siswa', fileName: '',
+  init() { this.render(); },
   render() {
     const page = document.getElementById('page-import-data-file');
     page.innerHTML = `
-      <div class="page-header">
-        <h2 class="page-title">Import Data</h2>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h3>Upload File</h3>
+      <div class="page-header"><h2 class="page-title">Import Data</h2></div>
+      <div class="card"><div class="card-header"><h3>Upload File</h3></div><div class="import-section">
+        <div class="form-group"><label>Jenis Data</label><select id="import-type" onchange="ImportData.importType = this.value"><option value="siswa">Data Siswa (Nama, NIS, NISN)</option><option value="nilai">Nilai</option><option value="akademik">Data Akademik</option><option value="nonakademik">Ekskul & Absensi</option></select></div>
+        <div class="upload-area" id="upload-area" ondragover="ImportData.handleDragOver(event)" ondrop="ImportData.handleDrop(event)" ondragleave="ImportData.handleDragLeave(event)">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <p class="upload-text">Drag & drop file CSV di sini</p><p class="upload-hint">atau</p>
+          <label class="btn btn-outline upload-btn">Pilih File<input type="file" accept=".csv,.xlsx,.xls" onchange="ImportData.handleFileSelect(event)" style="display:none;"></label>
+          <p class="upload-format">Format: CSV, XLSX</p>
+          ${this.fileName ? '<p class="upload-filename">File: ' + this.fileName + '</p>' : ''}
         </div>
-        <div class="import-section">
-          <div class="form-group">
-            <label>Jenis Data yang Diimport</label>
-            <select id="import-type" onchange="ImportData.importType = this.value">
-              <option value="siswa">Data Siswa (Nama, NIS, NISN)</option>
-              <option value="nilai">Nilai (NIS, Mapel, Nilai Sem 1, Nilai Sem 2, Desc Sem 1, Desc Sem 2)</option>
-              <option value="akademik">Data Akademik (NIS, Tahun Pelajaran, Kelas, Wali Kelas, Status)</option>
-              <option value="nonakademik">Ekskul & Absensi</option>
-            </select>
-          </div>
-
-          <div class="upload-area" id="upload-area" 
-               ondragover="ImportData.handleDragOver(event)" 
-               ondrop="ImportData.handleDrop(event)"
-               ondragleave="ImportData.handleDragLeave(event)">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
-            <p class="upload-text">Drag & drop file CSV di sini</p>
-            <p class="upload-hint">atau</p>
-            <label class="btn btn-outline upload-btn">
-              Pilih File
-              <input type="file" accept=".csv,.xlsx,.xls" onchange="ImportData.handleFileSelect(event)" style="display:none;">
-            </label>
-            <p class="upload-format">Format yang didukung: CSV, XLSX</p>
-            ${this.fileName ? `<p class="upload-filename">File: ${this.fileName}</p>` : ''}
-          </div>
-        </div>
-      </div>
-
+      </div></div>
       ${this.parsedData ? this.renderPreview() : ''}
-      
-      <div id="import-results"></div>
-    `;
+      <div id="import-results"></div>`;
   },
-
   renderPreview() {
-    const data = this.parsedData;
-    if (!data || data.length === 0) return '<div class="card"><p>Tidak ada data yang bisa dibaca.</p></div>';
-
-    const headers = Object.keys(data[0]);
-    const preview = data.slice(0, 10);
-
-    return `
-      <div class="card" style="margin-top:16px;">
-        <div class="card-header">
-          <h3>Preview Data (${data.length} baris)</h3>
-          <button class="btn btn-primary" onclick="ImportData.doImport()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 16 12 12 8 16"></polyline>
-              <line x1="12" y1="12" x2="12" y2="21"></line>
-              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
-            </svg>
-            Import ${data.length} Data
-          </button>
-        </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                ${headers.map(h => `<th>${h}</th>`).join('')}
-              </tr>
-            </thead>
-            <tbody>
-              ${preview.map(row => `
-                <tr>
-                  ${headers.map(h => `<td>${row[h] || ''}</td>`).join('')}
-                </tr>
-              `).join('')}
-              ${data.length > 10 ? `<tr><td colspan="${headers.length}" class="muted" style="text-align:center;">... dan ${data.length - 10} baris lainnya</td></tr>` : ''}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    `;
+    const data = this.parsedData; if (!data || data.length === 0) return '<div class="card"><p>Tidak ada data.</p></div>';
+    const headers = Object.keys(data[0]); const preview = data.slice(0, 10);
+    return '<div class="card" style="margin-top:16px;"><div class="card-header"><h3>Preview (' + data.length + ' baris)</h3><button class="btn btn-primary" onclick="ImportData.doImport()">Import ' + data.length + ' Data</button></div><div class="table-container"><table class="data-table"><thead><tr>' + headers.map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>' + preview.map(row => '<tr>' + headers.map(h => '<td>' + (row[h] || '') + '</td>').join('') + '</tr>').join('') + (data.length > 10 ? '<tr><td colspan="' + headers.length + '" class="muted" style="text-align:center;">... dan ' + (data.length - 10) + ' baris lainnya</td></tr>' : '') + '</tbody></table></div></div>';
   },
-
-  handleDragOver(event) {
-    event.preventDefault();
-    document.getElementById('upload-area').classList.add('drag-over');
-  },
-
-  handleDragLeave(event) {
-    event.preventDefault();
-    document.getElementById('upload-area').classList.remove('drag-over');
-  },
-
-  handleDrop(event) {
-    event.preventDefault();
-    document.getElementById('upload-area').classList.remove('drag-over');
-    const files = event.dataTransfer.files;
-    if (files.length > 0) {
-      this.processFile(files[0]);
-    }
-  },
-
-  handleFileSelect(event) {
-    const files = event.target.files;
-    if (files.length > 0) {
-      this.processFile(files[0]);
-    }
-  },
-
+  handleDragOver(event) { event.preventDefault(); document.getElementById('upload-area').classList.add('drag-over'); },
+  handleDragLeave(event) { event.preventDefault(); document.getElementById('upload-area').classList.remove('drag-over'); },
+  handleDrop(event) { event.preventDefault(); document.getElementById('upload-area').classList.remove('drag-over'); if (event.dataTransfer.files.length > 0) this.processFile(event.dataTransfer.files[0]); },
+  handleFileSelect(event) { if (event.target.files.length > 0) this.processFile(event.target.files[0]); },
   processFile(file) {
-    this.fileName = file.name;
-    const ext = file.name.split('.').pop().toLowerCase();
-
-    if (ext === 'xlsx' || ext === 'xls') {
-      XLSXParser.parse(file).then(data => {
-        if (data) {
-          this.parsedData = data;
-          this.render();
-        }
-      }).catch(() => {
-        alert('Untuk file Excel (.xlsx), disarankan simpan sebagai CSV terlebih dahulu lalu upload ulang.');
-        this.render();
-      });
-    } else if (ext === 'csv') {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target.result;
-        this.parsedData = CSVParser.parse(text);
-        this.render();
-      };
-      reader.readAsText(file);
-    } else {
-      alert('Format file tidak didukung. Gunakan CSV atau XLSX.');
-    }
+    this.fileName = file.name; const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'xlsx' || ext === 'xls') { XLSXParser.parse(file).then(data => { if (data) { this.parsedData = data; this.render(); } }).catch(() => { alert('Simpan sebagai CSV terlebih dahulu.'); this.render(); }); }
+    else if (ext === 'csv') { const reader = new FileReader(); reader.onload = (e) => { this.parsedData = CSVParser.parse(e.target.result); this.render(); }; reader.readAsText(file); }
+    else { alert('Format tidak didukung.'); }
   },
-
   async doImport() {
-    if (!this.parsedData || this.parsedData.length === 0) {
-      alert('Tidak ada data untuk diimport.');
-      return;
-    }
-
+    if (!this.parsedData || this.parsedData.length === 0) { alert('Tidak ada data.'); return; }
     const resultsDiv = document.getElementById('import-results');
-    resultsDiv.innerHTML = '<div class="card"><p>Mengimport data...</p><div class="progress-bar"><div class="progress-fill" id="import-progress" style="width:0%"></div></div></div>';
-
+    resultsDiv.innerHTML = '<div class="card"><p>Mengimport data...</p><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div>';
+    let results;
     try {
-      let results;
       switch (this.importType) {
-        case 'siswa':
-          results = await this.importSiswa();
-          break;
-        case 'nilai':
-          results = await this.importNilai();
-          break;
-        case 'akademik':
-          results = await this.importAkademik();
-          break;
-        case 'nonakademik':
-          results = await this.importNonAkademik();
-          break;
-        default:
-          results = { success: 0, failed: 0, errors: [] };
+        case 'siswa': results = await this.importSiswa(); break;
+        case 'nilai': results = await this.importNilai(); break;
+        case 'akademik': results = await this.importAkademik(); break;
+        case 'nonakademik': results = await this.importNonAkademik(); break;
+        default: results = { success: 0, failed: 0, errors: [] };
       }
-
-      resultsDiv.innerHTML = `
-        <div class="card" style="margin-top:16px;">
-          <div class="card-header"><h3>Hasil Import</h3></div>
-          <div class="import-results-summary">
-            <div class="result-item success">
-              <strong>${results.success}</strong> berhasil
-            </div>
-            <div class="result-item failed">
-              <strong>${results.failed}</strong> gagal
-            </div>
-          </div>
-          ${results.errors.length > 0 ? `
-            <div class="error-list">
-              <h4>Detail Error:</h4>
-              <ul>
-                ${results.errors.slice(0, 10).map(e => `<li>${JSON.stringify(e)}</li>`).join('')}
-              </ul>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    } catch (e) {
-      resultsDiv.innerHTML = `<div class="card"><p class="error">Import gagal: ${e.message}</p></div>`;
-    }
+      resultsDiv.innerHTML = '<div class="card" style="margin-top:16px;"><div class="card-header"><h3>Hasil Import</h3></div><div class="import-results-summary"><div class="result-item success"><strong>' + results.success + '</strong> berhasil</div><div class="result-item failed"><strong>' + results.failed + '</strong> gagal</div></div>' + (results.errors.length > 0 ? '<div class="error-list"><h4>Error:</h4><ul>' + results.errors.slice(0, 10).map(e => '<li>' + JSON.stringify(e) + '</li>').join('') + '</ul></div>' : '') + '</div>';
+    } catch (e) { resultsDiv.innerHTML = '<div class="card"><p style="color:#DC2626;">Import gagal: ' + e.message + '</p></div>'; }
   },
-
   async importSiswa() {
     const results = { success: 0, failed: 0, errors: [] };
     for (const row of this.parsedData) {
       const nama = row['Nama'] || row['nama'] || row['NAMA'] || row['Nama Peserta Didik'] || '';
-      const nis = row['NIS'] || row['nis'] || '';
-      const nisn = row['NISN'] || row['nisn'] || '';
-
-      if (!nama || !nis) {
-        results.failed++;
-        results.errors.push({ row, error: 'Nama atau NIS kosong' });
-        continue;
-      }
-
-      try {
-        await DB.addSiswa({ nama: nama.trim(), nis: nis.toString().trim(), nisn: nisn.toString().trim() });
-        results.success++;
-      } catch (e) {
-        try {
-          await DB.updateSiswa({ nama: nama.trim(), nis: nis.toString().trim(), nisn: nisn.toString().trim() });
-          results.success++;
-        } catch (e2) {
-          results.failed++;
-          results.errors.push({ row, error: e2.message });
-        }
-      }
+      const nis = row['NIS'] || row['nis'] || ''; const nisn = row['NISN'] || row['nisn'] || '';
+      if (!nama || !nis) { results.failed++; results.errors.push({ row, error: 'Nama/NIS kosong' }); continue; }
+      try { await DB.addSiswa({ nama: nama.trim(), nis: nis.toString().trim(), nisn: nisn.toString().trim() }); results.success++; }
+      catch (e) { try { await DB.updateSiswa({ nama: nama.trim(), nis: nis.toString().trim(), nisn: nisn.toString().trim() }); results.success++; } catch (e2) { results.failed++; results.errors.push({ row, error: e2.message }); } }
     }
     return results;
   },
-
   async importAkademik() {
     const results = { success: 0, failed: 0, errors: [] };
     for (const row of this.parsedData) {
-      const nis = (row['NIS'] || row['nis'] || '').toString().trim();
-      const tp = row['Tahun Pelajaran'] || row['tahunPelajaran'] || row['TP'] || '';
-      const kelas = row['Kelas'] || row['kelas'] || '';
-      const wali = row['Wali Kelas'] || row['waliKelas'] || '';
-      const status = row['Status'] || row['status'] || '';
-
-      if (!nis || !tp) {
-        results.failed++;
-        results.errors.push({ row, error: 'NIS atau Tahun Pelajaran kosong' });
-        continue;
-      }
-
-      try {
-        await DB.addAkademik({ nis, tahunPelajaran: tp, kelas, waliKelas: wali, status });
-        results.success++;
-      } catch (e) {
-        results.failed++;
-        results.errors.push({ row, error: e.message });
-      }
+      const nis = (row['NIS'] || row['nis'] || '').toString().trim(); const tp = row['Tahun Pelajaran'] || row['tahunPelajaran'] || row['TP'] || '';
+      const kelas = row['Kelas'] || row['kelas'] || ''; const wali = row['Wali Kelas'] || row['waliKelas'] || ''; const status = row['Status'] || row['status'] || '';
+      if (!nis || !tp) { results.failed++; results.errors.push({ row, error: 'NIS/TP kosong' }); continue; }
+      try { await DB.addAkademik({ nis, tahunPelajaran: tp, kelas, waliKelas: wali, status }); results.success++; } catch (e) { results.failed++; results.errors.push({ row, error: e.message }); }
     }
     return results;
   },
-
   async importNilai() {
     const results = { success: 0, failed: 0, errors: [] };
     for (const row of this.parsedData) {
-      const nis = (row['NIS'] || row['nis'] || '').toString().trim();
-      const mapel = row['Mata Pelajaran'] || row['mapel'] || row['Mapel'] || '';
-      const nilaiSem1 = parseInt(row['Nilai Sem 1'] || row['nilaiSem1'] || row['Nilai Akhir Semester 1'] || '0');
-      const nilaiSem2 = parseInt(row['Nilai Sem 2'] || row['nilaiSem2'] || row['Nilai Akhir Semester 2'] || '0');
-      const deskSem1 = row['Deskripsi Sem 1'] || row['deskSem1'] || row['Catatan Semester 1'] || '';
-      const deskSem2 = row['Deskripsi Sem 2'] || row['deskSem2'] || row['Catatan Semester 2'] || '';
-
-      if (!nis || !mapel) {
-        results.failed++;
-        results.errors.push({ row, error: 'NIS atau Mapel kosong' });
-        continue;
-      }
-
-      // Find the latest akademik for this student
+      const nis = (row['NIS'] || row['nis'] || '').toString().trim(); const mapel = row['Mata Pelajaran'] || row['mapel'] || row['Mapel'] || '';
+      if (!nis || !mapel) { results.failed++; results.errors.push({ row, error: 'NIS/Mapel kosong' }); continue; }
       const akademikRecords = await DB.getAkademikBySiswa(nis);
-      if (akademikRecords.length === 0) {
-        results.failed++;
-        results.errors.push({ row, error: 'Data akademik tidak ditemukan untuk NIS: ' + nis });
-        continue;
-      }
-
+      if (akademikRecords.length === 0) { results.failed++; results.errors.push({ row, error: 'Akademik tidak ditemukan: ' + nis }); continue; }
       const latestAkad = akademikRecords[akademikRecords.length - 1];
-      try {
-        await DB.addNilai({
-          akademikId: latestAkad.id,
-          mapel,
-          nilaiSem1: nilaiSem1 || null,
-          nilaiSem2: nilaiSem2 || null,
-          deskSem1,
-          deskSem2,
-        });
-        results.success++;
-      } catch (e) {
-        results.failed++;
-        results.errors.push({ row, error: e.message });
-      }
+      try { await DB.addNilai({ akademikId: latestAkad.id, mapel, nilaiSem1: parseInt(row['Nilai Sem 1'] || row['nilaiSem1'] || '0') || null, nilaiSem2: parseInt(row['Nilai Sem 2'] || row['nilaiSem2'] || '0') || null, deskSem1: row['Deskripsi Sem 1'] || row['deskSem1'] || '', deskSem2: row['Deskripsi Sem 2'] || row['deskSem2'] || '' }); results.success++; } catch (e) { results.failed++; results.errors.push({ row, error: e.message }); }
     }
     return results;
   },
-
   async importNonAkademik() {
     const results = { success: 0, failed: 0, errors: [] };
     for (const row of this.parsedData) {
       const nis = (row['NIS'] || row['nis'] || '').toString().trim();
-
-      if (!nis) {
-        results.failed++;
-        results.errors.push({ row, error: 'NIS kosong' });
-        continue;
-      }
-
+      if (!nis) { results.failed++; results.errors.push({ row, error: 'NIS kosong' }); continue; }
       const akademikRecords = await DB.getAkademikBySiswa(nis);
-      if (akademikRecords.length === 0) {
-        results.failed++;
-        results.errors.push({ row, error: 'Data akademik tidak ditemukan untuk NIS: ' + nis });
-        continue;
-      }
-
+      if (akademikRecords.length === 0) { results.failed++; results.errors.push({ row, error: 'Akademik tidak ditemukan: ' + nis }); continue; }
       const latestAkad = akademikRecords[akademikRecords.length - 1];
-      try {
-        await DB.addNonAkademik({
-          akademikId: latestAkad.id,
-          ekskulKegiatan1: row['Ekskul Sem 1'] || row['ekskulKegiatan1'] || '',
-          ekskulKet1: row['Ket Sem 1'] || row['ekskulKet1'] || '',
-          ekskulKegiatan2: row['Ekskul Sem 2'] || row['ekskulKegiatan2'] || '',
-          ekskulKet2: row['Ket Sem 2'] || row['ekskulKet2'] || '',
-          sakit1: parseInt(row['Sakit Sem 1'] || '0') || 0,
-          izin1: parseInt(row['Izin Sem 1'] || '0') || 0,
-          alpha1: parseInt(row['Alpha Sem 1'] || '0') || 0,
-          sakit2: parseInt(row['Sakit Sem 2'] || '0') || 0,
-          izin2: parseInt(row['Izin Sem 2'] || '0') || 0,
-          alpha2: parseInt(row['Alpha Sem 2'] || '0') || 0,
-        });
-        results.success++;
-      } catch (e) {
-        results.failed++;
-        results.errors.push({ row, error: e.message });
-      }
+      try { await DB.addNonAkademik({ akademikId: latestAkad.id, ekskulKegiatan1: row['Ekskul Sem 1'] || '', ekskulKet1: row['Ket Sem 1'] || '', ekskulKegiatan2: row['Ekskul Sem 2'] || '', ekskulKet2: row['Ket Sem 2'] || '', sakit1: parseInt(row['Sakit Sem 1'] || '0') || 0, izin1: parseInt(row['Izin Sem 1'] || '0') || 0, alpha1: parseInt(row['Alpha Sem 1'] || '0') || 0, sakit2: parseInt(row['Sakit Sem 2'] || '0') || 0, izin2: parseInt(row['Izin Sem 2'] || '0') || 0, alpha2: parseInt(row['Alpha Sem 2'] || '0') || 0 }); results.success++; } catch (e) { results.failed++; results.errors.push({ row, error: e.message }); }
     }
     return results;
   }
 };
   </script>
 
+
   <!-- app.js -->
   <script>
-// Main Application Entry Point - Buku Induk Siswa Digital
 (async function() {
-  // Initialize database
-  try {
-    await DB.init();
-    console.log('Database initialized successfully');
-  } catch (e) {
-    console.error('Failed to initialize database:', e);
-    document.body.innerHTML = '<div style="padding:40px;text-align:center;"><h2>Error</h2><p>Gagal menginisialisasi database. Pastikan browser mendukung IndexedDB.</p></div>';
-    return;
-  }
+  try { await DB.init(); console.log('Database initialized'); }
+  catch (e) { console.error('DB init failed:', e); document.body.innerHTML = '<div style="padding:40px;text-align:center;"><h2>Error</h2><p>Gagal menginisialisasi database.</p></div>'; return; }
 
-  // Render sidebar
   Sidebar.render();
 
-  // Listen for page changes
   window.addEventListener('page-change', async (event) => {
     const { page, params } = event.detail;
-
     switch (page) {
-      case 'dashboard':
-        await Dashboard.init();
-        break;
-      case 'input-data':
-        await InputData.init();
-        break;
-      case 'student-detail':
-        if (params && params.nis) {
-          await StudentDetail.init(params.nis);
-        }
-        break;
-      case 'import-data-file':
-        ImportData.init();
-        break;
+      case 'dashboard': await Dashboard.init(); break;
+      case 'input-data': await InputData.init(); break;
+      case 'student-detail': if (params && params.nis) await StudentDetail.init(params.nis); break;
+      case 'data-akademik': await DataAkademik.init(); break;
+      case 'input-nilai': await InputNilai.init(); break;
+      case 'import-data-file': ImportData.init(); break;
     }
   });
 
-  // Initialize with dashboard
   Router.navigateTo('dashboard');
 })();
   </script>

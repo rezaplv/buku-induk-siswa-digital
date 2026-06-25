@@ -1,6 +1,5 @@
 // Main Application Entry Point - Buku Induk Siswa Digital
 (async function() {
-  // Initialize database
   try {
     await DB.init();
     console.log('Database initialized successfully');
@@ -28,6 +27,12 @@
         if (params && params.nis) {
           await StudentDetail.init(params.nis);
         }
+        break;
+      case 'data-akademik':
+        await DataAkademik.init();
+        break;
+      case 'input-nilai':
+        await InputNilai.init();
         break;
       case 'import-data-file':
         ImportData.init();
