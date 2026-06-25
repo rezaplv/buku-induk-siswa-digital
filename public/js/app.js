@@ -9,6 +9,14 @@
     return;
   }
 
+  // Load custom mapel from localStorage
+  const storedMapel = localStorage.getItem('mapelList');
+  if (storedMapel) {
+    const parsed = JSON.parse(storedMapel);
+    MATA_PELAJARAN.length = 0;
+    parsed.forEach(m => MATA_PELAJARAN.push(m));
+  }
+
   // Render sidebar
   Sidebar.render();
 
@@ -29,7 +37,7 @@
         }
         break;
       case 'data-akademik':
-        await DataAkademik.init();
+        DataAkademik.init();
         break;
       case 'input-nilai':
         await InputNilai.init();
