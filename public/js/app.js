@@ -21,12 +21,15 @@
       case 'dashboard':
         await Dashboard.init();
         break;
+      case 'input-data':
+        await InputData.init();
+        break;
       case 'student-detail':
         if (params && params.nis) {
           await StudentDetail.init(params.nis);
         }
         break;
-      case 'import-data':
+      case 'import-data-file':
         ImportData.init();
         break;
     }

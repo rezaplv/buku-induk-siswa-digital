@@ -20,7 +20,14 @@ const Sidebar = {
           </svg>
           <span>Dashboard</span>
         </a>
-        <a class="nav-item" data-page="import-data" onclick="Router.navigateTo('import-data')">
+        <a class="nav-item" data-page="input-data" onclick="Router.navigateTo('input-data')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>Input Data</span>
+        </a>
+        <a class="nav-item" data-page="import-data-file" onclick="Router.navigateTo('import-data-file')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="17 8 12 3 7 8"></polyline>
@@ -29,6 +36,22 @@ const Sidebar = {
           <span>Import Data</span>
         </a>
       </nav>
+      <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);">
+        <a class="nav-item" onclick="Sidebar.handleLogout()" style="color:#F87171;border-left:none;padding:12px 8px;border-radius:var(--radius-sm);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar</span>
+        </a>
+      </div>
     `;
+  },
+
+  handleLogout() {
+    if (confirm('Yakin ingin keluar?')) {
+      window.location.reload();
+    }
   }
 };
