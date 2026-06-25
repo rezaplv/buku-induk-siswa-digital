@@ -77,14 +77,28 @@ const DataAkademik = {
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><h3>Tambah Mata Pelajaran Baru</h3></div>
-        <form onsubmit="DataAkademik.addMapel(event)" style="display:flex;gap:12px;align-items:flex-end;">
+        <div class="card-header"><h3>Tambah Mata Pelajaran</h3></div>
+        
+        <!-- Manual (satu per satu) -->
+        <form onsubmit="DataAkademik.addMapel(event)" style="display:flex;gap:12px;align-items:flex-end;margin-bottom:16px;">
           <div class="form-group" style="flex:1;margin-bottom:0;">
-            <label>Nama Mata Pelajaran</label>
+            <label>Manual (satu per satu)</label>
             <input type="text" id="mapel-input" required placeholder="Contoh: Prakarya dan Kewirausahaan">
           </div>
           <button type="submit" class="btn btn-primary" style="height:42px;">+ Tambah</button>
         </form>
+        
+        <hr style="margin:16px 0;border:none;border-top:1px solid var(--border-color);">
+        
+        <!-- Batch (banyak sekaligus) -->
+        <div class="form-group">
+          <label>Batch (satu mapel per baris)</label>
+          <textarea id="mapel-batch-input" rows="6" placeholder="Contoh:\nPrakarya dan Kewirausahaan\nBahasa Arab\nTahfidz\nMuatan Lokal"></textarea>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <button type="button" class="btn btn-primary" onclick="DataAkademik.addMapelBatch()">+ Tambah Semua</button>
+          <span id="mapel-batch-count" style="font-size:12px;color:var(--text-muted);"></span>
+        </div>
       </div>
       <div class="card" style="margin-top:16px;">
         <p style="font-size:12px;color:var(--text-muted);">
@@ -104,6 +118,38 @@ const DataAkademik = {
     this.mapelList.push(nama);
     this.saveMapel();
     this.render();
+  },
+
+  addMapelBatch() {
+    const textarea = document.getElementById('mapel-batch-input');
+    const text = textarea.value.trim();
+    if (!text) { alert('Masukkan daftar mata pelajaran (satu per baris).'); return; }
+
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) { alert('Tidak ada data yang valid.'); return; }
+
+    let added = 0;
+    let skipped = 0;
+    const skippedNames = [];
+
+    for (const nama of lines) {
+      if (this.mapelList.includes(nama)) {
+        skipped++;
+        skippedNames.push(nama);
+      } else {
+        this.mapelList.push(nama);
+        added++;
+      }
+    }
+
+    this.saveMapel();
+    this.render();
+
+    let msg = 'Berhasil menambahkan ' + added + ' mata pelajaran.';
+    if (skipped > 0) {
+      msg += '\n\n' + skipped + ' mapel dilewati (sudah ada): ' + skippedNames.join(', ');
+    }
+    alert(msg);
   },
 
   deleteMapel(index) {
