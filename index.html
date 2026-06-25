@@ -2088,42 +2088,49 @@ const InputData = {
       <!-- Batch Add Modal -->
       <div id="inputdata-batch-modal" class="modal" style="display:none;">
         <div class="modal-overlay" onclick="InputData.closeBatchModal()"></div>
-        <div class="modal-content" style="max-width:680px;">
+        <div class="modal-content" style="max-width:900px;">
           <div class="modal-header">
             <h3>Tambah Siswa Batch</h3>
             <button class="modal-close" onclick="InputData.closeBatchModal()">&times;</button>
           </div>
           <div id="inputdata-batch-content">
-            <div class="form-group">
-              <label>Paste Data (format: Nama;NIS;NISN per baris)</label>
-              <textarea id="inputdata-batch-textarea" rows="8" placeholder="Contoh:\nAhmad Fauzi;2401001;0012345601\nSiti Aminah;2401002;0012345602\nBudi Santoso;2401003;0012345603"></textarea>
-            </div>
-            <p style="text-align:center;color:var(--text-muted);margin:12px 0;font-size:13px;">— atau gunakan tabel di bawah —</p>
-            <div class="form-group">
-              <label>Input Manual</label>
-              <div class="table-container">
-                <table class="data-table" id="inputdata-batch-table">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nama</th>
-                      <th>NIS</th>
-                      <th>NISN</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="inputdata-batch-table-body">
-                    <tr>
-                      <td>1</td>
-                      <td><input type="text" class="input-md batch-nama" placeholder="Nama"></td>
-                      <td><input type="text" class="input-md batch-nis" placeholder="NIS"></td>
-                      <td><input type="text" class="input-md batch-nisn" placeholder="NISN"></td>
-                      <td><button type="button" class="btn btn-sm btn-danger" onclick="InputData.removeBatchRow(this)">×</button></td>
-                    </tr>
-                  </tbody>
-                </table>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">Paste daftar nama, NIS, dan NISN masing-masing di kolom terpisah (satu per baris). Data akan dicocokkan berdasarkan nomor baris.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+              <div class="form-group" style="margin-bottom:4px;">
+                <label>NAMA (paste list)</label>
+                <textarea id="inputdata-batch-nama" rows="10" placeholder="Ahmad Fauzi\nSiti Aminah\nBudi Santoso" oninput="InputData.updateBatchCounters()"></textarea>
+                <span id="inputdata-batch-nama-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span>
               </div>
-              <button type="button" class="btn btn-sm btn-outline" style="margin-top:8px;" onclick="InputData.addBatchRow()">+ Tambah Baris</button>
+              <div class="form-group" style="margin-bottom:4px;">
+                <label>NIS (paste list)</label>
+                <textarea id="inputdata-batch-nis" rows="10" placeholder="2401001\n2401002\n2401003" oninput="InputData.updateBatchCounters()"></textarea>
+                <span id="inputdata-batch-nis-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span>
+              </div>
+              <div class="form-group" style="margin-bottom:4px;">
+                <label>NISN (paste list)</label>
+                <textarea id="inputdata-batch-nisn" rows="10" placeholder="0012345601\n0012345602\n0012345603" oninput="InputData.updateBatchCounters()"></textarea>
+                <span id="inputdata-batch-nisn-count" style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">0 baris</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;margin:12px 0;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="InputData.previewBatch()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                Preview
+              </button>
+              <span id="inputdata-batch-mismatch-warning" style="font-size:12px;color:#DC2626;display:none;"></span>
+            </div>
+            <div id="inputdata-batch-preview" style="display:none;max-height:220px;overflow-y:auto;border:1px solid var(--border-color);border-radius:var(--radius-sm);margin-bottom:12px;">
+              <table class="data-table" style="font-size:12px;">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>NIS</th>
+                    <th>NISN</th>
+                  </tr>
+                </thead>
+                <tbody id="inputdata-batch-preview-body"></tbody>
+              </table>
             </div>
             <div class="form-actions">
               <button type="button" class="btn btn-outline" onclick="InputData.closeBatchModal()">Batal</button>
@@ -2225,88 +2232,91 @@ const InputData = {
     document.getElementById('inputdata-batch-modal').style.display = 'flex';
     document.getElementById('inputdata-batch-content').style.display = 'block';
     document.getElementById('inputdata-batch-results').style.display = 'none';
-    document.getElementById('inputdata-batch-textarea').value = '';
-    document.getElementById('inputdata-batch-table-body').innerHTML = `
-      <tr>
-        <td>1</td>
-        <td><input type="text" class="input-md batch-nama" placeholder="Nama"></td>
-        <td><input type="text" class="input-md batch-nis" placeholder="NIS"></td>
-        <td><input type="text" class="input-md batch-nisn" placeholder="NISN"></td>
-        <td><button type="button" class="btn btn-sm btn-danger" onclick="InputData.removeBatchRow(this)">×</button></td>
-      </tr>
-    `;
+    document.getElementById('inputdata-batch-nama').value = '';
+    document.getElementById('inputdata-batch-nis').value = '';
+    document.getElementById('inputdata-batch-nisn').value = '';
+    document.getElementById('inputdata-batch-preview').style.display = 'none';
+    document.getElementById('inputdata-batch-mismatch-warning').style.display = 'none';
+    this.updateBatchCounters();
   },
 
   closeBatchModal() {
     document.getElementById('inputdata-batch-modal').style.display = 'none';
   },
 
-  addBatchRow() {
-    const tbody = document.getElementById('inputdata-batch-table-body');
-    const rowCount = tbody.rows.length + 1;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${rowCount}</td>
-      <td><input type="text" class="input-md batch-nama" placeholder="Nama"></td>
-      <td><input type="text" class="input-md batch-nis" placeholder="NIS"></td>
-      <td><input type="text" class="input-md batch-nisn" placeholder="NISN"></td>
-      <td><button type="button" class="btn btn-sm btn-danger" onclick="InputData.removeBatchRow(this)">×</button></td>
-    `;
-    tbody.appendChild(tr);
-    InputData.renumberBatchRows();
+  updateBatchCounters() {
+    const namaLines = document.getElementById('inputdata-batch-nama').value.split('\n').filter(l => l.trim()).length;
+    const nisLines = document.getElementById('inputdata-batch-nis').value.split('\n').filter(l => l.trim()).length;
+    const nisnLines = document.getElementById('inputdata-batch-nisn').value.split('\n').filter(l => l.trim()).length;
+    document.getElementById('inputdata-batch-nama-count').textContent = namaLines + ' baris';
+    document.getElementById('inputdata-batch-nis-count').textContent = nisLines + ' baris';
+    document.getElementById('inputdata-batch-nisn-count').textContent = nisnLines + ' baris';
   },
 
-  removeBatchRow(btn) {
-    const tbody = document.getElementById('inputdata-batch-table-body');
-    if (tbody.rows.length <= 1) return;
-    btn.closest('tr').remove();
-    InputData.renumberBatchRows();
+  getBatchData() {
+    const namaLines = document.getElementById('inputdata-batch-nama').value.split('\n');
+    const nisLines = document.getElementById('inputdata-batch-nis').value.split('\n');
+    const nisnLines = document.getElementById('inputdata-batch-nisn').value.split('\n');
+    const maxLen = Math.max(namaLines.length, nisLines.length, nisnLines.length);
+    const rows = [];
+    for (let i = 0; i < maxLen; i++) {
+      const nama = (namaLines[i] || '').trim();
+      const nis = (nisLines[i] || '').trim();
+      const nisn = (nisnLines[i] || '').trim();
+      if (!nama && !nis && !nisn) continue;
+      rows.push({ nama, nis, nisn, lineNum: i + 1, hasWarning: !nama || !nis });
+    }
+    return rows;
   },
 
-  renumberBatchRows() {
-    const tbody = document.getElementById('inputdata-batch-table-body');
-    Array.from(tbody.rows).forEach((row, i) => {
-      row.cells[0].textContent = i + 1;
+  previewBatch() {
+    const rows = this.getBatchData();
+    const previewDiv = document.getElementById('inputdata-batch-preview');
+    const tbody = document.getElementById('inputdata-batch-preview-body');
+    const warningEl = document.getElementById('inputdata-batch-mismatch-warning');
+
+    if (rows.length === 0) {
+      previewDiv.style.display = 'none';
+      warningEl.style.display = 'none';
+      return;
+    }
+
+    const namaCount = document.getElementById('inputdata-batch-nama').value.split('\n').filter(l => l.trim()).length;
+    const nisCount = document.getElementById('inputdata-batch-nis').value.split('\n').filter(l => l.trim()).length;
+    const nisnCount = document.getElementById('inputdata-batch-nisn').value.split('\n').filter(l => l.trim()).length;
+
+    if (namaCount !== nisCount || namaCount !== nisnCount) {
+      warningEl.textContent = 'Peringatan: Jumlah baris tidak sama (Nama: ' + namaCount + ', NIS: ' + nisCount + ', NISN: ' + nisnCount + ')';
+      warningEl.style.display = 'inline';
+    } else {
+      warningEl.style.display = 'none';
+    }
+
+    let html = '';
+    rows.forEach((row, idx) => {
+      const bgStyle = row.hasWarning ? 'background:#FEF2F2;' : '';
+      html += '<tr style="' + bgStyle + '">';
+      html += '<td>' + (idx + 1) + '</td>';
+      html += '<td>' + escapeHTMLDash(row.nama || '<span style=color:#DC2626>— kosong —</span>') + '</td>';
+      html += '<td>' + escapeHTMLDash(row.nis || '<span style=color:#DC2626>— kosong —</span>') + '</td>';
+      html += '<td>' + escapeHTMLDash(row.nisn) + '</td>';
+      html += '</tr>';
     });
+    tbody.innerHTML = html;
+    previewDiv.style.display = 'block';
   },
 
   async saveBatch() {
+    const rows = this.getBatchData();
     const students = [];
     const errors = [];
 
-    const textareaVal = document.getElementById('inputdata-batch-textarea').value.trim();
-    if (textareaVal) {
-      const lines = textareaVal.split('\n');
-      lines.forEach((line, idx) => {
-        const trimmed = line.trim();
-        if (!trimmed) return;
-        const parts = trimmed.split(';');
-        if (parts.length < 2) {
-          errors.push('Baris ' + (idx + 1) + ': format salah (harus Nama;NIS;NISN)');
-          return;
-        }
-        const nama = parts[0].trim();
-        const nis = parts[1].trim();
-        const nisn = parts.length >= 3 ? parts[2].trim() : '';
-        if (!nama || !nis) {
-          errors.push('Baris ' + (idx + 1) + ': Nama dan NIS wajib diisi');
-          return;
-        }
-        students.push({ nama, nis, nisn });
-      });
-    }
-
-    const tbody = document.getElementById('inputdata-batch-table-body');
-    Array.from(tbody.rows).forEach((row, idx) => {
-      const nama = row.querySelector('.batch-nama').value.trim();
-      const nis = row.querySelector('.batch-nis').value.trim();
-      const nisn = row.querySelector('.batch-nisn').value.trim();
-      if (!nama && !nis && !nisn) return;
-      if (!nama || !nis) {
-        errors.push('Tabel baris ' + (idx + 1) + ': Nama dan NIS wajib diisi');
+    rows.forEach((row) => {
+      if (!row.nama || !row.nis) {
+        errors.push('Baris ' + row.lineNum + ': Nama dan NIS wajib diisi');
         return;
       }
-      students.push({ nama, nis, nisn });
+      students.push({ nama: row.nama, nis: row.nis, nisn: row.nisn });
     });
 
     if (students.length === 0 && errors.length === 0) {
