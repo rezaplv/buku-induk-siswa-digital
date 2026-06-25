@@ -127,9 +127,119 @@ const InputNilai = {
   renderNilaiTab() {
     const nilaiMap = {};
     (this.nilaiData || []).forEach(n => { nilaiMap[n.mapel] = n; });
-    return `<form onsubmit="InputNilai.saveNilai(event)"><div class="table-container"><table class="data-table nilai-table"><thead><tr><th>No</th><th>Mata Pelajaran</th><th>Nilai Sem 1</th><th>Nilai Sem 2</th><th>Deskripsi Sem 1</th><th>Deskripsi Sem 2</th></tr></thead><tbody>
-      ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td>' + (i+1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td><input type="number" class="input-sm" name="in_nilai_sem1_' + i + '" value="' + escapeHTMLDash(n.nilaiSem1 || '') + '" min="0" max="100"></td><td><input type="number" class="input-sm" name="in_nilai_sem2_' + i + '" value="' + escapeHTMLDash(n.nilaiSem2 || '') + '" min="0" max="100"></td><td><textarea class="input-desc" name="in_desc_sem1_' + i + '" rows="2">' + escapeHTMLDash(n.deskSem1 || '') + '</textarea></td><td><textarea class="input-desc" name="in_desc_sem2_' + i + '" rows="2">' + escapeHTMLDash(n.deskSem2 || '') + '</textarea></td></tr>'; }).join('')}
-    </tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="submit" class="btn btn-primary">Simpan Nilai</button></div></form>`;
+
+    // Pre-fill textareas with existing values
+    const existingSem1 = MATA_PELAJARAN.map(mp => { const n = nilaiMap[mp]; return n && n.nilaiSem1 != null ? n.nilaiSem1 : ''; }).join('\n');
+    const existingSem2 = MATA_PELAJARAN.map(mp => { const n = nilaiMap[mp]; return n && n.nilaiSem2 != null ? n.nilaiSem2 : ''; }).join('\n');
+
+    return `
+      <h3 class="section-title">Batch Input Nilai</h3>
+      <p class="muted" style="margin-bottom:12px;">Paste ${MATA_PELAJARAN.length} angka (satu per baris) sesuai urutan mata pelajaran di bawah.</p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:180px;">
+          <h4 style="margin-bottom:8px;color:var(--text-secondary);">Daftar Mata Pelajaran</h4>
+          <ol style="margin:0;padding-left:20px;font-size:13px;line-height:2;">
+            ${MATA_PELAJARAN.map(mp => '<li>' + escapeHTMLDash(mp) + '</li>').join('')}
+          </ol>
+        </div>
+        <div style="flex:1;min-width:180px;">
+          <label style="font-weight:600;display:block;margin-bottom:4px;">Nilai Semester 1</label>
+          <textarea id="batch-nilai-sem1" rows="${MATA_PELAJARAN.length + 1}" style="width:100%;font-family:monospace;font-size:14px;padding:8px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Contoh:\n85\n90\n78\n..." oninput="InputNilai.updateNilaiPreview()">${escapeHTMLDash(existingSem1)}</textarea>
+        </div>
+        <div style="flex:1;min-width:180px;">
+          <label style="font-weight:600;display:block;margin-bottom:4px;">Nilai Semester 2</label>
+          <textarea id="batch-nilai-sem2" rows="${MATA_PELAJARAN.length + 1}" style="width:100%;font-family:monospace;font-size:14px;padding:8px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Contoh:\n88\n92\n80\n..." oninput="InputNilai.updateNilaiPreview()">${escapeHTMLDash(existingSem2)}</textarea>
+        </div>
+      </div>
+      <div id="nilai-preview-area" style="margin-top:16px;">${this.renderNilaiPreviewTable()}</div>
+      <div class="form-actions" style="margin-top:16px;">
+        <button type="button" class="btn btn-primary" onclick="InputNilai.saveNilaiBatch()">Simpan Semua Nilai</button>
+      </div>
+      <details style="margin-top:24px;border:1px solid var(--border-color);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">Input Manual</summary>
+        <form onsubmit="InputNilai.saveNilai(event)" style="margin-top:12px;">
+          <div class="table-container"><table class="data-table nilai-table"><thead><tr><th>No</th><th>Mata Pelajaran</th><th>Nilai Sem 1</th><th>Nilai Sem 2</th><th>Deskripsi Sem 1</th><th>Deskripsi Sem 2</th></tr></thead><tbody>
+            ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td>' + (i+1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td><input type="number" class="input-sm" name="in_nilai_sem1_' + i + '" value="' + escapeHTMLDash(n.nilaiSem1 || '') + '" min="0" max="100"></td><td><input type="number" class="input-sm" name="in_nilai_sem2_' + i + '" value="' + escapeHTMLDash(n.nilaiSem2 || '') + '" min="0" max="100"></td><td><textarea class="input-desc" name="in_desc_sem1_' + i + '" rows="2">' + escapeHTMLDash(n.deskSem1 || '') + '</textarea></td><td><textarea class="input-desc" name="in_desc_sem2_' + i + '" rows="2">' + escapeHTMLDash(n.deskSem2 || '') + '</textarea></td></tr>'; }).join('')}
+          </tbody></table></div>
+          <div class="form-actions" style="margin-top:16px;"><button type="submit" class="btn btn-primary">Simpan Nilai</button></div>
+        </form>
+      </details>`;
+  },
+
+  renderNilaiPreviewTable() {
+    const sem1El = document.getElementById('batch-nilai-sem1');
+    const sem2El = document.getElementById('batch-nilai-sem2');
+    const sem1Lines = sem1El ? sem1El.value.split('\n').map(l => l.trim()) : [];
+    const sem2Lines = sem2El ? sem2El.value.split('\n').map(l => l.trim()) : [];
+
+    const hasData = sem1Lines.some(l => l !== '') || sem2Lines.some(l => l !== '');
+    if (!hasData) return '<p class="muted">Preview akan muncul setelah Anda memasukkan nilai di textarea.</p>';
+
+    let rows = '';
+    for (let i = 0; i < MATA_PELAJARAN.length; i++) {
+      const v1 = sem1Lines[i] || '';
+      const v2 = sem2Lines[i] || '';
+      const valid1 = v1 === '' || (!isNaN(v1) && parseInt(v1) >= 0 && parseInt(v1) <= 100);
+      const valid2 = v2 === '' || (!isNaN(v2) && parseInt(v2) >= 0 && parseInt(v2) <= 100);
+      const style1 = valid1 ? '' : ' style="color:red;font-weight:bold;"';
+      const style2 = valid2 ? '' : ' style="color:red;font-weight:bold;"';
+      rows += '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(MATA_PELAJARAN[i]) + '</td><td' + style1 + '>' + escapeHTMLDash(v1 || '-') + '</td><td' + style2 + '>' + escapeHTMLDash(v2 || '-') + '</td></tr>';
+    }
+
+    return '<h4 style="margin-bottom:8px;">Preview Mapping Nilai</h4><div class="table-container"><table class="data-table"><thead><tr><th>No</th><th>Mata Pelajaran</th><th>Sem 1</th><th>Sem 2</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+  },
+
+  updateNilaiPreview() {
+    const previewArea = document.getElementById('nilai-preview-area');
+    if (previewArea) previewArea.innerHTML = this.renderNilaiPreviewTable();
+  },
+
+  async saveNilaiBatch() {
+    const sem1El = document.getElementById('batch-nilai-sem1');
+    const sem2El = document.getElementById('batch-nilai-sem2');
+    if (!sem1El || !sem2El) return;
+
+    const sem1Lines = sem1El.value.split('\n').map(l => l.trim());
+    const sem2Lines = sem2El.value.split('\n').map(l => l.trim());
+
+    // Validate
+    for (let i = 0; i < MATA_PELAJARAN.length; i++) {
+      const v1 = sem1Lines[i] || '';
+      const v2 = sem2Lines[i] || '';
+      if (v1 !== '' && (isNaN(v1) || parseInt(v1) < 0 || parseInt(v1) > 100)) {
+        alert('Nilai Sem 1 baris ' + (i + 1) + ' (' + MATA_PELAJARAN[i] + ') tidak valid: "' + v1 + '". Harus angka 0-100.');
+        return;
+      }
+      if (v2 !== '' && (isNaN(v2) || parseInt(v2) < 0 || parseInt(v2) > 100)) {
+        alert('Nilai Sem 2 baris ' + (i + 1) + ' (' + MATA_PELAJARAN[i] + ') tidak valid: "' + v2 + '". Harus angka 0-100.');
+        return;
+      }
+    }
+
+    const akadId = this.currentAkademik.id;
+    // Preserve existing deskripsi
+    const nilaiMap = {};
+    (this.nilaiData || []).forEach(n => { nilaiMap[n.mapel] = n; });
+
+    const newRecords = [];
+    for (let i = 0; i < MATA_PELAJARAN.length; i++) {
+      const v1 = sem1Lines[i] || '';
+      const v2 = sem2Lines[i] || '';
+      const existing = nilaiMap[MATA_PELAJARAN[i]] || {};
+      newRecords.push({
+        akademikId: akadId,
+        mapel: MATA_PELAJARAN[i],
+        nilaiSem1: v1 !== '' ? parseInt(v1) : null,
+        nilaiSem2: v2 !== '' ? parseInt(v2) : null,
+        deskSem1: existing.deskSem1 || '',
+        deskSem2: existing.deskSem2 || ''
+      });
+    }
+
+    await DB.replaceNilaiByAkademik(akadId, newRecords);
+    this.nilaiData = await DB.getNilaiByAkademik(akadId);
+    alert('Nilai berhasil disimpan!');
+    this.renderStudentForm();
   },
 
   renderEkskulTab() {
