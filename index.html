@@ -1547,13 +1547,7 @@ const DataAkademik = {
             </thead>
             <tbody>
               ${this.mapelList.length === 0 ? '<tr><td colspan="3" class="empty-state">Belum ada mata pelajaran.</td></tr>' :
-                this.mapelList.map((m, i) => \`
-                  <tr>
-                    <td>\${i + 1}</td>
-                    <td><strong>\${escapeHTMLDash(m)}</strong></td>
-                    <td><button class="btn btn-sm btn-danger" onclick="DataAkademik.deleteMapel(\${i})">Hapus</button></td>
-                  </tr>
-                \`).join('')}
+                this.mapelList.map((m, i) => '<tr><td>' + (i + 1) + '</td><td><strong>' + escapeHTMLDash(m) + '</strong></td><td><button class="btn btn-sm btn-danger" onclick="DataAkademik.deleteMapel(' + i + ')">Hapus</button></td></tr>').join('')}
             </tbody>
           </table>
         </div>
