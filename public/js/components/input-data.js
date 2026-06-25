@@ -36,6 +36,76 @@ const InputData = {
     const page = document.getElementById('page-input-data');
     const filtered = this.getFilteredStudents();
 
+    // Group students by kelas
+    const grouped = {};
+    filtered.forEach(s => {
+      const akad = this.akademikMap[s.nis];
+      const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
+      const kelas = latest ? latest.kelas : 'Belum Ada Kelas';
+      if (!grouped[kelas]) grouped[kelas] = [];
+      grouped[kelas].push({ ...s, kelas, tahunPelajaran: latest ? latest.tahunPelajaran : '-' });
+    });
+
+    // Sort kelas names, put "Belum Ada Kelas" last
+    const kelasKeys = Object.keys(grouped).sort((a, b) => {
+      if (a === 'Belum Ada Kelas') return 1;
+      if (b === 'Belum Ada Kelas') return -1;
+      return a.localeCompare(b);
+    });
+
+    let groupedHTML = '';
+    if (filtered.length === 0) {
+      groupedHTML = `
+        <div class="card">
+          <div class="card-header"><h3>Kelola Data Siswa</h3></div>
+          <div class="empty-state">Belum ada data siswa. Klik "Tambah Siswa" atau "Tambah Batch" untuk menambahkan.</div>
+        </div>`;
+    } else {
+      kelasKeys.forEach(kelas => {
+        const students = grouped[kelas];
+        groupedHTML += `
+          <div class="card" style="margin-bottom:16px;">
+            <div class="kelas-group-header">
+              <div class="kelas-group-title">
+                <span class="kelas-group-icon">📚</span>
+                <span class="kelas-group-name">${escapeHTMLDash(kelas)}</span>
+                <span class="kelas-group-count">(${students.length} siswa)</span>
+              </div>
+              <button class="btn btn-sm btn-danger" onclick="InputData.deleteByKelas('${escapeHTMLDash(kelas)}')">Hapus Semua</button>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>NIS</th>
+                    <th>NISN</th>
+                    <th>Tahun Pelajaran</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${students.map((s, i) => `
+                    <tr>
+                      <td>${i + 1}</td>
+                      <td><strong>${escapeHTMLDash(s.nama)}</strong></td>
+                      <td>${escapeHTMLDash(s.nis)}</td>
+                      <td>${escapeHTMLDash(s.nisn || '-')}</td>
+                      <td>${escapeHTMLDash(s.tahunPelajaran)}</td>
+                      <td>
+                        <button class="btn btn-sm btn-outline" onclick="InputData.editStudent('${escapeHTMLDash(s.nis)}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="InputData.deleteStudent('${escapeHTMLDash(s.nis)}')">Hapus</button>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>`;
+      });
+    }
+
     page.innerHTML = `
       <div class="page-header">
         <h2 class="page-title">Input Data Siswa</h2>
@@ -68,48 +138,7 @@ const InputData = {
                value="${this.searchTerm}" oninput="InputData.onSearch(this.value)">
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h3>Kelola Data Siswa</h3>
-        </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>NIS</th>
-                <th>NISN</th>
-                <th>Kelas</th>
-                <th>Tahun Pelajaran</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${filtered.length === 0 ? `
-                <tr><td colspan="7" class="empty-state">Belum ada data siswa. Klik "Tambah Siswa" atau "Tambah Batch" untuk menambahkan.</td></tr>
-              ` : filtered.map((s, i) => {
-                const akad = this.akademikMap[s.nis];
-                const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
-                return `
-                  <tr>
-                    <td>${i + 1}</td>
-                    <td><strong>${escapeHTMLDash(s.nama)}</strong></td>
-                    <td>${escapeHTMLDash(s.nis)}</td>
-                    <td>${escapeHTMLDash(s.nisn || '-')}</td>
-                    <td>${latest ? escapeHTMLDash(latest.kelas) : '-'}</td>
-                    <td>${latest ? escapeHTMLDash(latest.tahunPelajaran) : '-'}</td>
-                    <td>
-                      <button class="btn btn-sm btn-outline" onclick="InputData.editStudent('${escapeHTMLDash(s.nis)}')">Edit</button>
-                      <button class="btn btn-sm btn-danger" onclick="InputData.deleteStudent('${escapeHTMLDash(s.nis)}')">Hapus</button>
-                    </td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      ${groupedHTML}
 
       <!-- Add/Edit Modal -->
       <div id="inputdata-student-modal" class="modal" style="display:none;">
@@ -323,6 +352,39 @@ const InputData = {
       await DB.deleteSiswa(nis);
       await this.loadData();
       this.render();
+    } catch (e) {
+      alert('Gagal menghapus: ' + e.message);
+    }
+  },
+
+  async deleteByKelas(kelas) {
+    const studentsInClass = this.students.filter(s => {
+      const akad = this.akademikMap[s.nis];
+      const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
+      const studentKelas = latest ? latest.kelas : 'Belum Ada Kelas';
+      return studentKelas === kelas;
+    });
+
+    if (!confirm('Yakin ingin menghapus semua ' + studentsInClass.length + ' siswa di ' + kelas + ' beserta seluruh datanya?')) return;
+
+    try {
+      for (const s of studentsInClass) {
+        const akademikRecords = await DB.getAkademikBySiswa(s.nis);
+        for (const akad of akademikRecords) {
+          const nilaiRecords = await DB.getNilaiByAkademik(akad.id);
+          for (const n of nilaiRecords) await DB.deleteNilai(n.id);
+          const nonAkad = await DB.getNonAkademikByAkademik(akad.id);
+          for (const na of nonAkad) await DB.deleteNonAkademik(na.id);
+          const p5Records = await DB.getP5ByAkademik(akad.id);
+          for (const p of p5Records) await DB.deleteP5(p.id);
+          await DB.deleteAkademik(akad.id);
+        }
+        await DB.deleteSiswa(s.nis);
+      }
+
+      await this.loadData();
+      this.render();
+      alert('Berhasil menghapus ' + studentsInClass.length + ' siswa dari ' + kelas);
     } catch (e) {
       alert('Gagal menghapus: ' + e.message);
     }
