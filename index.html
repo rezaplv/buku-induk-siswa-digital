@@ -1179,6 +1179,26 @@ const InputData = {
     const nisn = document.getElementById('inputdata-input-nisn').value.trim();
     const mode = document.getElementById('inputdata-input-edit-mode').value;
     if (!nama || !nis) { alert('Nama dan NIS wajib diisi!'); return; }
+
+    // Check duplicate NIS (only for add mode)
+    if (mode === 'add') {
+      const existingByNIS = await DB.getSiswa(nis);
+      if (existingByNIS) {
+        alert('GAGAL: NIS "' + nis + '" sudah digunakan oleh siswa "' + existingByNIS.nama + '". Tidak bisa menyimpan data duplikat.');
+        return;
+      }
+    }
+
+    // Check duplicate NISN
+    if (nisn) {
+      const allSiswa = await DB.getAllSiswa();
+      const existingByNISN = allSiswa.find(s => s.nisn === nisn && s.nis !== nis);
+      if (existingByNISN) {
+        alert('GAGAL: NISN "' + nisn + '" sudah digunakan oleh siswa "' + existingByNISN.nama + '" (NIS: ' + existingByNISN.nis + '). Tidak bisa menyimpan data duplikat.');
+        return;
+      }
+    }
+
     try {
       if (mode === 'edit') await DB.updateSiswa({ nama, nis, nisn });
       else {
@@ -1284,12 +1304,48 @@ const InputData = {
     const rows = this.getBatchData(); const students = []; const errors = [];
     rows.forEach(row => { if (!row.nama || !row.nis) { errors.push('Baris ' + row.lineNum + ': Nama dan NIS wajib'); return; } students.push({ nama: row.nama, nis: row.nis, nisn: row.nisn }); });
     if (students.length === 0 && errors.length === 0) { alert('Tidak ada data.'); return; }
+
+    // Check for duplicates within the batch
+    const nisSet = new Set();
+    const nisnSet = new Set();
+    for (const s of students) {
+      if (nisSet.has(s.nis)) {
+        errors.push('NIS "' + s.nis + '" muncul lebih dari sekali dalam data batch');
+      }
+      nisSet.add(s.nis);
+      if (s.nisn) {
+        if (nisnSet.has(s.nisn)) {
+          errors.push('NISN "' + s.nisn + '" muncul lebih dari sekali dalam data batch');
+        }
+        nisnSet.add(s.nisn);
+      }
+    }
+
     const tp = document.getElementById('inputdata-batch-tp').value.trim();
     const kelas = document.getElementById('inputdata-batch-kelas').value.trim();
     const wali = document.getElementById('inputdata-batch-wali').value.trim();
     const status = document.getElementById('inputdata-batch-status').value;
     let success = 0, failed = 0; const failDetails = [];
-    for (const s of students) { try { await DB.addSiswa(s); if (tp && kelas) { await DB.addAkademik({ nis: s.nis, tahunPelajaran: tp, kelas, waliKelas: wali, status }); } success++; } catch (e) { failed++; failDetails.push(s.nama + ' (' + s.nis + '): ' + e.message); } }
+    for (const s of students) {
+      // Check duplicate NIS against database
+      const existingByNIS = await DB.getSiswa(s.nis);
+      if (existingByNIS) {
+        failed++;
+        failDetails.push(s.nama + ' (NIS: ' + s.nis + '): NIS sudah digunakan oleh "' + existingByNIS.nama + '"');
+        continue;
+      }
+      // Check duplicate NISN against database
+      if (s.nisn) {
+        const allSiswa = await DB.getAllSiswa();
+        const existingByNISN = allSiswa.find(existing => existing.nisn === s.nisn);
+        if (existingByNISN) {
+          failed++;
+          failDetails.push(s.nama + ' (NISN: ' + s.nisn + '): NISN sudah digunakan oleh "' + existingByNISN.nama + '"');
+          continue;
+        }
+      }
+      try { await DB.addSiswa(s); if (tp && kelas) { await DB.addAkademik({ nis: s.nis, tahunPelajaran: tp, kelas, waliKelas: wali, status }); } success++; } catch (e) { failed++; failDetails.push(s.nama + ' (' + s.nis + '): ' + e.message); }
+    }
     document.getElementById('inputdata-batch-content').style.display = 'none';
     const resultsDiv = document.getElementById('inputdata-batch-results');
     resultsDiv.style.display = 'block';

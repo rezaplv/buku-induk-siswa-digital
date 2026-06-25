@@ -313,6 +313,25 @@ const InputData = {
       return;
     }
 
+    // Check duplicate NIS (only for add mode)
+    if (mode === 'add') {
+      const existingByNIS = await DB.getSiswa(nis);
+      if (existingByNIS) {
+        alert('GAGAL: NIS "' + nis + '" sudah digunakan oleh siswa "' + existingByNIS.nama + '". Tidak bisa menyimpan data duplikat.');
+        return;
+      }
+    }
+
+    // Check duplicate NISN
+    if (nisn) {
+      const allSiswa = await DB.getAllSiswa();
+      const existingByNISN = allSiswa.find(s => s.nisn === nisn && s.nis !== nis);
+      if (existingByNISN) {
+        alert('GAGAL: NISN "' + nisn + '" sudah digunakan oleh siswa "' + existingByNISN.nama + '" (NIS: ' + existingByNISN.nis + '). Tidak bisa menyimpan data duplikat.');
+        return;
+      }
+    }
+
     const data = { nama, nis, nisn };
 
     try {
@@ -490,6 +509,22 @@ const InputData = {
       return;
     }
 
+    // Check for duplicates within the batch
+    const nisSet = new Set();
+    const nisnSet = new Set();
+    for (const s of students) {
+      if (nisSet.has(s.nis)) {
+        errors.push('NIS "' + s.nis + '" muncul lebih dari sekali dalam data batch');
+      }
+      nisSet.add(s.nis);
+      if (s.nisn) {
+        if (nisnSet.has(s.nisn)) {
+          errors.push('NISN "' + s.nisn + '" muncul lebih dari sekali dalam data batch');
+        }
+        nisnSet.add(s.nisn);
+      }
+    }
+
     const tp = document.getElementById('inputdata-batch-tp').value.trim();
     const kelas = document.getElementById('inputdata-batch-kelas').value.trim();
     const wali = document.getElementById('inputdata-batch-wali').value.trim();
@@ -500,6 +535,23 @@ const InputData = {
     const failDetails = [];
 
     for (const s of students) {
+      // Check duplicate NIS against database
+      const existingByNIS = await DB.getSiswa(s.nis);
+      if (existingByNIS) {
+        failed++;
+        failDetails.push(s.nama + ' (NIS: ' + s.nis + '): NIS sudah digunakan oleh "' + existingByNIS.nama + '"');
+        continue;
+      }
+      // Check duplicate NISN against database
+      if (s.nisn) {
+        const allSiswa = await DB.getAllSiswa();
+        const existingByNISN = allSiswa.find(existing => existing.nisn === s.nisn);
+        if (existingByNISN) {
+          failed++;
+          failDetails.push(s.nama + ' (NISN: ' + s.nisn + '): NISN sudah digunakan oleh "' + existingByNISN.nama + '"');
+          continue;
+        }
+      }
       try {
         await DB.addSiswa(s);
         if (tp && kelas) {
