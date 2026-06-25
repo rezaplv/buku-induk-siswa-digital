@@ -1,0 +1,2936 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buku Induk Siswa Digital</title>
+  <style>
+/* ============================================
+   Buku Induk Siswa Digital - Styles
+   Modern SaaS Admin Dashboard Design
+   ============================================ */
+
+/* CSS Variables */
+:root {
+  --bg-primary: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --navy: #0F172A;
+  --navy-light: #1E293B;
+  --emerald: #10B981;
+  --emerald-light: #D1FAE5;
+  --emerald-dark: #059669;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --border-color: #E2E8F0;
+  --border-light: #F1F5F9;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-width: 260px;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Layout */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--navy);
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-logo {
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.sidebar-nav {
+  padding: 12px 0;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #94A3B8;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.nav-item.active {
+  color: #fff;
+  background: rgba(16, 185, 129, 0.1);
+  border-left-color: var(--emerald);
+}
+
+.nav-item svg {
+  flex-shrink: 0;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 32px;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* Search Bar */
+.search-bar {
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.search-bar input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.data-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr.clickable-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr.clickable-row:hover {
+  background: var(--bg-primary);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 16px !important;
+  font-style: italic;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--emerald);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--emerald-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-outline:hover {
+  background: var(--bg-primary);
+  border-color: var(--text-muted);
+}
+
+.btn-danger {
+  background: #FEE2E2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+
+.btn-danger:hover {
+  background: #FECACA;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0;
+  background: var(--bg-white);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 0 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  border-bottom: none;
+}
+
+.tab-btn {
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: var(--emerald);
+  border-bottom-color: var(--emerald);
+}
+
+.tab-content {
+  border-radius: 0 0 var(--radius) var(--radius);
+  margin-top: 0;
+  border-top: none;
+}
+
+/* Student Info Header */
+.student-info-header {
+  margin-bottom: 16px;
+}
+
+.student-info-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.student-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Akademik Selector */
+.akademik-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.akademik-selector label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.akademik-selector select {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  background: var(--bg-white);
+  color: var(--text-primary);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: var(--bg-white);
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Inline inputs in table */
+.input-sm {
+  width: 70px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font);
+  text-align: center;
+}
+
+.input-sm:focus {
+  outline: none;
+  border-color: var(--emerald);
+}
+
+.input-md {
+  width: 100%;
+  min-width: 150px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font);
+}
+
+.input-md:focus {
+  outline: none;
+  border-color: var(--emerald);
+}
+
+.input-desc {
+  width: 100%;
+  min-width: 150px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font);
+  resize: vertical;
+}
+
+.input-desc:focus {
+  outline: none;
+  border-color: var(--emerald);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.info-item p {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 480px;
+  padding: 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: var(--border-color);
+}
+
+/* Import Section */
+.import-section {
+  padding: 8px 0;
+}
+
+.upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius);
+  padding: 48px 24px;
+  text-align: center;
+  margin-top: 16px;
+  transition: all 0.2s;
+  background: var(--bg-primary);
+}
+
+.upload-area.drag-over {
+  border-color: var(--emerald);
+  background: var(--emerald-light);
+}
+
+.upload-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 16px;
+}
+
+.upload-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 8px 0;
+}
+
+.upload-btn {
+  cursor: pointer;
+}
+
+.upload-format {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+.upload-filename {
+  font-size: 13px;
+  color: var(--emerald);
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--emerald);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* Import Results */
+.import-results-summary {
+  display: flex;
+  gap: 24px;
+  padding: 16px 0;
+}
+
+.result-item {
+  font-size: 14px;
+}
+
+.result-item.success {
+  color: var(--emerald);
+}
+
+.result-item.failed {
+  color: #DC2626;
+}
+
+.error-list {
+  margin-top: 12px;
+  padding: 12px;
+  background: #FEF2F2;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+.error-list h4 {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #DC2626;
+}
+
+.error-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.error-list li {
+  padding: 4px 0;
+  border-bottom: 1px solid #FECACA;
+  word-break: break-all;
+}
+
+/* Nilai Table */
+.nilai-table th,
+.nilai-table td {
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+}
+
+/* ============================================
+   PRINT STYLES - PDF Generation
+   ============================================ */
+
+#print-area {
+  display: none;
+}
+
+@media print {
+  /* Hide everything except print area */
+  body * {
+    visibility: hidden;
+  }
+
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+
+  #print-area {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .app-layout {
+    display: none !important;
+  }
+
+  /* Print Document Styles */
+  .print-document {
+    padding: 20mm;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 11pt;
+    color: #000;
+    line-height: 1.4;
+  }
+
+  .print-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #000;
+  }
+
+  .print-header h1 {
+    font-size: 14pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .print-student-info {
+    margin-bottom: 24px;
+  }
+
+  .info-table {
+    border-collapse: collapse;
+    width: auto;
+  }
+
+  .info-table td {
+    padding: 3px 8px 3px 0;
+    font-size: 11pt;
+    vertical-align: top;
+  }
+
+  .label-td {
+    font-weight: bold;
+    width: 200px;
+  }
+
+  .print-section {
+    margin-bottom: 20px;
+  }
+
+  .print-section h2 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+  }
+
+  .print-table th,
+  .print-table td {
+    border: 1px solid #000;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .print-table th {
+    background: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+    font-size: 9pt;
+  }
+
+  .print-table .center {
+    text-align: center;
+  }
+
+  .print-table .desc-cell {
+    font-size: 9pt;
+    line-height: 1.3;
+    min-width: 150px;
+  }
+
+  .signature-cell {
+    height: 80px;
+    vertical-align: bottom;
+  }
+
+  .signature-line {
+    display: inline-block;
+    margin-top: 40px;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Page settings */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Dashboard Page -->
+      <div id="page-dashboard" class="page" style="display:none;"></div>
+
+      <!-- Student Detail Page -->
+      <div id="page-student-detail" class="page" style="display:none;"></div>
+
+      <!-- Import Data Page -->
+      <div id="page-import-data" class="page" style="display:none;"></div>
+    </main>
+  </div>
+
+  <!-- Print Area (hidden, used for PDF generation) -->
+  <div id="print-area"></div>
+
+  <!-- db.js -->
+  <script>
+// IndexedDB Database Layer for Buku Induk Siswa Digital
+const DB_NAME = 'BukuIndukSiswaDB';
+const DB_VERSION = 1;
+
+let db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (db) { resolve(db); return; }
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = (event) => {
+      const database = event.target.result;
+
+      // Siswa store
+      if (!database.objectStoreNames.contains('siswa')) {
+        const siswaStore = database.createObjectStore('siswa', { keyPath: 'nis' });
+        siswaStore.createIndex('nama', 'nama', { unique: false });
+        siswaStore.createIndex('nisn', 'nisn', { unique: false });
+      }
+
+      // Akademik store
+      if (!database.objectStoreNames.contains('akademik')) {
+        const akademikStore = database.createObjectStore('akademik', { keyPath: 'id', autoIncrement: true });
+        akademikStore.createIndex('nis', 'nis', { unique: false });
+        akademikStore.createIndex('tahunPelajaran', 'tahunPelajaran', { unique: false });
+      }
+
+      // Nilai store
+      if (!database.objectStoreNames.contains('nilai')) {
+        const nilaiStore = database.createObjectStore('nilai', { keyPath: 'id', autoIncrement: true });
+        nilaiStore.createIndex('akademikId', 'akademikId', { unique: false });
+      }
+
+      // NonAkademik store
+      if (!database.objectStoreNames.contains('nonAkademik')) {
+        const nonAkademikStore = database.createObjectStore('nonAkademik', { keyPath: 'id', autoIncrement: true });
+        nonAkademikStore.createIndex('akademikId', 'akademikId', { unique: false });
+      }
+
+      // P5 store
+      if (!database.objectStoreNames.contains('p5')) {
+        const p5Store = database.createObjectStore('p5', { keyPath: 'id', autoIncrement: true });
+        p5Store.createIndex('akademikId', 'akademikId', { unique: false });
+      }
+    };
+
+    request.onsuccess = (event) => {
+      db = event.target.result;
+      resolve(db);
+    };
+
+    request.onerror = (event) => {
+      reject(event.target.error);
+    };
+  });
+}
+
+// Generic CRUD helpers
+function getStore(storeName, mode) {
+  const tx = db.transaction(storeName, mode || 'readonly');
+  return tx.objectStore(storeName);
+}
+
+function addRecord(storeName, data) {
+  return new Promise((resolve, reject) => {
+    const store = getStore(storeName, 'readwrite');
+    const request = store.add(data);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function putRecord(storeName, data) {
+  return new Promise((resolve, reject) => {
+    const store = getStore(storeName, 'readwrite');
+    const request = store.put(data);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function getRecord(storeName, key) {
+  return new Promise((resolve, reject) => {
+    const store = getStore(storeName, 'readonly');
+    const request = store.get(key);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function getAllRecords(storeName) {
+  return new Promise((resolve, reject) => {
+    const store = getStore(storeName, 'readonly');
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function deleteRecord(storeName, key) {
+  return new Promise((resolve, reject) => {
+    const store = getStore(storeName, 'readwrite');
+    const request = store.delete(key);
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function getByIndex(storeName, indexName, value) {
+  return new Promise((resolve, reject) => {
+    const store = getStore(storeName, 'readonly');
+    const index = store.index(indexName);
+    const request = index.getAll(value);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Atomic replace: delete all records matching an index value, then insert new ones in one transaction
+function replaceByIndex(storeName, indexName, indexValue, newRecords) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    const index = store.index(indexName);
+    const getReq = index.getAll(indexValue);
+
+    getReq.onsuccess = () => {
+      const existing = getReq.result || [];
+      for (const rec of existing) {
+        store.delete(rec.id);
+      }
+      for (const rec of newRecords) {
+        store.add(rec);
+      }
+    };
+    getReq.onerror = () => reject(getReq.error);
+
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+// Domain-specific queries
+const DB = {
+  init: openDB,
+
+  // Siswa
+  addSiswa: (siswa) => addRecord('siswa', siswa),
+  updateSiswa: (siswa) => putRecord('siswa', siswa),
+  getSiswa: (nis) => getRecord('siswa', nis),
+  getAllSiswa: () => getAllRecords('siswa'),
+  deleteSiswa: (nis) => deleteRecord('siswa', nis),
+
+  // Akademik
+  addAkademik: (data) => addRecord('akademik', data),
+  updateAkademik: (data) => putRecord('akademik', data),
+  getAkademik: (id) => getRecord('akademik', id),
+  getAllAkademik: () => getAllRecords('akademik'),
+  getAkademikBySiswa: (nis) => getByIndex('akademik', 'nis', nis),
+  deleteAkademik: (id) => deleteRecord('akademik', id),
+
+  // Nilai
+  addNilai: (data) => addRecord('nilai', data),
+  updateNilai: (data) => putRecord('nilai', data),
+  getNilai: (id) => getRecord('nilai', id),
+  getNilaiByAkademik: (akademikId) => getByIndex('nilai', 'akademikId', akademikId),
+  deleteNilai: (id) => deleteRecord('nilai', id),
+
+  // NonAkademik
+  addNonAkademik: (data) => addRecord('nonAkademik', data),
+  updateNonAkademik: (data) => putRecord('nonAkademik', data),
+  getNonAkademik: (id) => getRecord('nonAkademik', id),
+  getNonAkademikByAkademik: (akademikId) => getByIndex('nonAkademik', 'akademikId', akademikId),
+  deleteNonAkademik: (id) => deleteRecord('nonAkademik', id),
+
+  // P5
+  addP5: (data) => addRecord('p5', data),
+  updateP5: (data) => putRecord('p5', data),
+  getP5: (id) => getRecord('p5', id),
+  getP5ByAkademik: (akademikId) => getByIndex('p5', 'akademikId', akademikId),
+  deleteP5: (id) => deleteRecord('p5', id),
+
+  // Atomic replace operations
+  replaceNilaiByAkademik: (akademikId, newRecords) => replaceByIndex('nilai', 'akademikId', akademikId, newRecords),
+  replaceNonAkademikByAkademik: (akademikId, newRecords) => replaceByIndex('nonAkademik', 'akademikId', akademikId, newRecords),
+  replaceP5ByAkademik: (akademikId, newRecords) => replaceByIndex('p5', 'akademikId', akademikId, newRecords),
+
+  // Bulk operations
+  bulkAddSiswa: async (records) => {
+    const results = { success: 0, failed: 0, errors: [] };
+    for (const record of records) {
+      try {
+        await addRecord('siswa', record);
+        results.success++;
+      } catch (e) {
+        // Try update if duplicate
+        try {
+          await putRecord('siswa', record);
+          results.success++;
+        } catch (e2) {
+          results.failed++;
+          results.errors.push({ record, error: e2.message });
+        }
+      }
+    }
+    return results;
+  },
+
+  // Get complete student data
+  getCompleteStudentData: async (nis) => {
+    const siswa = await getRecord('siswa', nis);
+    if (!siswa) return null;
+
+    const akademikRecords = await getByIndex('akademik', 'nis', nis);
+    const completeAkademik = [];
+
+    for (const akad of akademikRecords) {
+      const nilai = await getByIndex('nilai', 'akademikId', akad.id);
+      const nonAkademik = await getByIndex('nonAkademik', 'akademikId', akad.id);
+      const p5 = await getByIndex('p5', 'akademikId', akad.id);
+      completeAkademik.push({
+        ...akad,
+        nilai: nilai || [],
+        nonAkademik: nonAkademik[0] || null,
+        p5: p5[0] || null,
+      });
+    }
+
+    return { ...siswa, akademik: completeAkademik };
+  }
+};
+  </script>
+
+  <!-- router.js -->
+  <script>
+// Simple SPA Router - show/hide page sections
+const Router = {
+  currentPage: 'dashboard',
+  currentParams: {},
+
+  pages: ['dashboard', 'student-detail', 'import-data'],
+
+  navigateTo(page, params = {}) {
+    this.currentPage = page;
+    this.currentParams = params;
+
+    // Hide all pages
+    this.pages.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.style.display = 'none';
+    });
+
+    // Show target page
+    const target = document.getElementById('page-' + page);
+    if (target) target.style.display = 'block';
+
+    // Update active sidebar item
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.remove('active');
+      if (item.dataset.page === page) item.classList.add('active');
+    });
+
+    // Dispatch custom event
+    window.dispatchEvent(new CustomEvent('page-change', {
+      detail: { page, params }
+    }));
+  },
+
+  getCurrentPage() {
+    return this.currentPage;
+  },
+
+  getParams() {
+    return this.currentParams;
+  }
+};
+  </script>
+
+  <!-- csv-parser.js -->
+  <script>
+// Custom CSV Parser - handles quoted fields, commas within quotes, newlines, UTF-8 BOM
+// Supports both comma and semicolon delimiters (auto-detected)
+const CSVParser = {
+  parse(text) {
+    // Remove UTF-8 BOM if present
+    if (text.charCodeAt(0) === 0xFEFF) {
+      text = text.substring(1);
+    }
+
+    // Detect delimiter from the first line (header)
+    const delimiter = this.detectDelimiter(text);
+
+    const rows = this.parseRows(text, delimiter);
+    if (rows.length < 2) return [];
+
+    const headers = rows[0].map(h => h.trim());
+    const data = [];
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.length === 0 || (row.length === 1 && row[0].trim() === '')) continue;
+
+      const obj = {};
+      for (let j = 0; j < headers.length; j++) {
+        obj[headers[j]] = (row[j] || '').trim();
+      }
+      data.push(obj);
+    }
+
+    return data;
+  },
+
+  detectDelimiter(text) {
+    // Look at the first line to determine delimiter
+    const firstLineEnd = text.indexOf('\n');
+    const firstLine = firstLineEnd >= 0 ? text.substring(0, firstLineEnd) : text;
+
+    // Count commas and semicolons outside of quotes
+    let commas = 0;
+    let semicolons = 0;
+    let inQuotes = false;
+
+    for (let i = 0; i < firstLine.length; i++) {
+      const ch = firstLine[i];
+      if (ch === '"') {
+        inQuotes = !inQuotes;
+      } else if (!inQuotes) {
+        if (ch === ',') commas++;
+        else if (ch === ';') semicolons++;
+      }
+    }
+
+    // Use semicolons if they outnumber commas (common in Indonesian/European locale exports)
+    return semicolons > commas ? ';' : ',';
+  },
+
+  parseRows(text, delimiter) {
+    const rows = [];
+    let currentRow = [];
+    let currentField = '';
+    let inQuotes = false;
+    let i = 0;
+
+    while (i < text.length) {
+      const char = text[i];
+
+      if (inQuotes) {
+        if (char === '"') {
+          // Check for escaped quote
+          if (i + 1 < text.length && text[i + 1] === '"') {
+            currentField += '"';
+            i += 2;
+          } else {
+            inQuotes = false;
+            i++;
+          }
+        } else {
+          currentField += char;
+          i++;
+        }
+      } else {
+        if (char === '"') {
+          inQuotes = true;
+          i++;
+        } else if (char === delimiter) {
+          currentRow.push(currentField);
+          currentField = '';
+          i++;
+        } else if (char === '\r') {
+          // Handle CRLF
+          if (i + 1 < text.length && text[i + 1] === '\n') {
+            i++;
+          }
+          currentRow.push(currentField);
+          currentField = '';
+          rows.push(currentRow);
+          currentRow = [];
+          i++;
+        } else if (char === '\n') {
+          currentRow.push(currentField);
+          currentField = '';
+          rows.push(currentRow);
+          currentRow = [];
+          i++;
+        } else {
+          currentField += char;
+          i++;
+        }
+      }
+    }
+
+    // Handle last field/row
+    if (currentField !== '' || currentRow.length > 0) {
+      currentRow.push(currentField);
+      rows.push(currentRow);
+    }
+
+    return rows;
+  }
+};
+  </script>
+
+  <!-- xlsx-parser.js -->
+  <script>
+// XLSX Parser - Basic detection and CSV fallback prompt
+// XLSX files are ZIP archives containing XML files
+// Without external libraries, we provide basic detection and guide users to use CSV
+const XLSXParser = {
+  async parse(file) {
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+
+    // Check for ZIP signature (PK..)
+    if (bytes[0] === 0x50 && bytes[1] === 0x4B) {
+      // This is a ZIP file (likely XLSX)
+      try {
+        return await this.parseXLSX(buffer);
+      } catch (e) {
+        alert(
+          'File Excel (.xlsx) terdeteksi. Untuk hasil terbaik, silakan:\n\n' +
+          '1. Buka file di Microsoft Excel atau Google Sheets\n' +
+          '2. Simpan sebagai CSV (File > Save As > CSV)\n' +
+          '3. Upload file CSV tersebut\n\n' +
+          'Atau gunakan format CSV sejak awal untuk import data.'
+        );
+        return null;
+      }
+    }
+
+    alert('Format file tidak dikenali. Silakan gunakan file CSV.');
+    return null;
+  },
+
+  async parseXLSX(buffer) {
+    // Basic XLSX parser using ZIP structure
+    // XLSX = ZIP containing xl/sharedStrings.xml and xl/worksheets/sheet1.xml
+    const files = await this.unzip(buffer);
+    
+    if (!files) {
+      throw new Error('Cannot parse ZIP structure');
+    }
+
+    // Warn user if some entries were skipped during decompression
+    if (this._lastSkippedEntries > 0) {
+      alert(
+        'Peringatan: ' + this._lastSkippedEntries + ' bagian file tidak dapat dibaca.\n' +
+        'Data yang ditampilkan mungkin tidak lengkap.\n\n' +
+        'Untuk hasil terbaik, simpan file sebagai CSV sebelum import.'
+      );
+    }
+
+    // Get shared strings
+    const sharedStrings = this.parseSharedStrings(files['xl/sharedStrings.xml'] || '');
+    
+    // Get first sheet
+    const sheetXml = files['xl/worksheets/sheet1.xml'] || '';
+    if (!sheetXml) throw new Error('No sheet found');
+
+    return this.parseSheet(sheetXml, sharedStrings);
+  },
+
+  async unzip(buffer) {
+    const bytes = new Uint8Array(buffer);
+    const files = {};
+    let offset = 0;
+    let skippedEntries = 0;
+
+    try {
+      while (offset < bytes.length - 4) {
+        // Look for local file header signature
+        if (bytes[offset] !== 0x50 || bytes[offset + 1] !== 0x4B ||
+            bytes[offset + 2] !== 0x03 || bytes[offset + 3] !== 0x04) {
+          break;
+        }
+
+        const compressionMethod = bytes[offset + 8] | (bytes[offset + 9] << 8);
+        const compressedSize = bytes[offset + 18] | (bytes[offset + 19] << 8) | 
+                              (bytes[offset + 20] << 16) | (bytes[offset + 21] << 24);
+        const uncompressedSize = bytes[offset + 22] | (bytes[offset + 23] << 8) |
+                                (bytes[offset + 24] << 16) | (bytes[offset + 25] << 24);
+        const fileNameLength = bytes[offset + 26] | (bytes[offset + 27] << 8);
+        const extraLength = bytes[offset + 28] | (bytes[offset + 29] << 8);
+
+        const fileName = new TextDecoder().decode(bytes.slice(offset + 30, offset + 30 + fileNameLength));
+        const dataStart = offset + 30 + fileNameLength + extraLength;
+        const dataEnd = dataStart + compressedSize;
+
+        if (compressionMethod === 0) {
+          // Stored (not compressed)
+          const content = new TextDecoder().decode(bytes.slice(dataStart, dataEnd));
+          files[fileName] = content;
+        } else if (compressionMethod === 8) {
+          // Deflate - try using DecompressionStream if available
+          try {
+            const compressed = bytes.slice(dataStart, dataEnd);
+            const rawStream = new Blob([compressed]).stream();
+            const decompressed = rawStream.pipeThrough(new DecompressionStream('raw'));
+            const reader = decompressed.getReader();
+            const chunks = [];
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+            }
+            const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+            const result = new Uint8Array(totalLength);
+            let pos = 0;
+            for (const chunk of chunks) {
+              result.set(chunk, pos);
+              pos += chunk.length;
+            }
+            files[fileName] = new TextDecoder().decode(result);
+          } catch (e) {
+            // Skip files we cannot decompress
+            skippedEntries++;
+          }
+        } else {
+          skippedEntries++;
+        }
+
+        offset = dataEnd;
+      }
+    } catch (e) {
+      return null;
+    }
+
+    if (skippedEntries > 0) {
+      console.warn(`XLSX parser: ${skippedEntries} ZIP entries could not be decompressed and were skipped.`);
+      this._lastSkippedEntries = skippedEntries;
+    } else {
+      this._lastSkippedEntries = 0;
+    }
+
+    return Object.keys(files).length > 0 ? files : null;
+  },
+
+  parseSharedStrings(xml) {
+    const strings = [];
+    const regex = /<t[^>]*>([\s\S]*?)<\/t>/g;
+    let match;
+    while ((match = regex.exec(xml)) !== null) {
+      strings.push(this.decodeXMLEntities(match[1]));
+    }
+    return strings;
+  },
+
+  parseSheet(xml, sharedStrings) {
+    const rows = [];
+    const rowRegex = /<row[^>]*>([\s\S]*?)<\/row>/g;
+    const cellRegex = /<c\s+r="([A-Z]+)(\d+)"[^>]*(?:t="([^"]*)")?[^>]*>(?:<v>([\s\S]*?)<\/v>)?/g;
+    
+    let rowMatch;
+    while ((rowMatch = rowRegex.exec(xml)) !== null) {
+      const rowContent = rowMatch[1];
+      const cells = {};
+      let cellMatch;
+      const localCellRegex = /<c\s+r="([A-Z]+)(\d+)"[^>]*?(?: t="([^"]*)")?[^>]*?>(?:[\s\S]*?<v>([\s\S]*?)<\/v>)?[\s\S]*?<\/c>/g;
+      
+      while ((cellMatch = localCellRegex.exec(rowContent)) !== null) {
+        const col = cellMatch[1];
+        const type = cellMatch[3];
+        const value = cellMatch[4] || '';
+        
+        let cellValue = value;
+        if (type === 's' && sharedStrings.length > 0) {
+          const idx = parseInt(value);
+          cellValue = sharedStrings[idx] || '';
+        }
+        
+        const colIndex = this.colToIndex(col);
+        cells[colIndex] = cellValue;
+      }
+      rows.push(cells);
+    }
+
+    if (rows.length < 2) return [];
+
+    // First row is headers
+    const headers = {};
+    const maxCol = Math.max(...rows.map(r => Math.max(...Object.keys(r).map(Number), 0)));
+    
+    for (let c = 0; c <= maxCol; c++) {
+      headers[c] = (rows[0][c] || `Column${c}`).toString().trim();
+    }
+
+    const data = [];
+    for (let i = 1; i < rows.length; i++) {
+      const obj = {};
+      let hasData = false;
+      for (let c = 0; c <= maxCol; c++) {
+        const val = (rows[i][c] || '').toString().trim();
+        obj[headers[c]] = val;
+        if (val) hasData = true;
+      }
+      if (hasData) data.push(obj);
+    }
+
+    return data;
+  },
+
+  colToIndex(col) {
+    let index = 0;
+    for (let i = 0; i < col.length; i++) {
+      index = index * 26 + (col.charCodeAt(i) - 64);
+    }
+    return index - 1;
+  },
+
+  decodeXMLEntities(text) {
+    return text
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'");
+  }
+};
+  </script>
+
+  <!-- pdf-generator.js -->
+  <script>
+// PDF Generator - Uses window.print() with print-ready HTML
+const PDFGenerator = {
+  escapeHTML(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  },
+
+  generate(studentData, akademikData) {
+    const s = studentData;
+    const akad = akademikData;
+    const nilaiRecords = akad.nilai || [];
+    const nonAkad = akad.nonAkademik || {};
+    const p5 = akad.p5 || {};
+    const esc = this.escapeHTML;
+
+    // Build nilai map
+    const nilaiMap = {};
+    nilaiRecords.forEach(n => { nilaiMap[n.mapel] = n; });
+
+    const printContent = `
+      <div class="print-document">
+        <div class="print-header">
+          <h1>LAPORAN HASIL CAPAIAN KOMPETENSI PESERTA DIDIK</h1>
+        </div>
+
+        <div class="print-student-info">
+          <table class="info-table">
+            <tr><td class="label-td">NAMA PESERTA DIDIK</td><td>: ${esc(s.nama)}</td></tr>
+            <tr><td class="label-td">NIS</td><td>: ${esc(s.nis)}</td></tr>
+            <tr><td class="label-td">NISN</td><td>: ${esc(s.nisn || '-')}</td></tr>
+            <tr><td class="label-td">TAHUN PELAJARAN</td><td>: ${esc(akad.tahunPelajaran || '-')}</td></tr>
+            <tr><td class="label-td">KELAS</td><td>: ${esc(akad.kelas || '-')}</td></tr>
+          </table>
+        </div>
+
+        <div class="print-section">
+          <h2>A. NILAI AKHIR</h2>
+          <table class="print-table">
+            <thead>
+              <tr>
+                <th>NO</th>
+                <th>MATA PELAJARAN</th>
+                <th>NILAI AKHIR<br>Semester 1</th>
+                <th>NILAI AKHIR<br>Semester 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${MATA_PELAJARAN.map((mp, i) => {
+                const n = nilaiMap[mp] || {};
+                return `
+                  <tr>
+                    <td class="center">${i + 1}</td>
+                    <td>${esc(mp)}</td>
+                    <td class="center">${esc(n.nilaiSem1 || '-')}</td>
+                    <td class="center">${esc(n.nilaiSem2 || '-')}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="print-section">
+          <h2>B. EKSTRAKURIKULER</h2>
+          <table class="print-table">
+            <thead>
+              <tr>
+                <th>SEMESTER</th>
+                <th>KEGIATAN EKSTRAKURIKULER</th>
+                <th>KETERANGAN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center">1</td>
+                <td>${esc(nonAkad.ekskulKegiatan1 || '-')}</td>
+                <td>${esc(nonAkad.ekskulKet1 || '-')}</td>
+              </tr>
+              <tr>
+                <td class="center">2</td>
+                <td>${esc(nonAkad.ekskulKegiatan2 || '-')}</td>
+                <td>${esc(nonAkad.ekskulKet2 || '-')}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="print-section">
+          <h2>C. KETIDAKHADIRAN</h2>
+          <table class="print-table">
+            <thead>
+              <tr>
+                <th>SEMESTER</th>
+                <th>SAKIT (Hari)</th>
+                <th>IZIN (Hari)</th>
+                <th>TANPA KETERANGAN (Hari)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center">1</td>
+                <td class="center">${esc(nonAkad.sakit1 || 0)}</td>
+                <td class="center">${esc(nonAkad.izin1 || 0)}</td>
+                <td class="center">${esc(nonAkad.alpha1 || 0)}</td>
+              </tr>
+              <tr>
+                <td class="center">2</td>
+                <td class="center">${esc(nonAkad.sakit2 || 0)}</td>
+                <td class="center">${esc(nonAkad.izin2 || 0)}</td>
+                <td class="center">${esc(nonAkad.alpha2 || 0)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="print-section">
+          <h2>D. STATUS AKHIR TAHUN PELAJARAN</h2>
+          <table class="print-table">
+            <thead>
+              <tr>
+                <th>KELAS</th>
+                <th>STATUS</th>
+                <th>WALI KELAS</th>
+                <th>TANDA TANGAN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center">${esc(akad.kelas || '-')}</td>
+                <td class="center">${esc(akad.status || '-')}</td>
+                <td class="center">${esc(akad.waliKelas || '-')}</td>
+                <td class="center signature-cell">
+                  <br><br><br>
+                  <span class="signature-line">____________________</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="print-section page-break">
+          <h2>E. DESKRIPSI CAPAIAN KOMPETENSI</h2>
+          <table class="print-table">
+            <thead>
+              <tr>
+                <th>NO</th>
+                <th>MATA PELAJARAN</th>
+                <th>CATATAN SEMESTER 1</th>
+                <th>CATATAN SEMESTER 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${MATA_PELAJARAN.map((mp, i) => {
+                const n = nilaiMap[mp] || {};
+                return `
+                  <tr>
+                    <td class="center">${i + 1}</td>
+                    <td>${esc(mp)}</td>
+                    <td class="desc-cell">${esc(n.deskSem1 || '-')}</td>
+                    <td class="desc-cell">${esc(n.deskSem2 || '-')}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="print-section">
+          <h2>F. KOKURIKULER (Proyek Penguatan Profil Pelajar Pancasila / P5)</h2>
+          <table class="print-table">
+            <thead>
+              <tr>
+                <th>SEMESTER</th>
+                <th>CATATAN PROYEK P5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center">1</td>
+                <td class="desc-cell">${esc(p5.catatanSem1 || '-')}</td>
+              </tr>
+              <tr>
+                <td class="center">2</td>
+                <td class="desc-cell">${esc(p5.catatanSem2 || '-')}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+
+    // Set print content and trigger print
+    const printArea = document.getElementById('print-area');
+    printArea.innerHTML = printContent;
+    window.print();
+  }
+};
+  </script>
+
+  <!-- sidebar.js -->
+  <script>
+// Sidebar Navigation Component
+const Sidebar = {
+  render() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.innerHTML = `
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <h1 class="sidebar-title">Buku Induk Siswa Digital</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-page="dashboard" onclick="Router.navigateTo('dashboard')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-item" data-page="import-data" onclick="Router.navigateTo('import-data')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span>Import Data</span>
+        </a>
+      </nav>
+    `;
+  }
+};
+  </script>
+
+  <!-- dashboard.js -->
+  <script>
+// HTML escape utility to prevent XSS
+function escapeHTMLDash(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Dashboard Component
+const Dashboard = {
+  searchTerm: '',
+  students: [],
+  akademikMap: {},
+
+  async init() {
+    await this.loadData();
+    this.render();
+  },
+
+  async loadData() {
+    this.students = await DB.getAllSiswa();
+    const allAkademik = await DB.getAllAkademik();
+    this.akademikMap = {};
+    allAkademik.forEach(a => {
+      if (!this.akademikMap[a.nis]) this.akademikMap[a.nis] = [];
+      this.akademikMap[a.nis].push(a);
+    });
+  },
+
+  getFilteredStudents() {
+    if (!this.searchTerm) return this.students;
+    const term = this.searchTerm.toLowerCase();
+    return this.students.filter(s =>
+      s.nama.toLowerCase().includes(term) ||
+      s.nis.toLowerCase().includes(term) ||
+      (s.nisn && s.nisn.toLowerCase().includes(term))
+    );
+  },
+
+  render() {
+    const page = document.getElementById('page-dashboard');
+    const filtered = this.getFilteredStudents();
+    const totalSiswa = this.students.length;
+    const kelasSet = new Set();
+    const tpSet = new Set();
+    Object.values(this.akademikMap).flat().forEach(a => {
+      if (a.kelas) kelasSet.add(a.kelas);
+      if (a.tahunPelajaran) tpSet.add(a.tahunPelajaran);
+    });
+
+    page.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Dashboard</h2>
+        <button class="btn btn-primary" onclick="Dashboard.showAddModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Tambah Siswa
+        </button>
+      </div>
+
+      <div class="search-bar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="global-search" placeholder="Cari siswa berdasarkan NIS atau Nama..." 
+               value="${this.searchTerm}" oninput="Dashboard.onSearch(this.value)">
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">${totalSiswa}</div>
+          <div class="stat-label">Total Siswa</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${kelasSet.size}</div>
+          <div class="stat-label">Total Kelas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${tpSet.size || '-'}</div>
+          <div class="stat-label">Tahun Pelajaran</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Daftar Siswa</h3>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>NIS</th>
+                <th>NISN</th>
+                <th>Kelas</th>
+                <th>Tahun Pelajaran</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filtered.length === 0 ? `
+                <tr><td colspan="7" class="empty-state">Belum ada data siswa. Klik "Tambah Siswa" atau gunakan fitur Import.</td></tr>
+              ` : filtered.map((s, i) => {
+                const akad = this.akademikMap[s.nis];
+                const latest = akad && akad.length > 0 ? akad[akad.length - 1] : null;
+                return `
+                  <tr onclick="Router.navigateTo('student-detail', {nis: '${escapeHTMLDash(s.nis)}'})" class="clickable-row">
+                    <td>${i + 1}</td>
+                    <td><strong>${escapeHTMLDash(s.nama)}</strong></td>
+                    <td>${escapeHTMLDash(s.nis)}</td>
+                    <td>${escapeHTMLDash(s.nisn || '-')}</td>
+                    <td>${latest ? escapeHTMLDash(latest.kelas) : '-'}</td>
+                    <td>${latest ? escapeHTMLDash(latest.tahunPelajaran) : '-'}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); Dashboard.editStudent('${escapeHTMLDash(s.nis)}')">Edit</button>
+                      <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); Dashboard.deleteStudent('${escapeHTMLDash(s.nis)}')">Hapus</button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Add/Edit Modal -->
+      <div id="student-modal" class="modal" style="display:none;">
+        <div class="modal-overlay" onclick="Dashboard.closeModal()"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modal-title">Tambah Siswa</h3>
+            <button class="modal-close" onclick="Dashboard.closeModal()">&times;</button>
+          </div>
+          <form id="student-form" onsubmit="Dashboard.saveStudent(event)">
+            <div class="form-group">
+              <label for="input-nama">Nama Peserta Didik</label>
+              <input type="text" id="input-nama" required placeholder="Masukkan nama lengkap">
+            </div>
+            <div class="form-group">
+              <label for="input-nis">NIS</label>
+              <input type="text" id="input-nis" required placeholder="Masukkan NIS">
+            </div>
+            <div class="form-group">
+              <label for="input-nisn">NISN</label>
+              <input type="text" id="input-nisn" placeholder="Masukkan NISN">
+            </div>
+            <input type="hidden" id="input-edit-mode" value="add">
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" onclick="Dashboard.closeModal()">Batal</button>
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+  },
+
+  onSearch(value) {
+    this.searchTerm = value;
+    this.render();
+    // Re-focus input and set cursor position
+    const input = document.getElementById('global-search');
+    if (input) {
+      input.focus();
+      input.setSelectionRange(value.length, value.length);
+    }
+  },
+
+  showAddModal() {
+    document.getElementById('student-modal').style.display = 'flex';
+    document.getElementById('modal-title').textContent = 'Tambah Siswa';
+    document.getElementById('input-nama').value = '';
+    document.getElementById('input-nis').value = '';
+    document.getElementById('input-nisn').value = '';
+    document.getElementById('input-nis').disabled = false;
+    document.getElementById('input-edit-mode').value = 'add';
+  },
+
+  async editStudent(nis) {
+    const siswa = await DB.getSiswa(nis);
+    if (!siswa) return;
+    document.getElementById('student-modal').style.display = 'flex';
+    document.getElementById('modal-title').textContent = 'Edit Siswa';
+    document.getElementById('input-nama').value = siswa.nama;
+    document.getElementById('input-nis').value = siswa.nis;
+    document.getElementById('input-nis').disabled = true;
+    document.getElementById('input-nisn').value = siswa.nisn || '';
+    document.getElementById('input-edit-mode').value = 'edit';
+  },
+
+  closeModal() {
+    document.getElementById('student-modal').style.display = 'none';
+  },
+
+  async saveStudent(event) {
+    event.preventDefault();
+    const nama = document.getElementById('input-nama').value.trim();
+    const nis = document.getElementById('input-nis').value.trim();
+    const nisn = document.getElementById('input-nisn').value.trim();
+    const mode = document.getElementById('input-edit-mode').value;
+
+    if (!nama || !nis) {
+      alert('Nama dan NIS wajib diisi!');
+      return;
+    }
+
+    const data = { nama, nis, nisn };
+
+    try {
+      if (mode === 'edit') {
+        await DB.updateSiswa(data);
+      } else {
+        await DB.addSiswa(data);
+      }
+      this.closeModal();
+      await this.loadData();
+      this.render();
+    } catch (e) {
+      alert('Gagal menyimpan: ' + e.message);
+    }
+  },
+
+  async deleteStudent(nis) {
+    if (!confirm('Yakin ingin menghapus siswa ini beserta semua datanya?')) return;
+    try {
+      // Delete related records
+      const akademikRecords = await DB.getAkademikBySiswa(nis);
+      for (const akad of akademikRecords) {
+        const nilaiRecords = await DB.getNilaiByAkademik(akad.id);
+        for (const n of nilaiRecords) await DB.deleteNilai(n.id);
+        const nonAkad = await DB.getNonAkademikByAkademik(akad.id);
+        for (const na of nonAkad) await DB.deleteNonAkademik(na.id);
+        const p5Records = await DB.getP5ByAkademik(akad.id);
+        for (const p of p5Records) await DB.deleteP5(p.id);
+        await DB.deleteAkademik(akad.id);
+      }
+      await DB.deleteSiswa(nis);
+      await this.loadData();
+      this.render();
+    } catch (e) {
+      alert('Gagal menghapus: ' + e.message);
+    }
+  }
+};
+  </script>
+
+  <!-- student-detail.js -->
+  <script>
+// HTML escape utility to prevent XSS
+function escapeHTML(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Student Detail Component with Tabs
+const MATA_PELAJARAN = [
+  'Pendidikan Agama dan Budi Pekerti',
+  'Pendidikan Pancasila',
+  'Bahasa Indonesia',
+  'Matematika',
+  'IPA',
+  'IPS',
+  'Bahasa Inggris',
+  'PJOK',
+  'Informatika',
+  'Seni Budaya dan Prakarya',
+  'Bahasa Jawa'
+];
+
+const StudentDetail = {
+  nis: null,
+  studentData: null,
+  currentAkademikId: null,
+  activeTab: 'biodata',
+
+  async init(nis) {
+    this.nis = nis;
+    this.activeTab = 'biodata';
+    await this.loadData();
+    this.render();
+  },
+
+  async loadData() {
+    this.studentData = await DB.getCompleteStudentData(this.nis);
+  },
+
+  setTab(tab) {
+    this.activeTab = tab;
+    this.render();
+  },
+
+  render() {
+    const page = document.getElementById('page-student-detail');
+    if (!this.studentData) {
+      page.innerHTML = '<div class="card"><p>Siswa tidak ditemukan.</p><button class="btn btn-outline" onclick="Router.navigateTo(\'dashboard\')">Kembali</button></div>';
+      return;
+    }
+
+    const s = this.studentData;
+    const akademikRecords = s.akademik || [];
+    const latestAkademik = akademikRecords.length > 0 ? akademikRecords[akademikRecords.length - 1] : null;
+
+    if (!this.currentAkademikId && latestAkademik) {
+      this.currentAkademikId = latestAkademik.id;
+    }
+
+    const currentAkad = akademikRecords.find(a => a.id === this.currentAkademikId) || latestAkademik;
+
+    page.innerHTML = `
+      <div class="page-header">
+        <button class="btn btn-outline" onclick="Router.navigateTo('dashboard')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Kembali
+        </button>
+        <button class="btn btn-primary" onclick="StudentDetail.printBukuInduk()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Cetak Buku Induk
+        </button>
+      </div>
+
+      <div class="student-info-header card">
+        <h2>${escapeHTML(s.nama)}</h2>
+        <div class="student-meta">
+          <span><strong>NIS:</strong> ${escapeHTML(s.nis)}</span>
+          <span><strong>NISN:</strong> ${escapeHTML(s.nisn || '-')}</span>
+          ${currentAkad ? `<span><strong>Kelas:</strong> ${escapeHTML(currentAkad.kelas || '-')}</span>
+          <span><strong>TP:</strong> ${escapeHTML(currentAkad.tahunPelajaran || '-')}</span>` : ''}
+        </div>
+      </div>
+
+      ${akademikRecords.length > 0 ? `
+      <div class="akademik-selector card">
+        <label>Pilih Tahun Pelajaran:</label>
+        <select onchange="StudentDetail.switchAkademik(parseInt(this.value))">
+          ${akademikRecords.map(a => `
+            <option value="${a.id}" ${a.id === this.currentAkademikId ? 'selected' : ''}>
+              ${escapeHTML(a.tahunPelajaran)} - ${escapeHTML(a.kelas)}
+            </option>
+          `).join('')}
+        </select>
+        <button class="btn btn-sm btn-outline" onclick="StudentDetail.showAddAkademikModal()">+ Tahun Baru</button>
+      </div>
+      ` : `
+      <div class="card">
+        <p>Belum ada data akademik. Tambahkan tahun pelajaran untuk memulai.</p>
+        <button class="btn btn-primary" onclick="StudentDetail.showAddAkademikModal()">+ Tambah Tahun Pelajaran</button>
+      </div>
+      `}
+
+      <div class="tabs">
+        <button class="tab-btn ${this.activeTab === 'biodata' ? 'active' : ''}" onclick="StudentDetail.setTab('biodata')">Biodata</button>
+        <button class="tab-btn ${this.activeTab === 'nilai' ? 'active' : ''}" onclick="StudentDetail.setTab('nilai')">Nilai & Deskripsi</button>
+        <button class="tab-btn ${this.activeTab === 'ekskul' ? 'active' : ''}" onclick="StudentDetail.setTab('ekskul')">Ekskul & Absen</button>
+        <button class="tab-btn ${this.activeTab === 'p5' ? 'active' : ''}" onclick="StudentDetail.setTab('p5')">Proyek P5</button>
+      </div>
+
+      <div class="tab-content card">
+        ${this.renderTabContent(currentAkad)}
+      </div>
+
+      <!-- Akademik Modal -->
+      <div id="akademik-modal" class="modal" style="display:none;">
+        <div class="modal-overlay" onclick="StudentDetail.closeAkademikModal()"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Tambah Data Akademik</h3>
+            <button class="modal-close" onclick="StudentDetail.closeAkademikModal()">&times;</button>
+          </div>
+          <form onsubmit="StudentDetail.saveAkademik(event)">
+            <div class="form-group">
+              <label>Tahun Pelajaran</label>
+              <input type="text" id="akad-tp" required placeholder="Contoh: 2025/2026">
+            </div>
+            <div class="form-group">
+              <label>Kelas</label>
+              <input type="text" id="akad-kelas" required placeholder="Contoh: VII D">
+            </div>
+            <div class="form-group">
+              <label>Wali Kelas</label>
+              <input type="text" id="akad-wali" placeholder="Nama wali kelas">
+            </div>
+            <div class="form-group">
+              <label>Status Akhir Tahun</label>
+              <select id="akad-status">
+                <option value="">-- Pilih --</option>
+                <option value="Naik">Naik</option>
+                <option value="Tidak Naik">Tidak Naik</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" onclick="StudentDetail.closeAkademikModal()">Batal</button>
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+  },
+
+  renderTabContent(akad) {
+    switch (this.activeTab) {
+      case 'biodata': return this.renderBiodata(akad);
+      case 'nilai': return this.renderNilai(akad);
+      case 'ekskul': return this.renderEkskul(akad);
+      case 'p5': return this.renderP5(akad);
+      default: return '';
+    }
+  },
+
+  renderBiodata(akad) {
+    const s = this.studentData;
+    return `
+      <h3 class="section-title">Data Biodata Siswa</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Nama Peserta Didik</label>
+          <p>${escapeHTML(s.nama)}</p>
+        </div>
+        <div class="info-item">
+          <label>NIS</label>
+          <p>${escapeHTML(s.nis)}</p>
+        </div>
+        <div class="info-item">
+          <label>NISN</label>
+          <p>${escapeHTML(s.nisn || '-')}</p>
+        </div>
+      </div>
+      ${akad ? `
+      <h3 class="section-title" style="margin-top:24px;">Data Akademik (${escapeHTML(akad.tahunPelajaran)})</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Tahun Pelajaran</label>
+          <p>${escapeHTML(akad.tahunPelajaran)}</p>
+        </div>
+        <div class="info-item">
+          <label>Kelas</label>
+          <p>${escapeHTML(akad.kelas)}</p>
+        </div>
+        <div class="info-item">
+          <label>Wali Kelas</label>
+          <p>${escapeHTML(akad.waliKelas || '-')}</p>
+        </div>
+        <div class="info-item">
+          <label>Status Akhir Tahun</label>
+          <p>${escapeHTML(akad.status || '-')}</p>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-outline" style="margin-top:12px;" onclick="StudentDetail.editAkademik()">Edit Data Akademik</button>
+      ` : '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>'}
+    `;
+  },
+
+  renderNilai(akad) {
+    if (!akad) return '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>';
+    const nilaiRecords = akad.nilai || [];
+
+    // Build a map of subject to nilai
+    const nilaiMap = {};
+    nilaiRecords.forEach(n => {
+      nilaiMap[n.mapel] = n;
+    });
+
+    return `
+      <h3 class="section-title">Nilai & Deskripsi Capaian Kompetensi</h3>
+      <p class="muted">Tahun Pelajaran: ${escapeHTML(akad.tahunPelajaran)} | Kelas: ${escapeHTML(akad.kelas)}</p>
+      <form onsubmit="StudentDetail.saveNilai(event)">
+        <div class="table-container">
+          <table class="data-table nilai-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Mata Pelajaran</th>
+                <th>Nilai Sem 1</th>
+                <th>Nilai Sem 2</th>
+                <th>Deskripsi Sem 1</th>
+                <th>Deskripsi Sem 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${MATA_PELAJARAN.map((mp, i) => {
+                const n = nilaiMap[mp] || {};
+                return `
+                  <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHTML(mp)}</td>
+                    <td><input type="number" class="input-sm" name="nilai_sem1_${i}" value="${escapeHTML(n.nilaiSem1 || '')}" min="0" max="100"></td>
+                    <td><input type="number" class="input-sm" name="nilai_sem2_${i}" value="${escapeHTML(n.nilaiSem2 || '')}" min="0" max="100"></td>
+                    <td><textarea class="input-desc" name="desc_sem1_${i}" rows="2" placeholder="Catatan...">${escapeHTML(n.deskSem1 || '')}</textarea></td>
+                    <td><textarea class="input-desc" name="desc_sem2_${i}" rows="2" placeholder="Catatan...">${escapeHTML(n.deskSem2 || '')}</textarea></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div class="form-actions" style="margin-top:16px;">
+          <button type="submit" class="btn btn-primary">Simpan Nilai</button>
+        </div>
+      </form>
+    `;
+  },
+
+  renderEkskul(akad) {
+    if (!akad) return '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>';
+    const nonAkad = akad.nonAkademik || {};
+
+    return `
+      <h3 class="section-title">Ekstrakurikuler</h3>
+      <form onsubmit="StudentDetail.saveNonAkademik(event)">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Semester</th>
+                <th>Kegiatan Ekstrakurikuler</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><input type="text" class="input-md" name="ekskul_kegiatan_1" value="${escapeHTML(nonAkad.ekskulKegiatan1 || '')}" placeholder="Contoh: Pramuka, Volly"></td>
+                <td><input type="text" class="input-md" name="ekskul_ket_1" value="${escapeHTML(nonAkad.ekskulKet1 || '')}" placeholder="Keterangan"></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><input type="text" class="input-md" name="ekskul_kegiatan_2" value="${escapeHTML(nonAkad.ekskulKegiatan2 || '')}" placeholder="Contoh: Pramuka, Volly"></td>
+                <td><input type="text" class="input-md" name="ekskul_ket_2" value="${escapeHTML(nonAkad.ekskulKet2 || '')}" placeholder="Keterangan"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-title" style="margin-top:24px;">Rekap Ketidakhadiran</h3>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Semester</th>
+                <th>Sakit (Hari)</th>
+                <th>Izin (Hari)</th>
+                <th>Tanpa Keterangan (Hari)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><input type="number" class="input-sm" name="sakit_1" value="${nonAkad.sakit1 || ''}" min="0"></td>
+                <td><input type="number" class="input-sm" name="izin_1" value="${nonAkad.izin1 || ''}" min="0"></td>
+                <td><input type="number" class="input-sm" name="alpha_1" value="${nonAkad.alpha1 || ''}" min="0"></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><input type="number" class="input-sm" name="sakit_2" value="${nonAkad.sakit2 || ''}" min="0"></td>
+                <td><input type="number" class="input-sm" name="izin_2" value="${nonAkad.izin2 || ''}" min="0"></td>
+                <td><input type="number" class="input-sm" name="alpha_2" value="${nonAkad.alpha2 || ''}" min="0"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="form-actions" style="margin-top:16px;">
+          <button type="submit" class="btn btn-primary">Simpan Data Ekskul & Absensi</button>
+        </div>
+      </form>
+    `;
+  },
+
+  renderP5(akad) {
+    if (!akad) return '<p class="muted">Tambahkan data akademik terlebih dahulu.</p>';
+    const p5 = akad.p5 || {};
+
+    return `
+      <h3 class="section-title">Kokurikuler - Proyek Penguatan Profil Pelajar Pancasila (P5)</h3>
+      <form onsubmit="StudentDetail.saveP5(event)">
+        <div class="form-group">
+          <label>Catatan Proyek P5 Semester 1</label>
+          <textarea name="p5_sem1" rows="5" placeholder="Masukkan catatan proyek P5 semester 1...">${escapeHTML(p5.catatanSem1 || '')}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Catatan Proyek P5 Semester 2</label>
+          <textarea name="p5_sem2" rows="5" placeholder="Masukkan catatan proyek P5 semester 2...">${escapeHTML(p5.catatanSem2 || '')}</textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Simpan Data P5</button>
+        </div>
+      </form>
+    `;
+  },
+
+  switchAkademik(id) {
+    this.currentAkademikId = id;
+    this.render();
+  },
+
+  showAddAkademikModal() {
+    document.getElementById('akademik-modal').style.display = 'flex';
+  },
+
+  closeAkademikModal() {
+    document.getElementById('akademik-modal').style.display = 'none';
+  },
+
+  async saveAkademik(event) {
+    event.preventDefault();
+    const data = {
+      nis: this.nis,
+      tahunPelajaran: document.getElementById('akad-tp').value.trim(),
+      kelas: document.getElementById('akad-kelas').value.trim(),
+      waliKelas: document.getElementById('akad-wali').value.trim(),
+      status: document.getElementById('akad-status').value,
+    };
+
+    try {
+      const id = await DB.addAkademik(data);
+      this.currentAkademikId = id;
+      this.closeAkademikModal();
+      await this.loadData();
+      this.render();
+    } catch (e) {
+      alert('Gagal menyimpan: ' + e.message);
+    }
+  },
+
+  async editAkademik() {
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
+    if (!akad) return;
+
+    const tp = prompt('Tahun Pelajaran:', akad.tahunPelajaran);
+    if (tp === null) return;
+    const kelas = prompt('Kelas:', akad.kelas);
+    if (kelas === null) return;
+    const wali = prompt('Wali Kelas:', akad.waliKelas || '');
+    if (wali === null) return;
+    const status = prompt('Status (Naik/Tidak Naik):', akad.status || '');
+    if (status === null) return;
+
+    try {
+      await DB.updateAkademik({
+        id: akad.id,
+        nis: this.nis,
+        tahunPelajaran: tp,
+        kelas: kelas,
+        waliKelas: wali,
+        status: status,
+      });
+      await this.loadData();
+      this.render();
+    } catch (e) {
+      alert('Gagal update: ' + e.message);
+    }
+  },
+
+  async saveNilai(event) {
+    event.preventDefault();
+    const form = event.target;
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
+    if (!akad) return;
+
+    // Build new records
+    const newRecords = [];
+    for (let i = 0; i < MATA_PELAJARAN.length; i++) {
+      const nilaiSem1 = form.elements['nilai_sem1_' + i].value;
+      const nilaiSem2 = form.elements['nilai_sem2_' + i].value;
+      const deskSem1 = form.elements['desc_sem1_' + i].value;
+      const deskSem2 = form.elements['desc_sem2_' + i].value;
+
+      newRecords.push({
+        akademikId: akad.id,
+        mapel: MATA_PELAJARAN[i],
+        nilaiSem1: nilaiSem1 ? parseInt(nilaiSem1) : null,
+        nilaiSem2: nilaiSem2 ? parseInt(nilaiSem2) : null,
+        deskSem1: deskSem1,
+        deskSem2: deskSem2,
+      });
+    }
+
+    // Atomic replace in a single transaction
+    await DB.replaceNilaiByAkademik(akad.id, newRecords);
+
+    await this.loadData();
+    this.render();
+    alert('Nilai berhasil disimpan!');
+  },
+
+  async saveNonAkademik(event) {
+    event.preventDefault();
+    const form = event.target;
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
+    if (!akad) return;
+
+    const data = {
+      akademikId: akad.id,
+      ekskulKegiatan1: form.elements['ekskul_kegiatan_1'].value,
+      ekskulKet1: form.elements['ekskul_ket_1'].value,
+      ekskulKegiatan2: form.elements['ekskul_kegiatan_2'].value,
+      ekskulKet2: form.elements['ekskul_ket_2'].value,
+      sakit1: parseInt(form.elements['sakit_1'].value) || 0,
+      izin1: parseInt(form.elements['izin_1'].value) || 0,
+      alpha1: parseInt(form.elements['alpha_1'].value) || 0,
+      sakit2: parseInt(form.elements['sakit_2'].value) || 0,
+      izin2: parseInt(form.elements['izin_2'].value) || 0,
+      alpha2: parseInt(form.elements['alpha_2'].value) || 0,
+    };
+
+    // Atomic replace in a single transaction
+    await DB.replaceNonAkademikByAkademik(akad.id, [data]);
+
+    await this.loadData();
+    this.render();
+    alert('Data ekskul & absensi berhasil disimpan!');
+  },
+
+  async saveP5(event) {
+    event.preventDefault();
+    const form = event.target;
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
+    if (!akad) return;
+
+    const data = {
+      akademikId: akad.id,
+      catatanSem1: form.elements['p5_sem1'].value,
+      catatanSem2: form.elements['p5_sem2'].value,
+    };
+
+    // Atomic replace in a single transaction
+    await DB.replaceP5ByAkademik(akad.id, [data]);
+
+    await this.loadData();
+    this.render();
+    alert('Data P5 berhasil disimpan!');
+  },
+
+  async printBukuInduk() {
+    await this.loadData();
+    const akad = this.studentData.akademik.find(a => a.id === this.currentAkademikId);
+    if (!akad) {
+      alert('Pilih tahun pelajaran terlebih dahulu!');
+      return;
+    }
+    PDFGenerator.generate(this.studentData, akad);
+  }
+};
+  </script>
+
+  <!-- import-data.js -->
+  <script>
+// Import Data Component
+const ImportData = {
+  parsedData: null,
+  importType: 'siswa',
+  fileName: '',
+
+  init() {
+    this.render();
+  },
+
+  render() {
+    const page = document.getElementById('page-import-data');
+    page.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Import Data</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Upload File</h3>
+        </div>
+        <div class="import-section">
+          <div class="form-group">
+            <label>Jenis Data yang Diimport</label>
+            <select id="import-type" onchange="ImportData.importType = this.value">
+              <option value="siswa">Data Siswa (Nama, NIS, NISN)</option>
+              <option value="nilai">Nilai (NIS, Mapel, Nilai Sem 1, Nilai Sem 2, Desc Sem 1, Desc Sem 2)</option>
+              <option value="akademik">Data Akademik (NIS, Tahun Pelajaran, Kelas, Wali Kelas, Status)</option>
+              <option value="nonakademik">Ekskul & Absensi</option>
+            </select>
+          </div>
+
+          <div class="upload-area" id="upload-area" 
+               ondragover="ImportData.handleDragOver(event)" 
+               ondrop="ImportData.handleDrop(event)"
+               ondragleave="ImportData.handleDragLeave(event)">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="upload-text">Drag & drop file CSV di sini</p>
+            <p class="upload-hint">atau</p>
+            <label class="btn btn-outline upload-btn">
+              Pilih File
+              <input type="file" accept=".csv,.xlsx,.xls" onchange="ImportData.handleFileSelect(event)" style="display:none;">
+            </label>
+            <p class="upload-format">Format yang didukung: CSV, XLSX</p>
+            ${this.fileName ? `<p class="upload-filename">File: ${this.fileName}</p>` : ''}
+          </div>
+        </div>
+      </div>
+
+      ${this.parsedData ? this.renderPreview() : ''}
+      
+      <div id="import-results"></div>
+    `;
+  },
+
+  renderPreview() {
+    const data = this.parsedData;
+    if (!data || data.length === 0) return '<div class="card"><p>Tidak ada data yang bisa dibaca.</p></div>';
+
+    const headers = Object.keys(data[0]);
+    const preview = data.slice(0, 10);
+
+    return `
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header">
+          <h3>Preview Data (${data.length} baris)</h3>
+          <button class="btn btn-primary" onclick="ImportData.doImport()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 16 12 12 8 16"></polyline>
+              <line x1="12" y1="12" x2="12" y2="21"></line>
+              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+            </svg>
+            Import ${data.length} Data
+          </button>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                ${headers.map(h => `<th>${h}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${preview.map(row => `
+                <tr>
+                  ${headers.map(h => `<td>${row[h] || ''}</td>`).join('')}
+                </tr>
+              `).join('')}
+              ${data.length > 10 ? `<tr><td colspan="${headers.length}" class="muted" style="text-align:center;">... dan ${data.length - 10} baris lainnya</td></tr>` : ''}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  handleDragOver(event) {
+    event.preventDefault();
+    document.getElementById('upload-area').classList.add('drag-over');
+  },
+
+  handleDragLeave(event) {
+    event.preventDefault();
+    document.getElementById('upload-area').classList.remove('drag-over');
+  },
+
+  handleDrop(event) {
+    event.preventDefault();
+    document.getElementById('upload-area').classList.remove('drag-over');
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      this.processFile(files[0]);
+    }
+  },
+
+  handleFileSelect(event) {
+    const files = event.target.files;
+    if (files.length > 0) {
+      this.processFile(files[0]);
+    }
+  },
+
+  processFile(file) {
+    this.fileName = file.name;
+    const ext = file.name.split('.').pop().toLowerCase();
+
+    if (ext === 'xlsx' || ext === 'xls') {
+      XLSXParser.parse(file).then(data => {
+        if (data) {
+          this.parsedData = data;
+          this.render();
+        }
+      }).catch(() => {
+        alert('Untuk file Excel (.xlsx), disarankan simpan sebagai CSV terlebih dahulu lalu upload ulang.');
+        this.render();
+      });
+    } else if (ext === 'csv') {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result;
+        this.parsedData = CSVParser.parse(text);
+        this.render();
+      };
+      reader.readAsText(file);
+    } else {
+      alert('Format file tidak didukung. Gunakan CSV atau XLSX.');
+    }
+  },
+
+  async doImport() {
+    if (!this.parsedData || this.parsedData.length === 0) {
+      alert('Tidak ada data untuk diimport.');
+      return;
+    }
+
+    const resultsDiv = document.getElementById('import-results');
+    resultsDiv.innerHTML = '<div class="card"><p>Mengimport data...</p><div class="progress-bar"><div class="progress-fill" id="import-progress" style="width:0%"></div></div></div>';
+
+    try {
+      let results;
+      switch (this.importType) {
+        case 'siswa':
+          results = await this.importSiswa();
+          break;
+        case 'nilai':
+          results = await this.importNilai();
+          break;
+        case 'akademik':
+          results = await this.importAkademik();
+          break;
+        case 'nonakademik':
+          results = await this.importNonAkademik();
+          break;
+        default:
+          results = { success: 0, failed: 0, errors: [] };
+      }
+
+      resultsDiv.innerHTML = `
+        <div class="card" style="margin-top:16px;">
+          <div class="card-header"><h3>Hasil Import</h3></div>
+          <div class="import-results-summary">
+            <div class="result-item success">
+              <strong>${results.success}</strong> berhasil
+            </div>
+            <div class="result-item failed">
+              <strong>${results.failed}</strong> gagal
+            </div>
+          </div>
+          ${results.errors.length > 0 ? `
+            <div class="error-list">
+              <h4>Detail Error:</h4>
+              <ul>
+                ${results.errors.slice(0, 10).map(e => `<li>${JSON.stringify(e)}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    } catch (e) {
+      resultsDiv.innerHTML = `<div class="card"><p class="error">Import gagal: ${e.message}</p></div>`;
+    }
+  },
+
+  async importSiswa() {
+    const results = { success: 0, failed: 0, errors: [] };
+    for (const row of this.parsedData) {
+      const nama = row['Nama'] || row['nama'] || row['NAMA'] || row['Nama Peserta Didik'] || '';
+      const nis = row['NIS'] || row['nis'] || '';
+      const nisn = row['NISN'] || row['nisn'] || '';
+
+      if (!nama || !nis) {
+        results.failed++;
+        results.errors.push({ row, error: 'Nama atau NIS kosong' });
+        continue;
+      }
+
+      try {
+        await DB.addSiswa({ nama: nama.trim(), nis: nis.toString().trim(), nisn: nisn.toString().trim() });
+        results.success++;
+      } catch (e) {
+        try {
+          await DB.updateSiswa({ nama: nama.trim(), nis: nis.toString().trim(), nisn: nisn.toString().trim() });
+          results.success++;
+        } catch (e2) {
+          results.failed++;
+          results.errors.push({ row, error: e2.message });
+        }
+      }
+    }
+    return results;
+  },
+
+  async importAkademik() {
+    const results = { success: 0, failed: 0, errors: [] };
+    for (const row of this.parsedData) {
+      const nis = (row['NIS'] || row['nis'] || '').toString().trim();
+      const tp = row['Tahun Pelajaran'] || row['tahunPelajaran'] || row['TP'] || '';
+      const kelas = row['Kelas'] || row['kelas'] || '';
+      const wali = row['Wali Kelas'] || row['waliKelas'] || '';
+      const status = row['Status'] || row['status'] || '';
+
+      if (!nis || !tp) {
+        results.failed++;
+        results.errors.push({ row, error: 'NIS atau Tahun Pelajaran kosong' });
+        continue;
+      }
+
+      try {
+        await DB.addAkademik({ nis, tahunPelajaran: tp, kelas, waliKelas: wali, status });
+        results.success++;
+      } catch (e) {
+        results.failed++;
+        results.errors.push({ row, error: e.message });
+      }
+    }
+    return results;
+  },
+
+  async importNilai() {
+    const results = { success: 0, failed: 0, errors: [] };
+    for (const row of this.parsedData) {
+      const nis = (row['NIS'] || row['nis'] || '').toString().trim();
+      const mapel = row['Mata Pelajaran'] || row['mapel'] || row['Mapel'] || '';
+      const nilaiSem1 = parseInt(row['Nilai Sem 1'] || row['nilaiSem1'] || row['Nilai Akhir Semester 1'] || '0');
+      const nilaiSem2 = parseInt(row['Nilai Sem 2'] || row['nilaiSem2'] || row['Nilai Akhir Semester 2'] || '0');
+      const deskSem1 = row['Deskripsi Sem 1'] || row['deskSem1'] || row['Catatan Semester 1'] || '';
+      const deskSem2 = row['Deskripsi Sem 2'] || row['deskSem2'] || row['Catatan Semester 2'] || '';
+
+      if (!nis || !mapel) {
+        results.failed++;
+        results.errors.push({ row, error: 'NIS atau Mapel kosong' });
+        continue;
+      }
+
+      // Find the latest akademik for this student
+      const akademikRecords = await DB.getAkademikBySiswa(nis);
+      if (akademikRecords.length === 0) {
+        results.failed++;
+        results.errors.push({ row, error: 'Data akademik tidak ditemukan untuk NIS: ' + nis });
+        continue;
+      }
+
+      const latestAkad = akademikRecords[akademikRecords.length - 1];
+      try {
+        await DB.addNilai({
+          akademikId: latestAkad.id,
+          mapel,
+          nilaiSem1: nilaiSem1 || null,
+          nilaiSem2: nilaiSem2 || null,
+          deskSem1,
+          deskSem2,
+        });
+        results.success++;
+      } catch (e) {
+        results.failed++;
+        results.errors.push({ row, error: e.message });
+      }
+    }
+    return results;
+  },
+
+  async importNonAkademik() {
+    const results = { success: 0, failed: 0, errors: [] };
+    for (const row of this.parsedData) {
+      const nis = (row['NIS'] || row['nis'] || '').toString().trim();
+
+      if (!nis) {
+        results.failed++;
+        results.errors.push({ row, error: 'NIS kosong' });
+        continue;
+      }
+
+      const akademikRecords = await DB.getAkademikBySiswa(nis);
+      if (akademikRecords.length === 0) {
+        results.failed++;
+        results.errors.push({ row, error: 'Data akademik tidak ditemukan untuk NIS: ' + nis });
+        continue;
+      }
+
+      const latestAkad = akademikRecords[akademikRecords.length - 1];
+      try {
+        await DB.addNonAkademik({
+          akademikId: latestAkad.id,
+          ekskulKegiatan1: row['Ekskul Sem 1'] || row['ekskulKegiatan1'] || '',
+          ekskulKet1: row['Ket Sem 1'] || row['ekskulKet1'] || '',
+          ekskulKegiatan2: row['Ekskul Sem 2'] || row['ekskulKegiatan2'] || '',
+          ekskulKet2: row['Ket Sem 2'] || row['ekskulKet2'] || '',
+          sakit1: parseInt(row['Sakit Sem 1'] || '0') || 0,
+          izin1: parseInt(row['Izin Sem 1'] || '0') || 0,
+          alpha1: parseInt(row['Alpha Sem 1'] || '0') || 0,
+          sakit2: parseInt(row['Sakit Sem 2'] || '0') || 0,
+          izin2: parseInt(row['Izin Sem 2'] || '0') || 0,
+          alpha2: parseInt(row['Alpha Sem 2'] || '0') || 0,
+        });
+        results.success++;
+      } catch (e) {
+        results.failed++;
+        results.errors.push({ row, error: e.message });
+      }
+    }
+    return results;
+  }
+};
+  </script>
+
+  <!-- app.js -->
+  <script>
+// Main Application Entry Point - Buku Induk Siswa Digital
+(async function() {
+  // Initialize database
+  try {
+    await DB.init();
+    console.log('Database initialized successfully');
+  } catch (e) {
+    console.error('Failed to initialize database:', e);
+    document.body.innerHTML = '<div style="padding:40px;text-align:center;"><h2>Error</h2><p>Gagal menginisialisasi database. Pastikan browser mendukung IndexedDB.</p></div>';
+    return;
+  }
+
+  // Render sidebar
+  Sidebar.render();
+
+  // Listen for page changes
+  window.addEventListener('page-change', async (event) => {
+    const { page, params } = event.detail;
+
+    switch (page) {
+      case 'dashboard':
+        await Dashboard.init();
+        break;
+      case 'student-detail':
+        if (params && params.nis) {
+          await StudentDetail.init(params.nis);
+        }
+        break;
+      case 'import-data':
+        ImportData.init();
+        break;
+    }
+  });
+
+  // Initialize with dashboard
+  Router.navigateTo('dashboard');
+})();
+  </script>
+</body>
+</html>
