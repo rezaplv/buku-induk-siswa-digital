@@ -132,6 +132,30 @@ const InputData = {
               <label for="inputdata-input-nisn">NISN</label>
               <input type="text" id="inputdata-input-nisn" placeholder="Masukkan NISN">
             </div>
+            <div id="inputdata-akademik-section">
+              <hr style="margin:16px 0;border:none;border-top:1px solid var(--border-color);">
+              <p style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;">Data Akademik (opsional)</p>
+              <div class="form-group">
+                <label>Tahun Pelajaran</label>
+                <input type="text" id="inputdata-input-tp" placeholder="Contoh: 2025/2026">
+              </div>
+              <div class="form-group">
+                <label>Kelas</label>
+                <input type="text" id="inputdata-input-kelas" placeholder="Contoh: VII D">
+              </div>
+              <div class="form-group">
+                <label>Wali Kelas</label>
+                <input type="text" id="inputdata-input-wali" placeholder="Nama wali kelas">
+              </div>
+              <div class="form-group">
+                <label>Status Akhir Tahun</label>
+                <select id="inputdata-input-status">
+                  <option value="">-- Belum ditentukan --</option>
+                  <option value="Naik">Naik</option>
+                  <option value="Tidak Naik">Tidak Naik</option>
+                </select>
+              </div>
+            </div>
             <input type="hidden" id="inputdata-input-edit-mode" value="add">
             <div class="form-actions">
               <button type="button" class="btn btn-outline" onclick="InputData.closeModal()">Batal</button>
@@ -150,6 +174,13 @@ const InputData = {
             <button class="modal-close" onclick="InputData.closeBatchModal()">&times;</button>
           </div>
           <div id="inputdata-batch-content">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;padding:16px;background:var(--bg-primary);border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+              <div class="form-group" style="margin-bottom:0;"><label>Tahun Pelajaran</label><input type="text" id="inputdata-batch-tp" placeholder="2025/2026"></div>
+              <div class="form-group" style="margin-bottom:0;"><label>Kelas</label><input type="text" id="inputdata-batch-kelas" placeholder="VII D"></div>
+              <div class="form-group" style="margin-bottom:0;"><label>Wali Kelas</label><input type="text" id="inputdata-batch-wali" placeholder="Nama wali kelas"></div>
+              <div class="form-group" style="margin-bottom:0;"><label>Status Akhir Tahun</label><select id="inputdata-batch-status"><option value="">-- Belum ditentukan --</option><option value="Naik">Naik</option><option value="Tidak Naik">Tidak Naik</option></select></div>
+            </div>
+            <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">* Data akademik di atas akan diterapkan ke SEMUA siswa yang diinput di bawah (opsional)</p>
             <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">Paste daftar nama, NIS, dan NISN masing-masing di kolom terpisah (satu per baris). Data akan dicocokkan berdasarkan nomor baris.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
               <div class="form-group" style="margin-bottom:4px;">
@@ -217,6 +248,11 @@ const InputData = {
     document.getElementById('inputdata-input-nisn').value = '';
     document.getElementById('inputdata-input-nis').disabled = false;
     document.getElementById('inputdata-input-edit-mode').value = 'add';
+    document.getElementById('inputdata-input-tp').value = '';
+    document.getElementById('inputdata-input-kelas').value = '';
+    document.getElementById('inputdata-input-wali').value = '';
+    document.getElementById('inputdata-input-status').value = '';
+    document.getElementById('inputdata-akademik-section').style.display = 'block';
   },
 
   async editStudent(nis) {
@@ -229,6 +265,7 @@ const InputData = {
     document.getElementById('inputdata-input-nis').disabled = true;
     document.getElementById('inputdata-input-nisn').value = siswa.nisn || '';
     document.getElementById('inputdata-input-edit-mode').value = 'edit';
+    document.getElementById('inputdata-akademik-section').style.display = 'none';
   },
 
   closeModal() {
@@ -254,6 +291,13 @@ const InputData = {
         await DB.updateSiswa(data);
       } else {
         await DB.addSiswa(data);
+        const tp = document.getElementById('inputdata-input-tp').value.trim();
+        const kelas = document.getElementById('inputdata-input-kelas').value.trim();
+        const wali = document.getElementById('inputdata-input-wali').value.trim();
+        const status = document.getElementById('inputdata-input-status').value;
+        if (tp && kelas) {
+          await DB.addAkademik({ nis, tahunPelajaran: tp, kelas, waliKelas: wali, status });
+        }
       }
       this.closeModal();
       await this.loadData();
@@ -293,6 +337,10 @@ const InputData = {
     document.getElementById('inputdata-batch-nisn').value = '';
     document.getElementById('inputdata-batch-preview').style.display = 'none';
     document.getElementById('inputdata-batch-mismatch-warning').style.display = 'none';
+    document.getElementById('inputdata-batch-tp').value = '';
+    document.getElementById('inputdata-batch-kelas').value = '';
+    document.getElementById('inputdata-batch-wali').value = '';
+    document.getElementById('inputdata-batch-status').value = '';
     this.updateBatchCounters();
   },
 
@@ -380,6 +428,11 @@ const InputData = {
       return;
     }
 
+    const tp = document.getElementById('inputdata-batch-tp').value.trim();
+    const kelas = document.getElementById('inputdata-batch-kelas').value.trim();
+    const wali = document.getElementById('inputdata-batch-wali').value.trim();
+    const status = document.getElementById('inputdata-batch-status').value;
+
     let success = 0;
     let failed = 0;
     const failDetails = [];
@@ -387,6 +440,9 @@ const InputData = {
     for (const s of students) {
       try {
         await DB.addSiswa(s);
+        if (tp && kelas) {
+          await DB.addAkademik({ nis: s.nis, tahunPelajaran: tp, kelas, waliKelas: wali, status });
+        }
         success++;
       } catch (e) {
         failed++;
