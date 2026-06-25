@@ -41,10 +41,6 @@ const DataAkademik = {
     page.innerHTML = `
       <div class="page-header">
         <h2 class="page-title">Data Akademik</h2>
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-primary" onclick="DataAkademik.showSingleForm()">+ Tambah</button>
-          <button class="btn btn-outline" onclick="DataAkademik.showBatchForm()">Assign Batch</button>
-        </div>
       </div>
       <div class="card" style="margin-bottom:16px;">
         <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
