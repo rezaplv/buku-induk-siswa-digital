@@ -11,6 +11,8 @@ const InputNilai = {
   deskValues: [],
   mode: 'nilai', // 'nilai' or 'deskripsi'
   showingRekap: false,
+  showingRekapDesk: false,
+  rekapDeskStudentIndex: 0,
 
   async init() { await this.loadData(); this.render(); },
   async loadData() {
@@ -39,15 +41,17 @@ const InputNilai = {
     }).sort((a, b) => a.nama.localeCompare(b.nama));
   },
 
-  onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.selectedMapel = ''; this.studentList = []; this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.render(); },
-  onKelasChange(val) { this.selectedKelas = val; this.selectedMapel = ''; this.studentList = this.getStudentsInClass(); this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.render(); },
-  onSemesterChange(val) { this.selectedSemester = val; this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.render(); if (this.selectedMapel) this.loadExistingNilai(); },
-  onMapelChange(val) { this.selectedMapel = val; this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.render(); if (val) this.loadExistingNilai(); },
+  onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.selectedMapel = ''; this.studentList = []; this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.showingRekapDesk = false; this.render(); },
+  onKelasChange(val) { this.selectedKelas = val; this.selectedMapel = ''; this.studentList = this.getStudentsInClass(); this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.showingRekapDesk = false; this.render(); },
+  onSemesterChange(val) { this.selectedSemester = val; this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.showingRekapDesk = false; this.render(); if (this.selectedMapel) this.loadExistingNilai(); },
+  onMapelChange(val) { this.selectedMapel = val; this.nilaiValues = []; this.deskValues = []; this.showingRekap = false; this.showingRekapDesk = false; this.render(); if (val) this.loadExistingNilai(); },
 
   setMode(mode) {
     this.mode = mode;
     this.nilaiValues = [];
     this.deskValues = [];
+    this.showingRekap = false;
+    this.showingRekapDesk = false;
     this.render();
     if (this.selectedMapel) this.loadExistingNilai();
   },
@@ -166,10 +170,11 @@ const InputNilai = {
           <button class="btn btn-sm ${this.mode === 'deskripsi' ? 'btn-primary' : 'btn-outline'}" onclick="InputNilai.setMode('deskripsi')">Deskripsi Capaian</button>
         </div>
       </div>
-      ${canShowRekap ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekap()" id="btn-rekap-kelas"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Kelas</button></div>' : ''}
-      ${this.showingRekap ? '<div id="rekap-kelas-container"></div>' : (allSelected && this.studentList.length > 0 ? (this.mode === 'deskripsi' ? this.renderDeskripsiArea() : this.renderInputArea()) : this.renderPlaceholder())}`;
+      ${canShowRekap && this.mode === 'nilai' && !this.showingRekap ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekap()" id="btn-rekap-kelas"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Kelas</button></div>' : ''}
+      ${canShowRekap && this.mode === 'deskripsi' && !this.showingRekapDesk ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekapDesk()" id="btn-rekap-desk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Deskripsi</button></div>' : ''}
+      ${this.showingRekap ? '<div id="rekap-kelas-container"></div>' : (this.showingRekapDesk ? '<div id="rekap-desk-container"></div>' : (allSelected && this.studentList.length > 0 ? (this.mode === 'deskripsi' ? this.renderDeskripsiArea() : this.renderInputArea()) : this.renderPlaceholder()))}`;
 
-    if (!this.showingRekap && allSelected && this.studentList.length > 0) {
+    if (!this.showingRekap && !this.showingRekapDesk && allSelected && this.studentList.length > 0) {
       if (this.mode === 'deskripsi') {
         this.updateDeskInputs();
         this.updateDeskTextareaFromValues();
@@ -181,6 +186,9 @@ const InputNilai = {
 
     if (this.showingRekap) {
       this.renderRekapTable();
+    }
+    if (this.showingRekapDesk) {
+      this.loadRekapDeskData();
     }
   },
 
@@ -352,6 +360,7 @@ const InputNilai = {
 
   async showRekap() {
     this.showingRekap = true;
+    this.showingRekapDesk = false;
     this.render();
   },
 
@@ -398,5 +407,53 @@ const InputNilai = {
     });
 
     container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Nilai Kelas ' + escapeHTMLDash(this.selectedKelas) + ' - ' + semLabel + '</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekap()">Tutup Rekap</button></div><p class="muted" style="margin-bottom:12px;">Rekap semua mata pelajaran untuk ' + this.studentList.length + ' siswa. Scroll horizontal jika kolom tidak muat.</p><div style="overflow-x:auto;"><table class="data-table" style="min-width:900px;font-size:13px;"><thead><tr>' + headerCols + '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+  },
+
+  showRekapDesk() {
+    this.showingRekapDesk = true;
+    this.showingRekap = false;
+    this.rekapDeskStudentIndex = 0;
+    this.render();
+  },
+
+  hideRekapDesk() {
+    this.showingRekapDesk = false;
+    this.render();
+  },
+
+  onRekapDeskStudentChange(index) {
+    this.rekapDeskStudentIndex = parseInt(index);
+    this.loadRekapDeskData();
+  },
+
+  async loadRekapDeskData() {
+    const container = document.getElementById('rekap-desk-container');
+    if (!container) return;
+    const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
+    const field = this.selectedSemester === '1' ? 'deskSem1' : 'deskSem2';
+    const student = this.studentList[this.rekapDeskStudentIndex];
+    if (!student) return;
+
+    // Build dropdown
+    let dropdownHTML = '<select onchange="InputNilai.onRekapDeskStudentChange(this.value)" style="padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:14px;min-width:300px;">';
+    this.studentList.forEach((s, i) => {
+      dropdownHTML += '<option value="' + i + '"' + (i === this.rekapDeskStudentIndex ? ' selected' : '') + '>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>';
+    });
+    dropdownHTML += '</select>';
+
+    // Load nilai for selected student
+    const nilaiArr = await DB.getNilaiByAkademik(student.id);
+    const nilaiMap = {};
+    nilaiArr.forEach(n => { nilaiMap[n.mapel] = n; });
+
+    // Build table rows
+    let rows = '';
+    MATA_PELAJARAN.forEach((mp, idx) => {
+      const n = nilaiMap[mp];
+      const desc = n && n[field] ? escapeHTMLDash(n[field]) : '-';
+      rows += '<tr><td style="text-align:center;">' + (idx + 1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td>' + desc + '</td></tr>';
+    });
+
+    container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Deskripsi Capaian - Kelas ' + escapeHTMLDash(this.selectedKelas) + ' (' + semLabel + ')</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekapDesk()">Tutup Rekap</button></div><div style="margin-bottom:16px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">Pilih Siswa:</label>' + dropdownHTML + '</div><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Catatan ' + semLabel + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   }
 };
