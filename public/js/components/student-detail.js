@@ -269,6 +269,7 @@ const StudentDetail = {
 
     return `
       <h3 class="section-title">Ekstrakurikuler</h3>
+      <p class="muted" style="margin-bottom:8px;">Satu kegiatan per baris. Baris ke-1 kegiatan dipasangkan dengan baris ke-1 keterangan.</p>
       <form onsubmit="StudentDetail.saveNonAkademik(event)">
         <div class="table-container">
           <table class="data-table">
@@ -282,13 +283,13 @@ const StudentDetail = {
             <tbody>
               <tr>
                 <td>1</td>
-                <td><input type="text" class="input-md" name="ekskul_kegiatan_1" value="${escapeHTML(nonAkad.ekskulKegiatan1 || '')}" placeholder="Contoh: Pramuka, Volly"></td>
-                <td><input type="text" class="input-md" name="ekskul_ket_1" value="${escapeHTML(nonAkad.ekskulKet1 || '')}" placeholder="Keterangan"></td>
+                <td><textarea class="input-md" name="ekskul_kegiatan_1" rows="3" style="resize:vertical;min-height:50px;" placeholder="Satu per baris">${escapeHTML(nonAkad.ekskulKegiatan1 || '')}</textarea></td>
+                <td><textarea class="input-md" name="ekskul_ket_1" rows="3" style="resize:vertical;min-height:50px;" placeholder="Satu per baris">${escapeHTML(nonAkad.ekskulKet1 || '')}</textarea></td>
               </tr>
               <tr>
                 <td>2</td>
-                <td><input type="text" class="input-md" name="ekskul_kegiatan_2" value="${escapeHTML(nonAkad.ekskulKegiatan2 || '')}" placeholder="Contoh: Pramuka, Volly"></td>
-                <td><input type="text" class="input-md" name="ekskul_ket_2" value="${escapeHTML(nonAkad.ekskulKet2 || '')}" placeholder="Keterangan"></td>
+                <td><textarea class="input-md" name="ekskul_kegiatan_2" rows="3" style="resize:vertical;min-height:50px;" placeholder="Satu per baris">${escapeHTML(nonAkad.ekskulKegiatan2 || '')}</textarea></td>
+                <td><textarea class="input-md" name="ekskul_ket_2" rows="3" style="resize:vertical;min-height:50px;" placeholder="Satu per baris">${escapeHTML(nonAkad.ekskulKet2 || '')}</textarea></td>
               </tr>
             </tbody>
           </table>

@@ -98,8 +98,9 @@ const Ekstrakurikuler = {
   updateTextareasFromValues() {
     const taKeg = document.getElementById('paste-kegiatan-textarea');
     const taKet = document.getElementById('paste-keterangan-textarea');
-    if (taKeg) taKeg.value = this.kegiatanValues.join('\n');
-    if (taKet) taKet.value = this.keteranganValues.join('\n');
+    // Convert internal newline format to semicolon for paste display (one line per student)
+    if (taKeg) taKeg.value = this.kegiatanValues.map(v => (v || '').replace(/\n/g, ';')).join('\n');
+    if (taKet) taKet.value = this.keteranganValues.map(v => (v || '').replace(/\n/g, ';')).join('\n');
   },
 
   applyPaste() {
@@ -111,8 +112,9 @@ const Ekstrakurikuler = {
     const ketLines = taKet.value.split('\n');
 
     for (let i = 0; i < this.studentList.length; i++) {
-      this.kegiatanValues[i] = (kegLines[i] || '').trim();
-      this.keteranganValues[i] = (ketLines[i] || '').trim();
+      // Convert semicolons to newlines for internal storage
+      this.kegiatanValues[i] = (kegLines[i] || '').trim().replace(/;/g, '\n');
+      this.keteranganValues[i] = (ketLines[i] || '').trim().replace(/;/g, '\n');
     }
     this.updateTableInputs();
 
@@ -201,6 +203,16 @@ const Ekstrakurikuler = {
     if (this.studentList.length > 0) this.loadExisting();
   },
 
+  formatEkskulBullet(kegiatan, keterangan) {
+    if (!kegiatan || kegiatan === '-') return '-';
+    const kegArr = kegiatan.split('\n').map(k => k.trim()).filter(k => k);
+    const ketArr = (keterangan || '').split('\n').map(k => k.trim());
+    return kegArr.map((keg, idx) => {
+      const ket = ketArr[idx] || '-';
+      return '\u2022 ' + escapeHTMLDash(keg) + ': ' + escapeHTMLDash(ket);
+    }).join('<br>');
+  },
+
   async loadRekapData() {
     const rekapBody = document.getElementById('ekskul-rekap-tbody');
     if (!rekapBody) return;
@@ -210,17 +222,19 @@ const Ekstrakurikuler = {
       const student = this.studentList[i];
       const nonAkademikArr = await DB.getNonAkademikByAkademik(student.id);
       const na = nonAkademikArr.length > 0 ? nonAkademikArr[0] : null;
-      const keg1 = na && na.ekskulKegiatan1 ? na.ekskulKegiatan1 : '-';
-      const ket1 = na && na.ekskulKet1 ? na.ekskulKet1 : '-';
-      const keg2 = na && na.ekskulKegiatan2 ? na.ekskulKegiatan2 : '-';
-      const ket2 = na && na.ekskulKet2 ? na.ekskulKet2 : '-';
-      rows += '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(student.nama) + '</td><td>' + escapeHTMLDash(keg1) + '</td><td>' + escapeHTMLDash(ket1) + '</td><td>' + escapeHTMLDash(keg2) + '</td><td>' + escapeHTMLDash(ket2) + '</td></tr>';
+      const keg1 = na && na.ekskulKegiatan1 ? na.ekskulKegiatan1 : '';
+      const ket1 = na && na.ekskulKet1 ? na.ekskulKet1 : '';
+      const keg2 = na && na.ekskulKegiatan2 ? na.ekskulKegiatan2 : '';
+      const ket2 = na && na.ekskulKet2 ? na.ekskulKet2 : '';
+      const sem1Display = this.formatEkskulBullet(keg1, ket1);
+      const sem2Display = this.formatEkskulBullet(keg2, ket2);
+      rows += '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(student.nama) + '</td><td>' + sem1Display + '</td><td>' + sem2Display + '</td></tr>';
     }
     rekapBody.innerHTML = rows;
   },
 
   renderRekapTable() {
-    return '<div class="card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Ekstrakurikuler - ' + escapeHTMLDash(this.selectedKelas) + '</h3><button type="button" class="btn btn-outline" onclick="Ekstrakurikuler.hideRekap()">Tutup Rekap</button></div><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Data kedua semester ditampilkan.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:150px;">Ekskul Sem 1</th><th style="min-width:150px;">Keterangan Sem 1</th><th style="min-width:150px;">Ekskul Sem 2</th><th style="min-width:150px;">Keterangan Sem 2</th></tr></thead><tbody id="ekskul-rekap-tbody"><tr><td colspan="6" class="empty-state">Memuat data...</td></tr></tbody></table></div></div>';
+    return '<div class="card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Ekstrakurikuler - ' + escapeHTMLDash(this.selectedKelas) + '</h3><button type="button" class="btn btn-outline" onclick="Ekstrakurikuler.hideRekap()">Tutup Rekap</button></div><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Data kedua semester ditampilkan.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:250px;">Ekskul Sem 1</th><th style="min-width:250px;">Ekskul Sem 2</th></tr></thead><tbody id="ekskul-rekap-tbody"><tr><td colspan="4" class="empty-state">Memuat data...</td></tr></tbody></table></div></div>';
   },
 
   render() {
@@ -255,7 +269,7 @@ const Ekstrakurikuler = {
 
   renderInputArea() {
     const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
-    return '<div class="card" style="margin-bottom:16px;"><h3 class="section-title">Paste Batch - ' + escapeHTMLDash(semLabel) + '</h3><p class="muted" style="margin-bottom:12px;">Paste daftar kegiatan dan keterangan (satu baris per siswa, ' + this.studentList.length + ' baris urut alfabet). Jika siswa punya lebih dari 1 ekskul, pisahkan dengan koma.</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div class="form-group" style="margin-bottom:0;"><label>Paste Kegiatan</label><textarea id="paste-kegiatan-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Pramuka, Volly\nPMR\nPaskibra, Futsal\n..."></textarea></div><div class="form-group" style="margin-bottom:0;"><label>Paste Keterangan</label><textarea id="paste-keterangan-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Mampu baris-berbaris, Teknik dasar voli\nTerampil P3K\nDisiplin gerak, Teknik passing\n..."></textarea></div></div><button type="button" class="btn btn-outline" onclick="Ekstrakurikuler.applyPaste()" style="margin-top:12px;">Terapkan dari Paste</button></div>' +
-    '<div class="card"><h3 class="section-title">Data Ekstrakurikuler - ' + escapeHTMLDash(this.selectedKelas) + ' (' + escapeHTMLDash(semLabel) + ')</h3><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Bisa juga edit langsung di kolom tabel.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:200px;">Kegiatan Ekstrakurikuler</th><th style="min-width:200px;">Keterangan</th></tr></thead><tbody>' + this.studentList.map((s, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea class="input-md" id="ekskul-kegiatan-' + i + '" rows="2" style="resize:vertical;min-height:40px;" onchange="Ekstrakurikuler.onManualKegiatan(' + i + ', this.value)" placeholder="Pramuka, Volly"></textarea></td><td><textarea class="input-md" id="ekskul-ket-' + i + '" rows="2" style="resize:vertical;min-height:40px;" onchange="Ekstrakurikuler.onManualKeterangan(' + i + ', this.value)" placeholder="Keterangan per kegiatan"></textarea></td></tr>').join('') + '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="Ekstrakurikuler.saveAll()">Simpan Semua</button></div></div>';
+    return '<div class="card" style="margin-bottom:16px;"><h3 class="section-title">Paste Batch - ' + escapeHTMLDash(semLabel) + '</h3><p class="muted" style="margin-bottom:12px;">Paste daftar kegiatan dan keterangan (satu baris per siswa, ' + this.studentList.length + ' baris urut alfabet). Jika siswa punya lebih dari 1 ekskul, pisahkan dengan titik koma (;).</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div class="form-group" style="margin-bottom:0;"><label>Paste Kegiatan</label><textarea id="paste-kegiatan-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Pramuka;Volly\nPMR\nPaskibra;Futsal\n..."></textarea></div><div class="form-group" style="margin-bottom:0;"><label>Paste Keterangan</label><textarea id="paste-keterangan-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Mampu baris-berbaris;Teknik dasar voli\nTerampil P3K\nDisiplin gerak;Teknik passing\n..."></textarea></div></div><button type="button" class="btn btn-outline" onclick="Ekstrakurikuler.applyPaste()" style="margin-top:12px;">Terapkan dari Paste</button></div>' +
+    '<div class="card"><h3 class="section-title">Data Ekstrakurikuler - ' + escapeHTMLDash(this.selectedKelas) + ' (' + escapeHTMLDash(semLabel) + ')</h3><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Edit langsung di kolom tabel, satu kegiatan per baris.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:200px;">Kegiatan Ekstrakurikuler</th><th style="min-width:200px;">Keterangan</th></tr></thead><tbody>' + this.studentList.map((s, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea class="input-md" id="ekskul-kegiatan-' + i + '" rows="3" style="resize:vertical;min-height:50px;" onchange="Ekstrakurikuler.onManualKegiatan(' + i + ', this.value)" placeholder="Satu per baris"></textarea></td><td><textarea class="input-md" id="ekskul-ket-' + i + '" rows="3" style="resize:vertical;min-height:50px;" onchange="Ekstrakurikuler.onManualKeterangan(' + i + ', this.value)" placeholder="Satu per baris"></textarea></td></tr>').join('') + '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="Ekstrakurikuler.saveAll()">Simpan Semua</button></div></div>';
   }
 };
