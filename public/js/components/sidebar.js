@@ -51,6 +51,17 @@ const Sidebar = {
           </svg>
           <span>Ekstrakurikuler</span>
         </a>
+        <a class="nav-item" data-page="ketidakhadiran" onclick="Router.navigateTo('ketidakhadiran')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+            <line x1="10" y1="14" x2="14" y2="18"></line>
+            <line x1="14" y1="14" x2="10" y2="18"></line>
+          </svg>
+          <span>Ketidakhadiran</span>
+        </a>
         <a class="nav-item" data-page="import-data-file" onclick="Router.navigateTo('import-data-file')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>

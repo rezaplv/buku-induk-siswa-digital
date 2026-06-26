@@ -45,6 +45,9 @@
       case 'ekstrakurikuler':
         await Ekstrakurikuler.init();
         break;
+      case 'ketidakhadiran':
+        await Ketidakhadiran.init();
+        break;
       case 'import-data-file':
         ImportData.init();
         break;
