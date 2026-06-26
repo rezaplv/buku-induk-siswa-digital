@@ -48,6 +48,9 @@
       case 'ketidakhadiran':
         await Ketidakhadiran.init();
         break;
+      case 'status-wali':
+        await StatusWali.init();
+        break;
       case 'import-data-file':
         ImportData.init();
         break;

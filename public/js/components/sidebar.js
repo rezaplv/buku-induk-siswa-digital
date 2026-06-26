@@ -62,6 +62,13 @@ const Sidebar = {
           </svg>
           <span>Ketidakhadiran</span>
         </a>
+        <a class="nav-item" data-page="status-wali" onclick="Router.navigateTo('status-wali')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>Status & Wali Kelas</span>
+        </a>
         <a class="nav-item" data-page="import-data-file" onclick="Router.navigateTo('import-data-file')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
