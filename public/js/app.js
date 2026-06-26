@@ -51,6 +51,9 @@
       case 'status-wali':
         await StatusWali.init();
         break;
+      case 'kokurikuler':
+        await Kokurikuler.init();
+        break;
       case 'import-data-file':
         ImportData.init();
         break;
