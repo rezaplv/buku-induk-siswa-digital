@@ -487,24 +487,32 @@ body {
   #print-area, #print-area * { visibility: visible; }
   #print-area { display: block; position: absolute; left: 0; top: 0; width: 100%; }
   .app-layout { display: none !important; }
-  .print-document { padding: 20mm; font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; line-height: 1.4; }
-  .print-header { text-align: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #000; }
-  .print-header h1 { font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-  .print-student-info { margin-bottom: 24px; }
-  .info-table { border-collapse: collapse; width: auto; }
-  .info-table td { padding: 3px 8px 3px 0; font-size: 11pt; vertical-align: top; }
-  .label-td { font-weight: bold; width: 200px; }
-  .print-section { margin-bottom: 20px; }
-  .print-section h2 { font-size: 12pt; font-weight: bold; margin-bottom: 8px; }
-  .print-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-  .print-table th, .print-table td { border: 1px solid #000; padding: 6px 8px; text-align: left; vertical-align: top; }
-  .print-table th { background: #f0f0f0; font-weight: bold; text-align: center; font-size: 9pt; }
-  .print-table .center { text-align: center; }
-  .print-table .desc-cell { font-size: 9pt; line-height: 1.3; min-width: 150px; }
-  .signature-cell { height: 80px; vertical-align: bottom; }
-  .signature-line { display: inline-block; margin-top: 40px; }
-  .page-break { page-break-before: always; }
   @page { size: A4; margin: 15mm; }
+  .print-document { font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; line-height: 1.5; }
+  .print-header { text-align: center; margin-bottom: 20px; }
+  .print-header h1 { font-size: 13pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .print-student-info { margin-bottom: 16px; font-size: 11pt; font-weight: bold; }
+  .print-student-info span.label-underline { text-decoration: underline; }
+  .print-info-table { width: 100%; border-collapse: collapse; font-size: 10pt; margin-bottom: 16px; }
+  .print-info-table td { border: 1px solid #000; padding: 5px 8px; vertical-align: middle; }
+  .print-info-table .col-no { width: 40px; text-align: center; font-weight: bold; }
+  .print-info-table .col-label { width: 160px; font-weight: bold; }
+  .print-info-table .col-sem { text-align: center; font-weight: bold; }
+  .print-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  .print-table th, .print-table td { border: 1px solid #000; padding: 5px 8px; text-align: left; vertical-align: top; }
+  .print-table th { font-weight: bold; text-align: center; font-size: 10pt; }
+  .print-table .center { text-align: center; }
+  .print-table .desc-cell { font-size: 9pt; line-height: 1.4; word-wrap: break-word; overflow-wrap: break-word; }
+  .print-section { margin-bottom: 16px; }
+  .print-section-title { font-size: 11pt; font-weight: bold; text-decoration: underline; margin-bottom: 8px; }
+  .print-section-title-no-underline { font-size: 11pt; font-weight: bold; margin-bottom: 8px; }
+  .status-active { font-weight: bold; }
+  .status-inactive { text-decoration: line-through; }
+  .page-break { page-break-before: always; }
+  .kokurikuler-header { text-align: center; font-size: 12pt; font-weight: bold; border: 1px solid #000; padding: 8px; margin-bottom: 12px; }
+  .kokurikuler-semester { font-size: 11pt; font-weight: bold; text-decoration: underline; margin: 12px 0 8px 0; }
+  .kokurikuler-box { border: 1px solid #000; padding: 12px; margin-bottom: 12px; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
+  .signature-cell { height: 60px; vertical-align: bottom; text-align: center; }
 }
   </style>
 </head>
@@ -862,40 +870,134 @@ const XLSXParser = {
   <script>
 const PDFGenerator = {
   escapeHTML(str) { if (str == null) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); },
+  parseNewlineSeparated(str) {
+    if (!str) return [];
+    return str.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+  },
+  buildEkskulRows(kegiatan, keterangan, semester, minRows) {
+    const kegiatanList = this.parseNewlineSeparated(kegiatan);
+    const keteranganList = this.parseNewlineSeparated(keterangan);
+    const maxLen = Math.max(kegiatanList.length, keteranganList.length, minRows);
+    const esc = this.escapeHTML;
+    let rows = '';
+    for (let i = 0; i < maxLen; i++) {
+      rows += '<tr>';
+      if (i === 0) {
+        rows += '<td class="center" rowspan="' + maxLen + '">' + semester + '</td>';
+      }
+      rows += '<td>' + esc(kegiatanList[i] || '') + '</td>';
+      rows += '<td>' + esc(keteranganList[i] || '') + '</td>';
+      rows += '</tr>';
+    }
+    return rows;
+  },
   generate(studentData, akademikData) {
     const s = studentData; const akad = akademikData;
     const nilaiRecords = akad.nilai || []; const nonAkad = akad.nonAkademik || {}; const p5 = akad.p5 || {};
     const esc = this.escapeHTML; const nilaiMap = {}; nilaiRecords.forEach(n => { nilaiMap[n.mapel] = n; });
+    const statusNaik = (akad.status || '').toLowerCase() === 'naik';
+    const statusTidakNaik = (akad.status || '').toLowerCase() === 'tidak naik';
+    const semesterText1 = '1 (Satu)';
+    const semesterText2 = '2 (Dua)';
+    const ekskulRows1 = this.buildEkskulRows(nonAkad.ekskulKegiatan1, nonAkad.ekskulKet1, '1', 3);
+    const ekskulRows2 = this.buildEkskulRows(nonAkad.ekskulKegiatan2, nonAkad.ekskulKet2, '2', 3);
     const printContent = `<div class="print-document">
-      <div class="print-header"><h1>LAPORAN HASIL CAPAIAN KOMPETENSI PESERTA DIDIK</h1></div>
-      <div class="print-student-info"><table class="info-table">
-        <tr><td class="label-td">NAMA PESERTA DIDIK</td><td>: ${esc(s.nama)}</td></tr>
-        <tr><td class="label-td">NIS</td><td>: ${esc(s.nis)}</td></tr>
-        <tr><td class="label-td">NISN</td><td>: ${esc(s.nisn || '-')}</td></tr>
-        <tr><td class="label-td">TAHUN PELAJARAN</td><td>: ${esc(akad.tahunPelajaran || '-')}</td></tr>
-        <tr><td class="label-td">KELAS</td><td>: ${esc(akad.kelas || '-')}</td></tr>
-      </table></div>
-      <div class="print-section"><h2>A. NILAI AKHIR</h2><table class="print-table"><thead><tr><th>NO</th><th>MATA PELAJARAN</th><th>NILAI AKHIR Semester 1</th><th>NILAI AKHIR Semester 2</th></tr></thead><tbody>
-        ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td class="center">' + (i+1) + '</td><td>' + esc(mp) + '</td><td class="center">' + esc(n.nilaiSem1 || '-') + '</td><td class="center">' + esc(n.nilaiSem2 || '-') + '</td></tr>'; }).join('')}
-      </tbody></table></div>
-      <div class="print-section"><h2>B. EKSTRAKURIKULER</h2><table class="print-table"><thead><tr><th>SEMESTER</th><th>KEGIATAN</th><th>KETERANGAN</th></tr></thead><tbody>
-        <tr><td class="center">1</td><td>${esc(nonAkad.ekskulKegiatan1 || '-')}</td><td>${esc(nonAkad.ekskulKet1 || '-')}</td></tr>
-        <tr><td class="center">2</td><td>${esc(nonAkad.ekskulKegiatan2 || '-')}</td><td>${esc(nonAkad.ekskulKet2 || '-')}</td></tr>
-      </tbody></table></div>
-      <div class="print-section"><h2>C. KETIDAKHADIRAN</h2><table class="print-table"><thead><tr><th>SEMESTER</th><th>SAKIT</th><th>IZIN</th><th>TANPA KET</th></tr></thead><tbody>
-        <tr><td class="center">1</td><td class="center">${esc(nonAkad.sakit1 || 0)}</td><td class="center">${esc(nonAkad.izin1 || 0)}</td><td class="center">${esc(nonAkad.alpha1 || 0)}</td></tr>
-        <tr><td class="center">2</td><td class="center">${esc(nonAkad.sakit2 || 0)}</td><td class="center">${esc(nonAkad.izin2 || 0)}</td><td class="center">${esc(nonAkad.alpha2 || 0)}</td></tr>
-      </tbody></table></div>
-      <div class="print-section"><h2>D. STATUS AKHIR</h2><table class="print-table"><thead><tr><th>KELAS</th><th>STATUS</th><th>WALI KELAS</th><th>TTD</th></tr></thead><tbody>
-        <tr><td class="center">${esc(akad.kelas || '-')}</td><td class="center">${esc(akad.status || '-')}</td><td class="center">${esc(akad.waliKelas || '-')}</td><td class="center signature-cell"><br><br><br><span class="signature-line">____________________</span></td></tr>
-      </tbody></table></div>
-      <div class="print-section page-break"><h2>E. DESKRIPSI CAPAIAN KOMPETENSI</h2><table class="print-table"><thead><tr><th>NO</th><th>MATA PELAJARAN</th><th>CATATAN SEM 1</th><th>CATATAN SEM 2</th></tr></thead><tbody>
-        ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td class="center">' + (i+1) + '</td><td>' + esc(mp) + '</td><td class="desc-cell">' + esc(n.deskSem1 || '-') + '</td><td class="desc-cell">' + esc(n.deskSem2 || '-') + '</td></tr>'; }).join('')}
-      </tbody></table></div>
-      <div class="print-section"><h2>F. KOKURIKULER (P5)</h2><table class="print-table"><thead><tr><th>SEMESTER</th><th>CATATAN PROYEK P5</th></tr></thead><tbody>
-        <tr><td class="center">1</td><td class="desc-cell">${esc(p5.catatanSem1 || '-')}</td></tr>
-        <tr><td class="center">2</td><td class="desc-cell">${esc(p5.catatanSem2 || '-')}</td></tr>
-      </tbody></table></div>
+      <div class="print-header">
+        <h1>LAPORAN HASIL CAPAIAN KOMPETENSI PESERTA DIDIK</h1>
+      </div>
+      <div class="print-student-info">
+        <span class="label-underline">NAMA PESERTA DIDIK</span> : <strong>${esc(s.nama)}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="label-underline">NIS</span> : <strong>${esc(s.nis)}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="label-underline">NISN</span> : <strong>${esc(s.nisn || '-')}</strong>
+      </div>
+      <table class="print-info-table">
+        <tr>
+          <td class="col-no" rowspan="4">NO</td>
+          <td class="col-label">TAHUN PELAJARAN</td>
+          <td colspan="2">${esc(akad.tahunPelajaran || '-')}</td>
+        </tr>
+        <tr>
+          <td class="col-label">KELAS</td>
+          <td colspan="2">${esc(akad.kelas || '-')}</td>
+        </tr>
+        <tr>
+          <td class="col-label">SEMESTER</td>
+          <td class="col-sem">${semesterText1}</td>
+          <td class="col-sem">${semesterText2}</td>
+        </tr>
+        <tr>
+          <td class="col-label">MATA PELAJARAN</td>
+          <td class="col-sem">NILAI AKHIR</td>
+          <td class="col-sem">NILAI AKHIR</td>
+        </tr>
+      </table>
+      <table class="print-table">
+        <tbody>
+          ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td class="center" style="width:40px;">' + (i+1) + '</td><td>' + esc(mp) + '</td><td class="center" style="width:80px;">' + esc(n.nilaiSem1 || '-') + '</td><td class="center" style="width:80px;">' + esc(n.nilaiSem2 || '-') + '</td></tr>'; }).join('')}
+        </tbody>
+      </table>
+      <div class="print-section" style="margin-top:16px;">
+        <div class="print-section-title">Ekstrakurikuler</div>
+        <table class="print-table">
+          <thead>
+            <tr><th>Semester</th><th>Kegiatan Ekstrakurikuler</th><th>Keterangan</th></tr>
+          </thead>
+          <tbody>
+            ${ekskulRows1}
+            ${ekskulRows2}
+          </tbody>
+        </table>
+      </div>
+      <div class="print-section">
+        <div class="print-section-title">Ketidakhadiran</div>
+        <table class="print-table">
+          <thead>
+            <tr><th>Semester</th><th>Sakit (Hari)</th><th>Izin (Hari)</th><th>Tanpa Keterangan (Hari)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="center">1</td><td class="center">${esc(nonAkad.sakit1 || 0)}</td><td class="center">${esc(nonAkad.izin1 || 0)}</td><td class="center">${esc(nonAkad.alpha1 || 0)}</td></tr>
+            <tr><td class="center">2</td><td class="center">${esc(nonAkad.sakit2 || 0)}</td><td class="center">${esc(nonAkad.izin2 || 0)}</td><td class="center">${esc(nonAkad.alpha2 || 0)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="print-section">
+        <div class="print-section-title-no-underline">Status Akhir Tahun Pelajaran</div>
+        <table class="print-table">
+          <thead>
+            <tr><th>Kelas</th><th>Status Akhir Tahun Pelajaran</th><th>Nama Wali Kelas</th><th>Tanda Tangan</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="center" rowspan="3">${esc(akad.kelas || '-')}</td>
+              <td class="${statusNaik ? 'status-active' : 'status-inactive'}">Naik</td>
+              <td rowspan="3">${esc(akad.waliKelas || '-')}</td>
+              <td class="signature-cell" rowspan="3"></td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+              <td class="${statusTidakNaik ? 'status-active' : 'status-inactive'}">Tidak Naik</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="print-section page-break">
+        <div class="print-section-title">Deskripsi Capaian Kompetensi</div>
+        <table class="print-table">
+          <thead>
+            <tr><th style="width:30px;">No</th><th>Mata Pelajaran</th><th>Catatan Semester 1</th><th>Catatan Semester 2</th></tr>
+          </thead>
+          <tbody>
+            ${MATA_PELAJARAN.map((mp, i) => { const n = nilaiMap[mp] || {}; return '<tr><td class="center">' + (i+1) + '</td><td>' + esc(mp) + '</td><td class="desc-cell">' + esc(n.deskSem1 || '-') + '</td><td class="desc-cell">' + esc(n.deskSem2 || '-') + '</td></tr>'; }).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="print-section page-break">
+        <div class="kokurikuler-header">KOKURIKULER</div>
+        <div class="kokurikuler-semester">SEMESTER 1 :</div>
+        <div class="kokurikuler-box">${esc(p5.catatanSem1 || '-')}</div>
+        <div class="kokurikuler-semester">SEMESTER 2 :</div>
+        <div class="kokurikuler-box">${esc(p5.catatanSem2 || '-')}</div>
+      </div>
     </div>`;
     document.getElementById('print-area').innerHTML = printContent;
     window.print();
