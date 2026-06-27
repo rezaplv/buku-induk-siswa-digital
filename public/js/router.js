@@ -2,7 +2,7 @@
 const Router = {
   currentPage: 'dashboard',
   currentParams: {},
-  pages: ['dashboard', 'input-data', 'student-detail', 'data-akademik', 'input-nilai', 'ekstrakurikuler', 'ketidakhadiran', 'status-wali', 'kokurikuler', 'import-data-file'],
+  pages: ['dashboard', 'input-data', 'student-detail', 'data-akademik', 'input-nilai', 'ekstrakurikuler', 'ketidakhadiran', 'status-wali', 'kokurikuler', 'import-data-file', 'reset-data'],
 
   navigateTo(page, params = {}) {
     this.currentPage = page;

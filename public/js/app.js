@@ -57,6 +57,9 @@
       case 'import-data-file':
         ImportData.init();
         break;
+      case 'reset-data':
+        ResetData.init();
+        break;
     }
   });
 
