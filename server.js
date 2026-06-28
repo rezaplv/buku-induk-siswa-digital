@@ -63,5 +63,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Buku Induk Siswa Digital server running at http://localhost:${PORT}`);
+  console.log(`BIS-Gen server running at http://localhost:${PORT}`);
 });

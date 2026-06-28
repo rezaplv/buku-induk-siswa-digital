@@ -10,7 +10,7 @@ const Sidebar = {
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           </svg>
         </div>
-        <h1 class="sidebar-title">Buku Induk Siswa Digital</h1>
+        <h1 class="sidebar-title">BIS-Gen<br><span style="font-size:11px;opacity:0.7;font-weight:400;">Buku Induk Siswa Generator</span></h1>
       </div>
       <nav class="sidebar-nav">
         <a class="nav-item active" data-page="dashboard" onclick="Router.navigateTo('dashboard')">
