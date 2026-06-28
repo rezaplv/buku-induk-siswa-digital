@@ -71,7 +71,7 @@ const ResetData = {
       <div class="card" style="margin-bottom:12px;">
         <div style="padding:20px;">
           <h4 style="margin-bottom:6px;">Reset Mata Pelajaran</h4>
-          <p style="color:var(--text-secondary);margin-bottom:12px;">Reset daftar mata pelajaran ke default 11 mapel Kurikulum Merdeka.</p>
+          <p style="color:var(--text-secondary);margin-bottom:12px;">Hapus semua mata pelajaran (daftar menjadi kosong).</p>
           <button onclick="ResetData.resetMapel()" style="background:#EF4444;color:#fff;border:none;padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-weight:500;font-size:13px;">Reset Mata Pelajaran</button>
         </div>
       </div>
@@ -88,7 +88,10 @@ const ResetData = {
       await this.clearStore('nilai');
       await this.clearStore('nonAkademik');
       await this.clearStore('p5');
-      localStorage.removeItem('mapelList');
+      localStorage.setItem('mapelList', '[]');
+      if (typeof MATA_PELAJARAN !== 'undefined') {
+        MATA_PELAJARAN.length = 0;
+      }
       alert('Semua data berhasil dihapus.');
       Router.navigateTo('dashboard');
     } catch (e) { alert('Gagal menghapus data: ' + e.message); }
@@ -135,26 +138,12 @@ const ResetData = {
   },
 
   resetMapel() {
-    if (!confirm('Reset daftar mata pelajaran ke default 11 mapel?')) return;
-    const defaultMapel = [
-      'Pendidikan Agama dan Budi Pekerti',
-      'Pendidikan Pancasila',
-      'Bahasa Indonesia',
-      'Matematika',
-      'IPA',
-      'IPS',
-      'Bahasa Inggris',
-      'PJOK',
-      'Informatika',
-      'Seni Budaya dan Prakarya',
-      'Bahasa Jawa'
-    ];
-    localStorage.setItem('mapelList', JSON.stringify(defaultMapel));
+    if (!confirm('Hapus semua mata pelajaran? Daftar akan menjadi kosong.')) return;
+    localStorage.setItem('mapelList', '[]');
     if (typeof MATA_PELAJARAN !== 'undefined') {
       MATA_PELAJARAN.length = 0;
-      defaultMapel.forEach(m => MATA_PELAJARAN.push(m));
     }
-    alert('Daftar mata pelajaran berhasil direset ke default.');
+    alert('Semua mata pelajaran berhasil dihapus.');
     Router.navigateTo('reset-data');
   }
 };

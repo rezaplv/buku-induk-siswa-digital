@@ -9,10 +9,11 @@ const DataAkademik = {
 
   loadMapel() {
     const stored = localStorage.getItem('mapelList');
-    if (stored) {
+    if (stored !== null) {
+      // Key exists (could be empty array or filled)
       this.mapelList = JSON.parse(stored);
     } else {
-      // Default list
+      // Key never set before — first time use, create defaults
       this.mapelList = [
         'Pendidikan Agama dan Budi Pekerti',
         'Pendidikan Pancasila',
