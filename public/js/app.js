@@ -54,9 +54,7 @@
       case 'kokurikuler':
         await Kokurikuler.init();
         break;
-      case 'import-data-file':
-        ImportData.init();
-        break;
+
       case 'reset-data':
         ResetData.init();
         break;

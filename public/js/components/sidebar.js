@@ -77,14 +77,7 @@ const Sidebar = {
           </svg>
           <span>Kokurikuler P5</span>
         </a>
-        <a class="nav-item" data-page="import-data-file" onclick="Router.navigateTo('import-data-file')">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          <span>Import Data</span>
-        </a>
+
         <a class="nav-item" data-page="reset-data" onclick="Router.navigateTo('reset-data')" style="color:#F87171;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="3 6 5 6 21 6"></polyline>
