@@ -111,7 +111,7 @@ const PDFGenerator = {
           <div class="print-section-title">Ekstrakurikuler</div>
           <table class="print-table">
             <thead>
-              <tr><th>Semester</th><th>Kegiatan Ekstrakurikuler</th><th>Keterangan</th></tr>
+              <tr><th>Semester</th><th style="text-decoration:underline;">Kegiatan Ekstrakurikuler</th><th style="text-decoration:underline;">Keterangan</th></tr>
             </thead>
             <tbody>
               ${ekskulRows1}
@@ -124,7 +124,8 @@ const PDFGenerator = {
           <div class="print-section-title">Ketidakhadiran</div>
           <table class="print-table">
             <thead>
-              <tr><th>Semester</th><th>Sakit (Hari)</th><th>Izin (Hari)</th><th>Tanpa Keterangan (Hari)</th></tr>
+              <tr><th rowspan="2">Semester</th><th colspan="3" style="text-decoration:underline;">Ketidakhadiran</th></tr>
+<tr><th>Sakit (Hari)</th><th>Izin (Hari)</th><th>Tanpa Keterangan (Hari)</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -147,7 +148,7 @@ const PDFGenerator = {
           <div class="print-section-title-no-underline">Status Akhir Tahun Pelajaran</div>
           <table class="print-table">
             <thead>
-              <tr><th>Kelas</th><th>Status Akhir Tahun Pelajaran</th><th>Nama Wali Kelas</th><th>Tanda Tangan</th></tr>
+              <tr><th style="text-decoration:underline;">Kelas</th><th>Status Akhir Tahun Pelajaran</th><th style="text-decoration:underline;">Nama Wali Kelas</th><th>Tanda Tangan</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -168,7 +169,7 @@ const PDFGenerator = {
           <div class="print-section-title">Deskripsi Capaian Kompetensi</div>
           <table class="print-table">
             <thead>
-              <tr><th style="width:30px;">No</th><th>Mata Pelajaran</th><th>Catatan Semester 1</th><th>Catatan Semester 2</th></tr>
+              <tr><th style="width:30px;">No</th><th>Mata Pelajaran</th><th style="text-decoration:underline;">Catatan Semester 1</th><th style="text-decoration:underline;">Catatan Semester 2</th></tr>
             </thead>
             <tbody>
               ${MATA_PELAJARAN.map((mp, i) => {
@@ -229,8 +230,24 @@ const PDFGenerator = {
         .page-break { page-break-before: always; }
         .status-active { font-weight: bold; }
         .status-inactive { text-decoration: line-through; color: #666; }
-        .kokurikuler-box { border: 1px solid #000; padding: 10px; margin: 10px 0; min-height: 100px; }
-        .kokurikuler-header { border: 1px solid #000; text-align: center; font-weight: bold; padding: 8px; margin-bottom: 20px; }
+        .print-document { line-height: 1.4; }
+        .print-header h1 { font-size: 13pt; font-weight: bold; margin-bottom: 16px; }
+        .print-student-info { margin-bottom: 16px; font-weight: bold; }
+        .label-underline { text-decoration: underline; font-weight: bold; }
+        .print-info-table { margin-bottom: 0; }
+        .print-info-table td { padding: 4px 8px; }
+        .print-info-table .col-no { width: 40px; text-align: center; vertical-align: middle; font-weight: bold; }
+        .print-info-table .col-label { font-weight: bold; width: 250px; }
+        .print-info-table .col-sem { text-align: center; font-weight: bold; }
+        .print-table { margin-bottom: 0; }
+        .print-section { margin-top: 20px; }
+        .print-section-title { font-weight: bold; text-decoration: underline; margin-bottom: 8px; }
+        .print-section-title-no-underline { font-weight: bold; margin-bottom: 8px; }
+        .desc-cell { text-align: justify; font-size: 10pt; }
+        .signature-cell { width: 120px; height: 80px; vertical-align: bottom; }
+        .kokurikuler-header { border: 1px solid #000; text-align: center; font-weight: bold; padding: 10px; margin-bottom: 24px; font-size: 12pt; }
+        .kokurikuler-semester { font-weight: bold; text-decoration: underline; margin-bottom: 8px; margin-top: 20px; }
+        .kokurikuler-box { border: 1px solid #000; padding: 12px; margin-bottom: 12px; min-height: 130px; line-height: 1.6; }
       </style>
     </head>
     <body>${bodyContent}</body>
