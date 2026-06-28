@@ -902,3 +902,27 @@ body {
 .kelas-group-icon { font-size: 18px; }
 .kelas-group-name { font-size: 15px; font-weight: 700; color: var(--navy); }
 .kelas-group-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+/* Dashboard Statistics */
+.stat-cards-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card-gradient { border-radius: 16px; padding: 24px; color: #fff; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.stat-card-gradient::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.stat-card-gradient::after { content: ''; position: absolute; bottom: -30px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+.stat-card-gradient .stat-icon { margin-bottom: 12px; opacity: 0.9; }
+.stat-card-gradient .stat-value { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+.stat-card-gradient .stat-label { font-size: 13px; opacity: 0.85; font-weight: 500; }
+.bg-gradient-green { background: linear-gradient(135deg, #10B981, #059669); }
+.bg-gradient-blue { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+.bg-gradient-purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+.bg-gradient-orange { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.progress-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); min-width: 120px; }
+.progress-bar-bg { flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+.progress-percent { font-size: 12px; font-weight: 600; color: var(--text-muted); min-width: 40px; text-align: right; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.badge-green { background: #D1FAE5; color: #065F46; }
+.badge-red { background: #FEE2E2; color: #991B1B; }
+.badge-gray { background: #F1F5F9; color: #475569; }
+@media (max-width: 768px) { .stat-cards-row { grid-template-columns: repeat(2, 1fr); } .dashboard-grid { grid-template-columns: 1fr; } }
