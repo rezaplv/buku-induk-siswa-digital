@@ -471,10 +471,54 @@ body {
 .kelas-group-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
 
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: var(--bg-white);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
+  transition: all 0.3s;
+}
+.sidebar-toggle:hover {
+  background: var(--emerald);
+  color: #fff;
+}
+.sidebar {
+  transition: transform 0.3s ease;
+}
+.main-content {
+  transition: margin-left 0.3s ease;
+}
+.app-layout.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
+}
+.app-layout.sidebar-collapsed .main-content {
+  margin-left: 0;
+}
+.app-layout.sidebar-collapsed .sidebar-toggle {
+  left: 16px;
+}
+.app-layout:not(.sidebar-collapsed) .sidebar-toggle {
+  left: calc(var(--sidebar-width) + 16px);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main-content { margin-left: 0; padding: 16px; }
+  .app-layout .sidebar { position: fixed; transform: translateX(-100%); }
+  .app-layout:not(.sidebar-collapsed) .sidebar { transform: translateX(0); }
+  .main-content { margin-left: 0 !important; padding: 16px; }
+  .sidebar-toggle { left: 16px !important; }
   .stats-grid { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr; }
   .tabs { overflow-x: auto; }
@@ -659,6 +703,15 @@ body {
   <div class="app-layout" style="display:none;">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle" onclick="toggleSidebar()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -3858,6 +3911,10 @@ const ResetData = {
   <!-- login.js -->
   <script>
 const DEFAULT_CREDENTIALS = { username: 'admin', password: 'admin123' };
+
+function toggleSidebar() {
+  document.querySelector('.app-layout').classList.toggle('sidebar-collapsed');
+}
 
 function handleLogin(event) {
   event.preventDefault();
