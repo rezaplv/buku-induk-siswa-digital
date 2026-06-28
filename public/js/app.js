@@ -54,6 +54,9 @@
       case 'kokurikuler':
         await Kokurikuler.init();
         break;
+      case 'cetak-buku-induk':
+        await CetakBukuInduk.init();
+        break;
 
       case 'reset-data':
         ResetData.init();

@@ -34,7 +34,7 @@ const PDFGenerator = {
     return rows;
   },
 
-  generate(studentData, akademikData) {
+  buildHTML(studentData, akademikData) {
     const s = studentData;
     const akad = akademikData;
     const nilaiRecords = akad.nilai || [];
@@ -196,9 +196,13 @@ const PDFGenerator = {
       </div>
     `;
 
-    // Set print content and trigger print
+    return printContent;
+  },
+
+  generate(studentData, akademikData) {
+    const html = this.buildHTML(studentData, akademikData);
     const printArea = document.getElementById('print-area');
-    printArea.innerHTML = printContent;
+    printArea.innerHTML = html;
     window.print();
   }
 };
