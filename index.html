@@ -3940,7 +3940,11 @@ function showApp() {
 
 function showLogin() {
   sessionStorage.removeItem('isLoggedIn');
-  window.location.reload();
+  document.getElementById('login-screen').style.display = 'flex';
+  document.querySelector('.app-layout').style.display = 'none';
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').style.display = 'none';
 }
   </script>
 
@@ -3952,8 +3956,7 @@ function showLogin() {
   catch (e) { console.error('DB init failed:', e); document.body.innerHTML = '<div style="padding:40px;text-align:center;"><h2>Error</h2><p>Gagal menginisialisasi database.</p></div>'; return; }
 
   if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-    showLogin();
-    return;
+    return; // Login screen sudah visible by default (HTML display:flex)
   }
   showApp();
 

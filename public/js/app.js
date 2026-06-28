@@ -10,8 +10,7 @@
   }
 
   if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-    showLogin();
-    return;
+    return; // Login screen sudah visible by default (HTML display:flex)
   }
   showApp();
 
