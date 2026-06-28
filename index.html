@@ -480,41 +480,6 @@ body {
   .tabs { overflow-x: auto; }
 }
 
-/* Print Styles */
-#print-area { display: none; }
-@media print {
-  body * { visibility: hidden; }
-  #print-area, #print-area * { visibility: visible; }
-  #print-area { display: block; position: absolute; left: 0; top: 0; width: 100%; }
-  .app-layout { display: none !important; }
-  @page { size: A4; margin: 15mm; }
-  .print-document { font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; line-height: 1.5; }
-  .print-header { text-align: center; margin-bottom: 20px; }
-  .print-header h1 { font-size: 13pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
-  .print-student-info { margin-bottom: 16px; font-size: 11pt; font-weight: bold; }
-  .print-student-info span.label-underline { text-decoration: underline; }
-  .print-info-table { width: 100%; border-collapse: collapse; font-size: 10pt; margin-bottom: 16px; }
-  .print-info-table td { border: 1px solid #000; padding: 5px 8px; vertical-align: middle; }
-  .print-info-table .col-no { width: 40px; text-align: center; font-weight: bold; }
-  .print-info-table .col-label { width: 160px; font-weight: bold; }
-  .print-info-table .col-sem { text-align: center; font-weight: bold; }
-  .print-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-  .print-table th, .print-table td { border: 1px solid #000; padding: 5px 8px; text-align: left; vertical-align: top; }
-  .print-table th { font-weight: bold; text-align: center; font-size: 10pt; }
-  .print-table .center { text-align: center; }
-  .print-table .desc-cell { font-size: 9pt; line-height: 1.4; word-wrap: break-word; overflow-wrap: break-word; }
-  .print-section { margin-bottom: 16px; }
-  .print-section-title { font-size: 11pt; font-weight: bold; text-decoration: underline; margin-bottom: 8px; }
-  .print-section-title-no-underline { font-size: 11pt; font-weight: bold; margin-bottom: 8px; }
-  .status-active { font-weight: bold; }
-  .status-inactive { text-decoration: line-through; }
-  .page-break { page-break-before: always; }
-  .kokurikuler-header { text-align: center; font-size: 12pt; font-weight: bold; border: 1px solid #000; padding: 8px; margin-bottom: 12px; }
-  .kokurikuler-semester { font-size: 11pt; font-weight: bold; text-decoration: underline; margin: 12px 0 8px 0; }
-  .kokurikuler-box { border: 1px solid #000; padding: 12px; margin-bottom: 12px; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
-  .signature-cell { height: 60px; vertical-align: bottom; text-align: center; }
-}
-
 /* Dashboard Statistics */
 .stat-cards-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .stat-card-gradient { border-radius: 16px; padding: 24px; color: #fff; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
@@ -561,9 +526,6 @@ body {
       <div id="page-reset-data" class="page" style="display:none;"></div>
     </main>
   </div>
-
-  <!-- Print Area -->
-  <div id="print-area"></div>
 
 
   <!-- db.js -->
@@ -1029,8 +991,47 @@ const PDFGenerator = {
   },
   generate(studentData, akademikData) {
     const html = this.buildHTML(studentData, akademikData);
-    document.getElementById('print-area').innerHTML = html;
-    window.print();
+    const filename = studentData.nama.replace(/\s+/g, '_') + '_Buku_Induk.doc';
+    this.downloadAsWord(html, filename);
+  },
+  generateBatch(allHTML) {
+    this.downloadAsWord(allHTML, 'Buku_Induk_Kelas.doc');
+  },
+  downloadAsWord(bodyContent, filename) {
+    const fullHTML = `
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" 
+          xmlns:w="urn:schemas-microsoft-com:office:word" 
+          xmlns="http://www.w3.org/TR/REC-html40">
+    <head>
+      <meta charset="UTF-8">
+      <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+      <style>
+        @page { size: A4; margin: 15mm; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #000; padding: 4px 6px; vertical-align: top; }
+        th { text-align: center; font-weight: bold; }
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+        .underline { text-decoration: underline; }
+        .page-break { page-break-before: always; }
+        .status-active { font-weight: bold; }
+        .status-inactive { text-decoration: line-through; color: #666; }
+        .kokurikuler-box { border: 1px solid #000; padding: 10px; margin: 10px 0; min-height: 100px; }
+        .kokurikuler-header { border: 1px solid #000; text-align: center; font-weight: bold; padding: 8px; margin-bottom: 20px; }
+      </style>
+    </head>
+    <body>${bodyContent}</body>
+    </html>`;
+    const blob = new Blob(['\ufeff' + fullHTML], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 };
   </script>
@@ -3488,16 +3489,16 @@ const CetakBukuInduk = {
           '</select>' +
         '</div>' +
         '<button class="btn btn-primary" onclick="CetakBukuInduk.cetakPerSiswa()">' +
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>' +
-          ' Cetak Siswa Ini</button>' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>' +
+          ' Download Word</button>' +
       '</div>' +
     '</div>' +
     '<div class="card">' +
       '<h3 class="section-title">Opsi 2: Cetak Seluruh Kelas</h3>' +
       '<p class="muted" style="margin-bottom:12px;">Semua siswa di kelas ini akan dicetak dalam satu dokumen, dipisah page-break per siswa.</p>' +
       '<button class="btn btn-primary" onclick="CetakBukuInduk.cetakSeluruhKelas()">' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>' +
-        ' Cetak Semua Siswa di ' + kelasLabel + ' (' + count + ' siswa)</button>' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>' +
+        ' Download Word Semua Siswa di ' + kelasLabel + ' (' + count + ' siswa)</button>' +
     '</div>';
   },
 
@@ -3528,8 +3529,7 @@ const CetakBukuInduk = {
       allHTML += html;
     }
     if (!allHTML) { alert('Tidak ada data yang bisa dicetak!'); return; }
-    document.getElementById('print-area').innerHTML = allHTML;
-    window.print();
+    PDFGenerator.generateBatch(allHTML);
   }
 };
   </script>

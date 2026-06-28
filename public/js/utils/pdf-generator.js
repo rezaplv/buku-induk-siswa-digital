@@ -1,4 +1,4 @@
-// PDF Generator - Uses window.print() with print-ready HTML
+// PDF Generator - Generates MS Word (.doc) document via HTML-to-Word technique
 // Format: Buku Induk Resmi (Laporan Hasil Capaian Kompetensi Peserta Didik)
 const PDFGenerator = {
   escapeHTML(str) {
@@ -201,8 +201,48 @@ const PDFGenerator = {
 
   generate(studentData, akademikData) {
     const html = this.buildHTML(studentData, akademikData);
-    const printArea = document.getElementById('print-area');
-    printArea.innerHTML = html;
-    window.print();
+    const filename = studentData.nama.replace(/\s+/g, '_') + '_Buku_Induk.doc';
+    this.downloadAsWord(html, filename);
+  },
+
+  generateBatch(allHTML) {
+    this.downloadAsWord(allHTML, 'Buku_Induk_Kelas.doc');
+  },
+
+  downloadAsWord(bodyContent, filename) {
+    const fullHTML = `
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" 
+          xmlns:w="urn:schemas-microsoft-com:office:word" 
+          xmlns="http://www.w3.org/TR/REC-html40">
+    <head>
+      <meta charset="UTF-8">
+      <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+      <style>
+        @page { size: A4; margin: 15mm; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #000; padding: 4px 6px; vertical-align: top; }
+        th { text-align: center; font-weight: bold; }
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+        .underline { text-decoration: underline; }
+        .page-break { page-break-before: always; }
+        .status-active { font-weight: bold; }
+        .status-inactive { text-decoration: line-through; color: #666; }
+        .kokurikuler-box { border: 1px solid #000; padding: 10px; margin: 10px 0; min-height: 100px; }
+        .kokurikuler-header { border: 1px solid #000; text-align: center; font-weight: bold; padding: 8px; margin-bottom: 20px; }
+      </style>
+    </head>
+    <body>${bodyContent}</body>
+    </html>`;
+    const blob = new Blob(['\ufeff' + fullHTML], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 };
