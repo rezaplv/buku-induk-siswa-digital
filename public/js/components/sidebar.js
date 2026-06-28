@@ -108,5 +108,5 @@ const Sidebar = {
       </div>
     `;
   },
-  handleLogout() { if (confirm('Yakin ingin keluar?')) window.location.reload(); }
+  handleLogout() { if (confirm('Yakin ingin keluar?')) showLogin(); }
 };

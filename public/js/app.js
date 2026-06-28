@@ -9,6 +9,12 @@
     return;
   }
 
+  if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+    showLogin();
+    return;
+  }
+  showApp();
+
   // Load custom mapel from localStorage
   const storedMapel = localStorage.getItem('mapelList');
   if (storedMapel) {

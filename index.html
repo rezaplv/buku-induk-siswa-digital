@@ -503,10 +503,34 @@ body {
 .badge-red { background: #FEE2E2; color: #991B1B; }
 .badge-gray { background: #F1F5F9; color: #475569; }
 @media (max-width: 768px) { .stat-cards-row { grid-template-columns: repeat(2, 1fr); } .dashboard-grid { grid-template-columns: 1fr; } }
+
+.login-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%); padding:20px; }
+.login-card { background:#fff; border-radius:16px; padding:40px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+.login-logo { text-align:center; margin-bottom:32px; }
+.login-logo svg { margin-bottom:12px; }
+.login-logo h1 { font-size:20px; color:#0F172A; font-weight:700; }
+.login-footer { text-align:center; margin-top:24px; font-size:12px; color:#94A3B8; }
   </style>
 </head>
 <body>
-  <div class="app-layout">
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <h1>Buku Induk Siswa Digital</h1>
+        <p style="color:#94A3B8;font-size:13px;margin-top:4px;">Kurikulum Merdeka</p>
+      </div>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group"><label>Username</label><input type="text" id="login-username" required placeholder="Masukkan username" autocomplete="off"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="Masukkan password"></div>
+        <div id="login-error" style="color:#DC2626;font-size:13px;margin-bottom:12px;display:none;"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:15px;">Masuk</button>
+      </form>
+      <p class="login-footer">&copy; 2025 Buku Induk Siswa Digital</p>
+    </div>
+  </div>
+
+  <div class="app-layout" style="display:none;">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar"></aside>
 
@@ -1163,7 +1187,7 @@ const Sidebar = {
       </div>
     `;
   },
-  handleLogout() { if (confirm('Yakin ingin keluar?')) window.location.reload(); }
+  handleLogout() { if (confirm('Yakin ingin keluar?')) showLogin(); }
 };
   </script>
 
@@ -3705,11 +3729,51 @@ const ResetData = {
   </script>
 
 
+  <!-- login.js -->
+  <script>
+const DEFAULT_CREDENTIALS = { username: 'admin', password: 'admin123' };
+
+function handleLogin(event) {
+  event.preventDefault();
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errorEl = document.getElementById('login-error');
+  if (username === DEFAULT_CREDENTIALS.username && password === DEFAULT_CREDENTIALS.password) {
+    sessionStorage.setItem('isLoggedIn', 'true');
+    showApp();
+  } else {
+    errorEl.textContent = 'Username atau password salah!';
+    errorEl.style.display = 'block';
+  }
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.querySelector('.app-layout').style.display = 'flex';
+}
+
+function showLogin() {
+  sessionStorage.removeItem('isLoggedIn');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.querySelector('.app-layout').style.display = 'none';
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+  </script>
+
+
   <!-- app.js -->
   <script>
 (async function() {
   try { await DB.init(); console.log('Database initialized'); }
   catch (e) { console.error('DB init failed:', e); document.body.innerHTML = '<div style="padding:40px;text-align:center;"><h2>Error</h2><p>Gagal menginisialisasi database.</p></div>'; return; }
+
+  if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+    showLogin();
+    return;
+  }
+  showApp();
 
   // Load custom mapel from localStorage
   const storedMapel = localStorage.getItem('mapelList');
