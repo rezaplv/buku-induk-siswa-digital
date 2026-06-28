@@ -894,9 +894,9 @@ const PDFGenerator = {
         <h1>LAPORAN HASIL CAPAIAN KOMPETENSI PESERTA DIDIK</h1>
       </div>
       <div class="print-student-info">
-        <span class="label-underline">NAMA PESERTA DIDIK</span> : <strong>${esc(s.nama)}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="label-underline">NIS</span> : <strong>${esc(s.nis)}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="label-underline">NISN</span> : <strong>${esc(s.nisn || '-')}</strong>
+        <strong>NAMA PESERTA DIDIK</strong> : <strong>${esc(s.nama)}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+        <strong>NIS</strong> : <strong>${esc(s.nis)}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+        <strong>NISN</strong> : <strong>${esc(s.nisn || '-')}</strong>
       </div>
       <table class="print-table">
         <tbody>
@@ -1019,7 +1019,7 @@ const PDFGenerator = {
         .print-document { line-height: 1.4; }
         .print-header h1 { font-size: 13pt; font-weight: bold; margin-bottom: 16px; }
         .print-student-info { margin-bottom: 16px; font-weight: bold; }
-        .label-underline { text-decoration: underline; font-weight: bold; }
+        .label-underline { font-weight: bold; }
         .print-info-table { margin-bottom: 0; }
         .print-info-table td { padding: 4px 8px; }
         .print-info-table .col-no { width: 40px; text-align: center; vertical-align: middle; font-weight: bold; }
