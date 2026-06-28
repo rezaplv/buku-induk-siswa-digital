@@ -108,5 +108,10 @@ const Sidebar = {
       </div>
     `;
   },
-  handleLogout() { if (confirm('Yakin ingin keluar?')) showLogin(); }
+  handleLogout() { 
+    if (confirm('Yakin ingin keluar?')) {
+      sessionStorage.removeItem('isLoggedIn');
+      window.location.reload();
+    }
+  }
 };

@@ -3866,7 +3866,7 @@ function handleLogin(event) {
   const errorEl = document.getElementById('login-error');
   if (username === DEFAULT_CREDENTIALS.username && password === DEFAULT_CREDENTIALS.password) {
     sessionStorage.setItem('isLoggedIn', 'true');
-    showApp();
+    window.location.reload();
   } else {
     errorEl.textContent = 'Username atau password salah!';
     errorEl.style.display = 'block';
@@ -3880,11 +3880,7 @@ function showApp() {
 
 function showLogin() {
   sessionStorage.removeItem('isLoggedIn');
-  document.getElementById('login-screen').style.display = 'flex';
-  document.querySelector('.app-layout').style.display = 'none';
-  document.getElementById('login-username').value = '';
-  document.getElementById('login-password').value = '';
-  document.getElementById('login-error').style.display = 'none';
+  window.location.reload();
 }
   </script>
 
