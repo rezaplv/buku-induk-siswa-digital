@@ -134,6 +134,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  padding-left: 48px;
 }
 
 .page-title {
