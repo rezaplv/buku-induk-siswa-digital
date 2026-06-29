@@ -2349,18 +2349,21 @@ const InputNilai = {
     if (!clip) return;
     const text = clip.getData('text');
     if (text == null) return;
-    if (text.indexOf('\n') === -1 && text.indexOf('\r') === -1) return;
+    // Only intercept if TAB exists (multi-cell paste from Excel)
+    // If no TAB, let browser handle normally (multi-line text stays in one textarea)
+    if (text.indexOf('\t') === -1) return;
     event.preventDefault();
     const si = this.selectedDeskStudent;
-    let lines = text.split(/\r\n|\r|\n/);
-    if (lines.length > 0 && lines[lines.length - 1] === '') lines = lines.slice(0, -1);
-    for (let r = 0; r < lines.length; r++) {
-      const mi = startMi + r;
+    // Split by TAB to get each mapel's description
+    const cells = text.split('\t');
+    for (let c = 0; c < cells.length; c++) {
+      const mi = startMi + c;
       if (mi >= MATA_PELAJARAN.length) break;
+      const val = cells[c].replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
       if (!this.deskGrid[mi]) this.deskGrid[mi] = new Array(this.studentList.length).fill('');
-      this.deskGrid[mi][si] = lines[r];
+      this.deskGrid[mi][si] = val;
       const el = document.getElementById('desk-mapel-' + mi);
-      if (el) el.value = lines[r];
+      if (el) el.value = val;
     }
   },
 
@@ -2368,16 +2371,24 @@ const InputNilai = {
     const ta = document.getElementById('paste-desk-textarea');
     if (!ta || !ta.value.trim()) return;
     const si = this.selectedDeskStudent;
-    let lines = ta.value.split(/\r\n|\r|\n/);
-    if (lines.length > 0 && lines[lines.length - 1].trim() === '') lines = lines.slice(0, -1);
+    const rawText = ta.value;
+    // If TAB exists, split by TAB (Excel horizontal cells)
+    // Otherwise split by newline (one description per line, for backward compat)
+    let items;
+    if (rawText.indexOf('\t') !== -1) {
+      items = rawText.split('\t').map(function(s) { return s.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim(); });
+    } else {
+      items = rawText.split(/\r\n|\r|\n/);
+      if (items.length > 0 && items[items.length - 1].trim() === '') items = items.slice(0, -1);
+    }
     for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-      const val = mi < lines.length ? lines[mi] : '';
+      const val = mi < items.length ? items[mi] : '';
       if (!this.deskGrid[mi]) this.deskGrid[mi] = new Array(this.studentList.length).fill('');
       this.deskGrid[mi][si] = val;
       const el = document.getElementById('desk-mapel-' + mi);
       if (el) el.value = val;
     }
-    const nonEmpty = lines.filter(function(l) { return l.trim() !== ''; });
+    const nonEmpty = items.filter(function(l) { return l.trim() !== ''; });
     if (nonEmpty.length > 0 && nonEmpty.length !== MATA_PELAJARAN.length) {
       alert('Perhatian: jumlah baris paste (' + nonEmpty.length + ') tidak sama dengan jumlah mapel (' + MATA_PELAJARAN.length + '). Baris yang tidak ada dibiarkan kosong.');
     }
@@ -2516,7 +2527,7 @@ const InputNilai = {
       '</div>' +
       '<h3 class="section-title">Paste dari Excel (semua mapel sekaligus)</h3>' +
       '<p class="muted" style="margin-bottom:8px;">Copy satu kolom deskripsi dari Excel (' + MATA_PELAJARAN.length + ' baris, satu per mapel urut). Paste di bawah lalu klik "Terapkan dari Paste".</p>' +
-      '<textarea id="paste-desk-textarea" rows="5" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Paste ' + MATA_PELAJARAN.length + ' baris deskripsi (satu per mapel)..."></textarea>' +
+      '<textarea id="paste-desk-textarea" rows="5" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Pisahkan antar mapel dengan TAB (copy horizontal dari Excel) atau satu deskripsi per baris."></textarea>' +
       '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPasteDeskripsi()">Terapkan dari Paste</button>' +
       '</div>' +
       '<div class="card">' +
