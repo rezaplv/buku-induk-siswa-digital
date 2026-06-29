@@ -2142,7 +2142,7 @@ const DataAkademik = {
   </script>
 
 
-  <!-- input-nilai.js (REDESIGNED - paste kolom per mapel per semester) -->
+  <!-- input-nilai.js (REDESIGNED - dual semester per mapel) -->
   <script>
 const InputNilai = {
   allAkademik: [],
@@ -2151,7 +2151,7 @@ const InputNilai = {
   selectedKelas: '',
   selectedSemester: '1',
   studentList: [],
-  nilaiGrid: [], // [studentIndex][mapelIndex] = string
+  nilaiGrid: [], // [studentIndex][colIndex] where colIndex = mi*2+semIdx (0=sem1,1=sem2)
   deskGrid: [],  // [mapelIndex][studentIndex] = string
   activeDeskTab: 0,
   mode: 'nilai', // 'nilai' or 'deskripsi'
@@ -2180,9 +2180,10 @@ const InputNilai = {
       return { ...a, nama: siswa ? siswa.nama : a.nis, nisn: siswa ? siswa.nisn : '' };
     }).sort((a, b) => a.nama.localeCompare(b.nama));
   },
+
   onTPChange(val) { this.selectedTP = val; this.selectedKelas = ''; this.studentList = []; this.nilaiGrid = []; this.deskGrid = []; this.activeDeskTab = 0; this.showingRekap = false; this.showingRekapDesk = false; this.render(); },
   onKelasChange(val) { this.selectedKelas = val; this.studentList = this.getStudentsInClass(); this.nilaiGrid = []; this.deskGrid = []; this.activeDeskTab = 0; this.showingRekap = false; this.showingRekapDesk = false; this.render(); if (this.studentList.length > 0) this.loadExistingData(); },
-  onSemesterChange(val) { this.selectedSemester = val; this.nilaiGrid = []; this.deskGrid = []; this.showingRekap = false; this.showingRekapDesk = false; this.render(); if (this.studentList.length > 0) this.loadExistingData(); },
+  onSemesterChange(val) { this.selectedSemester = val; this.deskGrid = []; this.showingRekap = false; this.showingRekapDesk = false; this.render(); if (this.studentList.length > 0) this.loadExistingData(); },
 
   setMode(mode) {
     if (this.studentList.length > 0) {
@@ -2192,6 +2193,7 @@ const InputNilai = {
     this.showingRekap = false;
     this.showingRekapDesk = false;
     this.render();
+    if (this.studentList.length > 0 && mode === 'deskripsi') this.loadExistingData();
   },
 
   getMapelShortNames() {
@@ -2212,7 +2214,8 @@ const InputNilai = {
 
   initNilaiGrid() {
     this.nilaiGrid = [];
-    for (let si = 0; si < this.studentList.length; si++) this.nilaiGrid.push(new Array(MATA_PELAJARAN.length).fill(''));
+    const totalCols = MATA_PELAJARAN.length * 2;
+    for (let si = 0; si < this.studentList.length; si++) this.nilaiGrid.push(new Array(totalCols).fill(''));
   },
 
   initDeskGrid() {
@@ -2222,33 +2225,50 @@ const InputNilai = {
 
   initGrids() { this.initNilaiGrid(); this.initDeskGrid(); },
 
+
   async loadExistingData() {
-    if (!this.selectedTP || !this.selectedKelas || !this.selectedSemester || this.studentList.length === 0) return;
-    const nField = this.selectedSemester === '1' ? 'nilaiSem1' : 'nilaiSem2';
-    const dField = this.selectedSemester === '1' ? 'deskSem1' : 'deskSem2';
-    this.initGrids();
-    for (let si = 0; si < this.studentList.length; si++) {
-      const student = this.studentList[si];
-      const nilaiArr = await DB.getNilaiByAkademik(student.id);
-      const map = {};
-      nilaiArr.forEach(n => { map[n.mapel] = n; });
-      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-        const mp = MATA_PELAJARAN[mi];
-        const rec = map[mp];
-        this.nilaiGrid[si][mi] = rec && rec[nField] != null ? String(rec[nField]) : '';
-        this.deskGrid[mi][si] = rec && rec[dField] ? String(rec[dField]) : '';
+    if (!this.selectedTP || !this.selectedKelas || this.studentList.length === 0) return;
+    if (this.mode === 'nilai') {
+      this.initNilaiGrid();
+      for (let si = 0; si < this.studentList.length; si++) {
+        const student = this.studentList[si];
+        const nilaiArr = await DB.getNilaiByAkademik(student.id);
+        const map = {};
+        nilaiArr.forEach(n => { map[n.mapel] = n; });
+        for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+          const mp = MATA_PELAJARAN[mi];
+          const rec = map[mp];
+          this.nilaiGrid[si][mi * 2] = rec && rec.nilaiSem1 != null ? String(rec.nilaiSem1) : '';
+          this.nilaiGrid[si][mi * 2 + 1] = rec && rec.nilaiSem2 != null ? String(rec.nilaiSem2) : '';
+        }
       }
+      this.updateNilaiGridInputs();
+    } else {
+      if (!this.selectedSemester) return;
+      const dField = this.selectedSemester === '1' ? 'deskSem1' : 'deskSem2';
+      this.initDeskGrid();
+      for (let si = 0; si < this.studentList.length; si++) {
+        const student = this.studentList[si];
+        const nilaiArr = await DB.getNilaiByAkademik(student.id);
+        const map = {};
+        nilaiArr.forEach(n => { map[n.mapel] = n; });
+        for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+          const mp = MATA_PELAJARAN[mi];
+          const rec = map[mp];
+          this.deskGrid[mi][si] = rec && rec[dField] ? String(rec[dField]) : '';
+        }
+      }
+      this.updateDeskTabInputs();
     }
-    if (this.mode === 'deskripsi') this.updateDeskTabInputs();
-    else this.updateNilaiGridInputs();
   },
 
   captureNilaiGrid() {
     if (!this.nilaiGrid.length) return;
+    const totalCols = MATA_PELAJARAN.length * 2;
     for (let si = 0; si < this.studentList.length; si++) {
-      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
-        if (el) this.nilaiGrid[si][mi] = el.value.trim();
+      for (let ci = 0; ci < totalCols; ci++) {
+        const el = document.getElementById('nilai-cell-' + si + '-' + ci);
+        if (el) this.nilaiGrid[si][ci] = el.value.trim();
       }
     }
   },
@@ -2263,12 +2283,14 @@ const InputNilai = {
     }
   },
 
+
   updateNilaiGridInputs() {
     if (!this.nilaiGrid.length) return;
+    const totalCols = MATA_PELAJARAN.length * 2;
     for (let si = 0; si < this.studentList.length; si++) {
-      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
-        if (el) el.value = (this.nilaiGrid[si] && this.nilaiGrid[si][mi]) || '';
+      for (let ci = 0; ci < totalCols; ci++) {
+        const el = document.getElementById('nilai-cell-' + si + '-' + ci);
+        if (el) el.value = (this.nilaiGrid[si] && this.nilaiGrid[si][ci]) || '';
       }
     }
   },
@@ -2284,177 +2306,156 @@ const InputNilai = {
     if (ta) ta.value = '';
   },
 
+
   render() {
     const page = document.getElementById('page-input-nilai');
     const tpList = this.getTPList();
     const kelasList = this.getKelasList();
     this.studentList = this.getStudentsInClass();
-    const ready = this.selectedTP && this.selectedKelas && this.selectedSemester && this.studentList.length > 0;
-    const canShowRekap = ready;
+    const readyNilai = this.selectedTP && this.selectedKelas && this.studentList.length > 0;
+    const readyDesk = this.selectedTP && this.selectedKelas && this.selectedSemester && this.studentList.length > 0;
+    const canShowRekap = this.mode === 'nilai' ? readyNilai : readyDesk;
 
-    page.innerHTML = `
-      <div class="page-header"><h2 class="page-title">Input Nilai</h2></div>
-      <div class="card" style="margin-bottom:16px;">
-        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
-          <div class="form-group" style="margin-bottom:0;min-width:180px;">
-            <label>Tahun Pelajaran</label>
-            <select id="in-tp" onchange="InputNilai.onTPChange(this.value)">
-              <option value="">-- Pilih TP --</option>
-              ${tpList.map(tp => '<option value="' + escapeHTMLDash(tp) + '"' + (this.selectedTP === tp ? ' selected' : '') + '>' + escapeHTMLDash(tp) + '</option>').join('')}
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;min-width:180px;">
-            <label>Kelas</label>
-            <select id="in-kelas" onchange="InputNilai.onKelasChange(this.value)" ${!this.selectedTP ? 'disabled' : ''}>
-              <option value="">-- Pilih Kelas --</option>
-              ${kelasList.map(k => '<option value="' + escapeHTMLDash(k) + '"' + (this.selectedKelas === k ? ' selected' : '') + '>' + escapeHTMLDash(k) + '</option>').join('')}
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;min-width:150px;">
-            <label>Semester</label>
-            <select id="in-semester" onchange="InputNilai.onSemesterChange(this.value)" ${!this.selectedKelas ? 'disabled' : ''}>
-              <option value="1" ${this.selectedSemester === '1' ? 'selected' : ''}>Semester 1</option>
-              <option value="2" ${this.selectedSemester === '2' ? 'selected' : ''}>Semester 2</option>
-            </select>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;margin-top:12px;">
-          <label style="font-size:13px;font-weight:600;color:var(--text-secondary);">Mode:</label>
-          <button class="btn btn-sm ${this.mode === 'nilai' ? 'btn-primary' : 'btn-outline'}" onclick="InputNilai.setMode('nilai')">Nilai Angka</button>
-          <button class="btn btn-sm ${this.mode === 'deskripsi' ? 'btn-primary' : 'btn-outline'}" onclick="InputNilai.setMode('deskripsi')">Deskripsi Capaian</button>
-        </div>
-      </div>
-      ${canShowRekap && this.mode === 'nilai' && !this.showingRekap ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekap()" id="btn-rekap-kelas"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Kelas</button></div>' : ''}
-      ${canShowRekap && this.mode === 'deskripsi' && !this.showingRekapDesk ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekapDesk()" id="btn-rekap-desk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Deskripsi</button></div>' : ''}
-      ${this.showingRekap ? '<div id="rekap-kelas-container"></div>' : (this.showingRekapDesk ? '<div id="rekap-desk-container"></div>' : (ready ? (this.mode === 'deskripsi' ? this.renderDeskripsiArea() : this.renderInputArea()) : this.renderPlaceholder()))}`;
+    const semesterDropdown = this.mode === 'deskripsi' ? '<div class="form-group" style="margin-bottom:0;min-width:150px;"><label>Semester</label><select id="in-semester" onchange="InputNilai.onSemesterChange(this.value)" ' + (!this.selectedKelas ? 'disabled' : '') + '><option value="1" ' + (this.selectedSemester === '1' ? 'selected' : '') + '>Semester 1</option><option value="2" ' + (this.selectedSemester === '2' ? 'selected' : '') + '>Semester 2</option></select></div>' : '';
 
-    if (!this.showingRekap && !this.showingRekapDesk && ready) {
-      if (this.mode === 'deskripsi') {
+    page.innerHTML = '<div class="page-header"><h2 class="page-title">Input Nilai</h2></div>' +
+      '<div class="card" style="margin-bottom:16px;"><div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">' +
+      '<div class="form-group" style="margin-bottom:0;min-width:180px;"><label>Tahun Pelajaran</label><select id="in-tp" onchange="InputNilai.onTPChange(this.value)"><option value="">-- Pilih TP --</option>' + tpList.map(function(tp) { return '<option value="' + escapeHTMLDash(tp) + '"' + (InputNilai.selectedTP === tp ? ' selected' : '') + '>' + escapeHTMLDash(tp) + '</option>'; }).join('') + '</select></div>' +
+      '<div class="form-group" style="margin-bottom:0;min-width:180px;"><label>Kelas</label><select id="in-kelas" onchange="InputNilai.onKelasChange(this.value)" ' + (!this.selectedTP ? 'disabled' : '') + '><option value="">-- Pilih Kelas --</option>' + kelasList.map(function(k) { return '<option value="' + escapeHTMLDash(k) + '"' + (InputNilai.selectedKelas === k ? ' selected' : '') + '>' + escapeHTMLDash(k) + '</option>'; }).join('') + '</select></div>' +
+      semesterDropdown +
+      '</div>' +
+      '<div style="display:flex;gap:8px;align-items:center;margin-top:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);">Mode:</label><button class="btn btn-sm ' + (this.mode === 'nilai' ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.setMode(\'nilai\')">Nilai Angka</button><button class="btn btn-sm ' + (this.mode === 'deskripsi' ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.setMode(\'deskripsi\')">Deskripsi Capaian</button></div></div>' +
+      (canShowRekap && this.mode === 'nilai' && !this.showingRekap ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekap()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Kelas</button></div>' : '') +
+      (canShowRekap && this.mode === 'deskripsi' && !this.showingRekapDesk ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekapDesk()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Deskripsi</button></div>' : '') +
+      (this.showingRekap ? '<div id="rekap-kelas-container"></div>' : (this.showingRekapDesk ? '<div id="rekap-desk-container"></div>' : (this.mode === 'nilai' ? (readyNilai ? this.renderInputArea() : this.renderPlaceholder()) : (readyDesk ? this.renderDeskripsiArea() : this.renderPlaceholder()))));
+
+    if (!this.showingRekap && !this.showingRekapDesk) {
+      if (this.mode === 'deskripsi' && readyDesk) {
         this.updateDeskTabInputs();
-      } else {
+      } else if (this.mode === 'nilai' && readyNilai) {
         this.updateNilaiGridInputs();
       }
     }
-    if (this.showingRekap) {
-      this.renderRekapTable();
-    }
-    if (this.showingRekapDesk) {
-      this.loadRekapDeskData();
-    }
+    if (this.showingRekap) this.renderRekapTable();
+    if (this.showingRekapDesk) this.loadRekapDeskData();
   },
+
 
   renderPlaceholder() {
     if (this.selectedTP && this.selectedKelas && this.studentList.length === 0) {
       return '<div class="card"><p class="muted">Tidak ada siswa di kelas ini. Tambahkan data akademik terlebih dahulu.</p></div>';
     }
-    return '<div class="card"><p class="muted">Pilih Tahun Pelajaran, Kelas, dan Semester untuk mulai input nilai semua mapel sekaligus.</p></div>';
+    if (this.mode === 'nilai') {
+      return '<div class="card"><p class="muted">Pilih Tahun Pelajaran dan Kelas untuk mulai input nilai semua mapel (Sem1 & Sem2 sekaligus).</p></div>';
+    }
+    return '<div class="card"><p class="muted">Pilih Tahun Pelajaran, Kelas, dan Semester untuk mulai input deskripsi capaian.</p></div>';
   },
 
   renderInputArea() {
-    const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
     const shortNames = this.getMapelShortNames();
-    let header = '<th style="width:40px;position:sticky;left:0;background:var(--bg-primary);z-index:2;">No</th><th style="min-width:150px;position:sticky;left:40px;background:var(--bg-primary);z-index:2;">Nama Siswa</th><th style="width:90px;">NIS</th>';
-    MATA_PELAJARAN.forEach(mp => {
-      const short = shortNames[mp] || mp.substring(0, 4);
-      header += '<th style="width:60px;text-align:center;font-size:11px;" title="' + escapeHTMLDash(mp) + '">' + escapeHTMLDash(short) + '</th>';
+    const totalCols = MATA_PELAJARAN.length * 2;
+    // Two-row header: Row 1 = mapel names with colspan=2, Row 2 = S1/S2 per mapel
+    let headerRow1 = '<th rowspan="2" style="width:40px;position:sticky;left:0;background:var(--bg-primary);z-index:3;">No</th><th rowspan="2" style="min-width:130px;position:sticky;left:40px;background:var(--bg-primary);z-index:3;">Nama</th><th rowspan="2" style="width:80px;">NIS</th>';
+    let headerRow2 = '';
+    MATA_PELAJARAN.forEach(function(mp) {
+      var short = shortNames[mp] || mp.substring(0, 4);
+      headerRow1 += '<th colspan="2" style="text-align:center;font-size:11px;border-bottom:none;" title="' + escapeHTMLDash(mp) + '">' + escapeHTMLDash(short) + '</th>';
+      headerRow2 += '<th style="width:42px;text-align:center;font-size:10px;padding:2px 4px;">S1</th><th style="width:42px;text-align:center;font-size:10px;padding:2px 4px;">S2</th>';
     });
     let rows = '';
-    this.studentList.forEach((s, si) => {
-      let cols = '<td style="position:sticky;left:0;background:#fff;z-index:1;">' + (si + 1) + '</td>';
-      cols += '<td style="position:sticky;left:40px;background:#fff;z-index:1;white-space:nowrap;">' + escapeHTMLDash(s.nama) + '</td>';
-      cols += '<td>' + escapeHTMLDash(s.nis) + '</td>';
-      MATA_PELAJARAN.forEach((mp, mi) => {
-        cols += '<td style="padding:2px;text-align:center;"><input type="text" class="input-sm" id="nilai-cell-' + si + '-' + mi + '" value="" style="width:48px;text-align:center;" onpaste="InputNilai.onCellPaste(event,' + si + ',' + mi + ')" onchange="InputNilai.onNilaiCellInput(' + si + ',' + mi + ',this.value)"></td>';
-      });
+    this.studentList.forEach(function(s, si) {
+      var cols = '<td style="position:sticky;left:0;background:#fff;z-index:1;">' + (si + 1) + '</td>';
+      cols += '<td style="position:sticky;left:40px;background:#fff;z-index:1;white-space:nowrap;font-size:12px;">' + escapeHTMLDash(s.nama) + '</td>';
+      cols += '<td style="font-size:12px;">' + escapeHTMLDash(s.nis) + '</td>';
+      for (var ci = 0; ci < totalCols; ci++) {
+        cols += '<td style="padding:2px;text-align:center;"><input type="text" class="input-sm" id="nilai-cell-' + si + '-' + ci + '" value="" style="width:42px;text-align:center;font-size:12px;" onpaste="InputNilai.onCellPaste(event,' + si + ',' + ci + ')" onchange="InputNilai.onNilaiCellInput(' + si + ',' + ci + ',this.value)"></td>';
+      }
       rows += '<tr>' + cols + '</tr>';
     });
-    const orderHelp = MATA_PELAJARAN.map(mp => shortNames[mp] || mp).join(' | ');
+    var orderHelp = MATA_PELAJARAN.map(function(mp) { return (shortNames[mp] || mp) + '(S1,S2)'; }).join(' | ');
     return '<div class="card" style="margin-bottom:16px;">' +
-      '<h3 class="section-title">Paste dari Excel - Nilai Angka (' + semLabel + ')</h3>' +
-      '<p class="muted" style="margin-bottom:8px;">Copy blok nilai dari Excel/e-Rapor: baris = siswa (urut alfabet, ' + this.studentList.length + ' baris), kolom = 11 mapel sesuai urutan: ' + escapeHTMLDash(orderHelp) + '. Pemisah kolom otomatis TAB (hasil copy dari Excel). Desimal pakai koma (83,5) atau titik (83.5).</p>' +
-      '<textarea id="paste-nilai-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Paste blok nilai dari Excel di sini..."></textarea>' +
-      '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPaste()">Terapkan dari Paste</button>' +
-      '</div>' +
+      '<h3 class="section-title">Paste dari Excel - Nilai Angka (Sem1 & Sem2)</h3>' +
+      '<p class="muted" style="margin-bottom:8px;">Copy blok dari Excel: baris = siswa (urut alfabet, ' + this.studentList.length + ' baris), kolom = per mapel ada 2 kolom (Sem1, Sem2) — total ' + totalCols + ' kolom. Urutan: ' + escapeHTMLDash(orderHelp) + '. Pemisah kolom otomatis TAB. Desimal pakai koma (83,5) atau titik (83.5).</p>' +
+      '<textarea id="paste-nilai-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Paste blok nilai dari Excel di sini (22 kolom per baris: S1 S2 per mapel)..."></textarea>' +
+      '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPaste()">Terapkan dari Paste</button></div>' +
       '<div class="card">' +
-      '<h3 class="section-title">Input Nilai Semua Mapel (' + semLabel + ')</h3>' +
-      '<p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa x ' + MATA_PELAJARAN.length + ' mapel. Edit langsung tiap sel. Arahkan kursor ke judul kolom untuk melihat nama lengkap mapel. Scroll horizontal bila kolom tidak muat.</p>' +
-      '<div style="overflow-x:auto;"><table class="data-table" style="min-width:900px;font-size:13px;"><thead><tr>' + header + '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      '<div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="InputNilai.saveAll()">Simpan Semua</button><button type="button" class="btn btn-outline" onclick="InputNilai.clearAll()" style="margin-left:8px;">Hapus Semua Nilai</button></div>' +
-      '</div>';
+      '<h3 class="section-title">Input Nilai Semua Mapel (Sem1 & Sem2 Sekaligus)</h3>' +
+      '<p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa x ' + MATA_PELAJARAN.length + ' mapel x 2 semester = ' + totalCols + ' kolom nilai. Edit langsung tiap sel. Scroll horizontal bila kolom tidak muat.</p>' +
+      '<div style="overflow-x:auto;"><table class="data-table" style="min-width:1100px;font-size:12px;"><thead><tr>' + headerRow1 + '</tr><tr>' + headerRow2 + '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="InputNilai.saveAll()">Simpan Semua</button><button type="button" class="btn btn-outline" onclick="InputNilai.clearAll()" style="margin-left:8px;">Hapus Semua Nilai</button></div></div>';
   },
+
 
   renderDeskripsiArea() {
     const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
     const shortNames = this.getMapelShortNames();
     const activeMapel = MATA_PELAJARAN[this.activeDeskTab];
     let tabs = '';
-    MATA_PELAJARAN.forEach((mp, mi) => {
-      const short = shortNames[mp] || mp.substring(0, 4);
-      const cls = mi === this.activeDeskTab ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline';
+    MATA_PELAJARAN.forEach(function(mp, mi) {
+      var short = shortNames[mp] || mp.substring(0, 4);
+      var cls = mi === InputNilai.activeDeskTab ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline';
       tabs += '<button type="button" class="' + cls + '" style="margin:0 4px 6px 0;" title="' + escapeHTMLDash(mp) + '" onclick="InputNilai.switchDeskTab(' + mi + ')">' + escapeHTMLDash(short) + '</button>';
     });
     let rows = '';
-    this.studentList.forEach((s, si) => {
+    this.studentList.forEach(function(s, si) {
       rows += '<tr><td>' + (si + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea id="desk-cell-' + si + '" rows="3" style="width:100%;font-size:13px;padding:8px;border:1px solid var(--border-color);border-radius:6px;resize:vertical;" onchange="InputNilai.onDeskCellInput(' + si + ',this.value)"></textarea></td></tr>';
     });
     return '<div class="card" style="margin-bottom:16px;">' +
       '<h3 class="section-title">Pilih Mata Pelajaran (' + semLabel + ')</h3>' +
       '<p class="muted" style="margin-bottom:10px;">Klik tab mapel untuk mengisi deskripsi. Berpindah tab TIDAK menghapus isian yang belum disimpan. Klik "Simpan Semua Mapel" sekali untuk menyimpan seluruh mapel.</p>' +
-      '<div style="display:flex;flex-wrap:wrap;">' + tabs + '</div>' +
-      '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;">' + tabs + '</div></div>' +
       '<div class="card" style="margin-bottom:16px;">' +
       '<h3 class="section-title">Paste Deskripsi - ' + escapeHTMLDash(activeMapel) + ' (' + semLabel + ')</h3>' +
       '<p class="muted" style="margin-bottom:8px;">Paste satu kolom deskripsi untuk mapel ini (satu deskripsi per baris per siswa, urut alfabet, ' + this.studentList.length + ' baris).</p>' +
       '<textarea id="paste-desk-textarea" rows="5" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Paste deskripsi untuk ' + escapeHTMLDash(activeMapel) + '..."></textarea>' +
-      '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPasteDeskripsi()">Terapkan dari Paste</button>' +
-      '</div>' +
+      '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPasteDeskripsi()">Terapkan dari Paste</button></div>' +
       '<div class="card">' +
       '<h3 class="section-title">Deskripsi Capaian - ' + escapeHTMLDash(activeMapel) + ' (' + semLabel + ')</h3>' +
       '<p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Edit langsung di kolom Deskripsi Capaian.</p>' +
       '<div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:180px;">Nama Siswa</th><th>Deskripsi Capaian</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      '<div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="InputNilai.saveAll()">Simpan Semua Mapel</button><button type="button" class="btn btn-outline" onclick="InputNilai.clearAllDesk()" style="margin-left:8px;">Hapus Deskripsi Mapel Ini</button></div>' +
-      '</div>';
+      '<div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="InputNilai.saveAll()">Simpan Semua Mapel</button><button type="button" class="btn btn-outline" onclick="InputNilai.clearAllDesk()" style="margin-left:8px;">Hapus Deskripsi Mapel Ini</button></div></div>';
   },
 
-  onNilaiCellInput(si, mi, value) {
-    if (!this.nilaiGrid[si]) this.nilaiGrid[si] = new Array(MATA_PELAJARAN.length).fill('');
-    this.nilaiGrid[si][mi] = value.trim();
+
+  onNilaiCellInput(si, ci, value) {
+    const totalCols = MATA_PELAJARAN.length * 2;
+    if (!this.nilaiGrid[si]) this.nilaiGrid[si] = new Array(totalCols).fill('');
+    this.nilaiGrid[si][ci] = value.trim();
   },
 
-  onCellPaste(event, startSi, startMi) {
+  onCellPaste(event, startSi, startCi) {
     const clip = (event.clipboardData || window.clipboardData);
     if (!clip) return;
     const text = clip.getData('text');
     if (text == null) return;
     if (!this.nilaiGrid.length) this.initNilaiGrid();
+    const totalCols = MATA_PELAJARAN.length * 2;
 
-    // Single value (no newline, no tab): fill just the starting cell.
     if (text.indexOf('\n') === -1 && text.indexOf('\r') === -1 && text.indexOf('\t') === -1) {
       event.preventDefault();
       const val = String(text).trim().replace(',', '.');
-      if (!this.nilaiGrid[startSi]) this.nilaiGrid[startSi] = new Array(MATA_PELAJARAN.length).fill('');
-      this.nilaiGrid[startSi][startMi] = val;
-      const el = document.getElementById('nilai-cell-' + startSi + '-' + startMi);
+      if (!this.nilaiGrid[startSi]) this.nilaiGrid[startSi] = new Array(totalCols).fill('');
+      this.nilaiGrid[startSi][startCi] = val;
+      const el = document.getElementById('nilai-cell-' + startSi + '-' + startCi);
       if (el) el.value = val;
       return;
     }
 
     event.preventDefault();
     let lines = text.split(/\r\n|\r|\n/);
-    // Drop a single trailing empty line that Excel often appends.
     if (lines.length > 0 && lines[lines.length - 1] === '') lines = lines.slice(0, -1);
 
     for (let r = 0; r < lines.length; r++) {
       const cells = lines[r].split('\t');
       for (let c = 0; c < cells.length; c++) {
         const si = startSi + r;
-        const mi = startMi + c;
+        const ci = startCi + c;
         if (si < 0 || si >= this.studentList.length) continue;
-        if (mi < 0 || mi >= MATA_PELAJARAN.length) continue;
+        if (ci < 0 || ci >= totalCols) continue;
         const val = String(cells[c]).trim().replace(',', '.');
-        if (!this.nilaiGrid[si]) this.nilaiGrid[si] = new Array(MATA_PELAJARAN.length).fill('');
-        this.nilaiGrid[si][mi] = val;
-        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
+        if (!this.nilaiGrid[si]) this.nilaiGrid[si] = new Array(totalCols).fill('');
+        this.nilaiGrid[si][ci] = val;
+        const el = document.getElementById('nilai-cell-' + si + '-' + ci);
         if (el) el.value = val;
       }
     }
@@ -2464,17 +2465,17 @@ const InputNilai = {
     const ta = document.getElementById('paste-nilai-textarea');
     if (!ta) return;
     if (!this.nilaiGrid.length) this.initNilaiGrid();
+    const totalCols = MATA_PELAJARAN.length * 2;
     let lines = ta.value.split('\n');
-    // Drop a single trailing empty line that Excel often appends
     if (lines.length > 0 && lines[lines.length - 1].trim() === '') lines = lines.slice(0, -1);
-    const nonEmpty = lines.filter(l => l.trim() !== '');
+    const nonEmpty = lines.filter(function(l) { return l.trim() !== ''; });
     for (let si = 0; si < this.studentList.length; si++) {
       const line = lines[si] !== undefined ? lines[si] : '';
       const cells = line.split('\t');
-      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-        const raw = (cells[mi] !== undefined ? cells[mi] : '').trim().replace(',', '.');
-        this.nilaiGrid[si][mi] = raw;
-        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
+      for (let ci = 0; ci < totalCols; ci++) {
+        const raw = (cells[ci] !== undefined ? cells[ci] : '').trim().replace(',', '.');
+        this.nilaiGrid[si][ci] = raw;
+        const el = document.getElementById('nilai-cell-' + si + '-' + ci);
         if (el) el.value = raw;
       }
     }
@@ -2483,15 +2484,17 @@ const InputNilai = {
     }
   },
 
+
   clearAll() {
     if (!confirm('Hapus semua nilai di tabel?')) return;
     this.initNilaiGrid();
     this.updateNilaiGridInputs();
     const ta = document.getElementById('paste-nilai-textarea');
     if (ta) ta.value = '';
+    const totalCols = MATA_PELAJARAN.length * 2;
     for (let si = 0; si < this.studentList.length; si++) {
-      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
+      for (let ci = 0; ci < totalCols; ci++) {
+        const el = document.getElementById('nilai-cell-' + si + '-' + ci);
         if (el) el.style.background = '';
       }
     }
@@ -2521,7 +2524,7 @@ const InputNilai = {
       const el = document.getElementById('desk-cell-' + si);
       if (el) el.value = raw;
     }
-    const nonEmpty = lines.filter(l => l.trim() !== '');
+    const nonEmpty = lines.filter(function(l) { return l.trim() !== ''; });
     if (nonEmpty.length > 0 && nonEmpty.length < this.studentList.length) {
       alert('Perhatian: jumlah baris paste (' + nonEmpty.length + ') kurang dari jumlah siswa (' + this.studentList.length + '). Baris yang kosong tidak diisi.');
     }
@@ -2545,22 +2548,24 @@ const InputNilai = {
     return val;
   },
 
+
   async saveAll() {
-    if (!this.selectedTP || !this.selectedKelas || !this.selectedSemester || this.studentList.length === 0) return;
+    if (!this.selectedTP || !this.selectedKelas || this.studentList.length === 0) return;
     if (this.mode === 'deskripsi') {
+      if (!this.selectedSemester) return;
       this.captureDeskTab();
       const field = this.selectedSemester === '1' ? 'deskSem1' : 'deskSem2';
       for (let si = 0; si < this.studentList.length; si++) {
         const student = this.studentList[si];
         const nilaiArr = await DB.getNilaiByAkademik(student.id);
         const map = {};
-        nilaiArr.forEach(n => { map[n.mapel] = n; });
+        nilaiArr.forEach(function(n) { map[n.mapel] = n; });
         for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
           const mp = MATA_PELAJARAN[mi];
           const deskVal = (this.deskGrid[mi] && this.deskGrid[mi][si]) || '';
           const existing = map[mp];
           if (existing) {
-            const updated = { ...existing };
+            const updated = Object.assign({}, existing);
             updated[field] = deskVal;
             await DB.updateNilai(updated);
           } else if (deskVal !== '') {
@@ -2574,52 +2579,59 @@ const InputNilai = {
       await this.loadExistingData();
     } else {
       this.captureNilaiGrid();
+      const totalCols = MATA_PELAJARAN.length * 2;
       // Validate every non-empty cell
       for (let si = 0; si < this.studentList.length; si++) {
-        for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-          const raw = (this.nilaiGrid[si] && this.nilaiGrid[si][mi]) || '';
+        for (let ci = 0; ci < totalCols; ci++) {
+          const raw = (this.nilaiGrid[si] && this.nilaiGrid[si][ci]) || '';
           if (raw === '') continue;
           const val = this.parseNilai(raw);
           if (val === null || val < 0 || val > 100) {
-            alert('Nilai tidak valid untuk siswa "' + this.studentList[si].nama + '" mapel "' + MATA_PELAJARAN[mi] + '": "' + raw + '". Harus angka 0-100.');
+            const mapelIdx = Math.floor(ci / 2);
+            const semLabel = ci % 2 === 0 ? 'Sem1' : 'Sem2';
+            alert('Nilai tidak valid untuk siswa "' + this.studentList[si].nama + '" mapel "' + MATA_PELAJARAN[mapelIdx] + '" (' + semLabel + '): "' + raw + '". Harus angka 0-100.');
             return;
           }
         }
       }
-      const field = this.selectedSemester === '1' ? 'nilaiSem1' : 'nilaiSem2';
+      // Save both semesters at once
       for (let si = 0; si < this.studentList.length; si++) {
         const student = this.studentList[si];
         const nilaiArr = await DB.getNilaiByAkademik(student.id);
         const map = {};
-        nilaiArr.forEach(n => { map[n.mapel] = n; });
+        nilaiArr.forEach(function(n) { map[n.mapel] = n; });
         for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
           const mp = MATA_PELAJARAN[mi];
-          const raw = (this.nilaiGrid[si] && this.nilaiGrid[si][mi]) || '';
-          const parsedVal = this.parseNilai(raw);
+          const rawS1 = (this.nilaiGrid[si] && this.nilaiGrid[si][mi * 2]) || '';
+          const rawS2 = (this.nilaiGrid[si] && this.nilaiGrid[si][mi * 2 + 1]) || '';
+          const valS1 = this.parseNilai(rawS1);
+          const valS2 = this.parseNilai(rawS2);
           const existing = map[mp];
           if (existing) {
-            const updated = { ...existing };
-            updated[field] = parsedVal;
+            const updated = Object.assign({}, existing);
+            updated.nilaiSem1 = valS1;
+            updated.nilaiSem2 = valS2;
             await DB.updateNilai(updated);
-          } else if (parsedVal !== null) {
-            const newRecord = { akademikId: student.id, mapel: mp, nilaiSem1: null, nilaiSem2: null, deskSem1: '', deskSem2: '' };
-            newRecord[field] = parsedVal;
+          } else if (valS1 !== null || valS2 !== null) {
+            const newRecord = { akademikId: student.id, mapel: mp, nilaiSem1: valS1, nilaiSem2: valS2, deskSem1: '', deskSem2: '' };
             await DB.addNilai(newRecord);
           }
         }
       }
-      alert('Berhasil menyimpan nilai semua mapel (Semester ' + this.selectedSemester + ') untuk ' + this.studentList.length + ' siswa!');
+      alert('Berhasil menyimpan nilai semua mapel (Sem1 & Sem2) untuk ' + this.studentList.length + ' siswa!');
       await this.loadExistingData();
       this.markSavedIndicators();
     }
   },
 
+
   markSavedIndicators() {
     if (!this.nilaiGrid.length) return;
+    const totalCols = MATA_PELAJARAN.length * 2;
     for (let si = 0; si < this.studentList.length; si++) {
-      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
-        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
-        if (el && this.nilaiGrid[si] && this.nilaiGrid[si][mi] !== '') {
+      for (let ci = 0; ci < totalCols; ci++) {
+        const el = document.getElementById('nilai-cell-' + si + '-' + ci);
+        if (el && this.nilaiGrid[si] && this.nilaiGrid[si][ci] !== '') {
           el.style.background = 'var(--emerald-light)';
         }
       }
@@ -2641,34 +2653,38 @@ const InputNilai = {
     const container = document.getElementById('rekap-kelas-container');
     if (!container) return;
     const shortNames = this.getMapelShortNames();
-    const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
-    const field = this.selectedSemester === '1' ? 'nilaiSem1' : 'nilaiSem2';
     const rekapData = [];
     for (const student of this.studentList) {
       const nilaiArr = await DB.getNilaiByAkademik(student.id);
       const nilaiMap = {};
-      nilaiArr.forEach(n => { nilaiMap[n.mapel] = n; });
-      rekapData.push({ student, nilaiMap });
+      nilaiArr.forEach(function(n) { nilaiMap[n.mapel] = n; });
+      rekapData.push({ student: student, nilaiMap: nilaiMap });
     }
-    let headerCols = '<th style="width:40px;position:sticky;left:0;background:var(--bg-primary);z-index:1;">No</th><th style="min-width:150px;position:sticky;left:40px;background:var(--bg-primary);z-index:1;">Nama Siswa</th><th style="width:80px;">NIS</th>';
-    MATA_PELAJARAN.forEach(mp => {
-      const short = shortNames[mp] || mp.substring(0, 4);
-      headerCols += '<th style="width:50px;text-align:center;font-size:11px;">' + escapeHTMLDash(short) + '</th>';
+    // Two-row header with S1/S2 sub-columns per mapel
+    let headerRow1 = '<th rowspan="2" style="width:40px;position:sticky;left:0;background:var(--bg-primary);z-index:2;">No</th><th rowspan="2" style="min-width:130px;position:sticky;left:40px;background:var(--bg-primary);z-index:2;">Nama</th><th rowspan="2" style="width:70px;">NIS</th>';
+    let headerRow2 = '';
+    MATA_PELAJARAN.forEach(function(mp) {
+      var short = shortNames[mp] || mp.substring(0, 4);
+      headerRow1 += '<th colspan="2" style="text-align:center;font-size:11px;border-bottom:none;" title="' + escapeHTMLDash(mp) + '">' + escapeHTMLDash(short) + '</th>';
+      headerRow2 += '<th style="width:38px;text-align:center;font-size:10px;padding:2px;">S1</th><th style="width:38px;text-align:center;font-size:10px;padding:2px;">S2</th>';
     });
     let rows = '';
-    rekapData.forEach((item, idx) => {
-      let cols = '<td style="position:sticky;left:0;background:#fff;z-index:1;">' + (idx + 1) + '</td>';
-      cols += '<td style="position:sticky;left:40px;background:#fff;z-index:1;white-space:nowrap;">' + escapeHTMLDash(item.student.nama) + '</td>';
-      cols += '<td>' + escapeHTMLDash(item.student.nis) + '</td>';
-      MATA_PELAJARAN.forEach(mp => {
-        const n = item.nilaiMap[mp];
-        const val = n && n[field] != null ? String(n[field]) : '-';
-        cols += '<td style="text-align:center;">' + escapeHTMLDash(val) + '</td>';
+    rekapData.forEach(function(item, idx) {
+      var cols = '<td style="position:sticky;left:0;background:#fff;z-index:1;">' + (idx + 1) + '</td>';
+      cols += '<td style="position:sticky;left:40px;background:#fff;z-index:1;white-space:nowrap;font-size:12px;">' + escapeHTMLDash(item.student.nama) + '</td>';
+      cols += '<td style="font-size:12px;">' + escapeHTMLDash(item.student.nis) + '</td>';
+      MATA_PELAJARAN.forEach(function(mp) {
+        var n = item.nilaiMap[mp];
+        var v1 = n && n.nilaiSem1 != null ? String(n.nilaiSem1) : '-';
+        var v2 = n && n.nilaiSem2 != null ? String(n.nilaiSem2) : '-';
+        cols += '<td style="text-align:center;font-size:12px;">' + escapeHTMLDash(v1) + '</td>';
+        cols += '<td style="text-align:center;font-size:12px;">' + escapeHTMLDash(v2) + '</td>';
       });
       rows += '<tr>' + cols + '</tr>';
     });
-    container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Nilai Kelas ' + escapeHTMLDash(this.selectedKelas) + ' - ' + semLabel + '</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekap()">Tutup Rekap</button></div><p class="muted" style="margin-bottom:12px;">Rekap semua mata pelajaran untuk ' + this.studentList.length + ' siswa. Scroll horizontal jika kolom tidak muat.</p><div style="overflow-x:auto;"><table class="data-table" style="min-width:900px;font-size:13px;"><thead><tr>' + headerCols + '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+    container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Nilai Kelas ' + escapeHTMLDash(this.selectedKelas) + ' (Sem1 & Sem2)</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekap()">Tutup Rekap</button></div><p class="muted" style="margin-bottom:12px;">Rekap semua mata pelajaran untuk ' + this.studentList.length + ' siswa. Menampilkan kedua semester. Scroll horizontal jika kolom tidak muat.</p><div style="overflow-x:auto;"><table class="data-table" style="min-width:1100px;font-size:12px;"><thead><tr>' + headerRow1 + '</tr><tr>' + headerRow2 + '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   },
+
 
   showRekapDesk() {
     this.showingRekapDesk = true;
@@ -2695,24 +2711,24 @@ const InputNilai = {
     const student = this.studentList[this.rekapDeskStudentIndex];
     if (!student) return;
     let dropdownHTML = '<select onchange="InputNilai.onRekapDeskStudentChange(this.value)" style="padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:14px;min-width:300px;">';
-    this.studentList.forEach((s, i) => {
-      dropdownHTML += '<option value="' + i + '"' + (i === this.rekapDeskStudentIndex ? ' selected' : '') + '>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>';
+    this.studentList.forEach(function(s, i) {
+      dropdownHTML += '<option value="' + i + '"' + (i === InputNilai.rekapDeskStudentIndex ? ' selected' : '') + '>' + escapeHTMLDash(s.nama) + ' (' + escapeHTMLDash(s.nis) + ')</option>';
     });
     dropdownHTML += '</select>';
     const nilaiArr = await DB.getNilaiByAkademik(student.id);
     const nilaiMap = {};
-    nilaiArr.forEach(n => { nilaiMap[n.mapel] = n; });
+    nilaiArr.forEach(function(n) { nilaiMap[n.mapel] = n; });
     let rows = '';
-    MATA_PELAJARAN.forEach((mp, idx) => {
-      const n = nilaiMap[mp];
-      const desc = n && n[field] ? escapeHTMLDash(n[field]) : '-';
+    MATA_PELAJARAN.forEach(function(mp, idx) {
+      var n = nilaiMap[mp];
+      var desc = n && n[field] ? escapeHTMLDash(n[field]) : '-';
       rows += '<tr><td style="text-align:center;">' + (idx + 1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td>' + desc + '</td></tr>';
     });
     container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Deskripsi Capaian - Kelas ' + escapeHTMLDash(this.selectedKelas) + ' (' + semLabel + ')</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekapDesk()">Tutup Rekap</button></div><div style="margin-bottom:16px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">Pilih Siswa:</label>' + dropdownHTML + '</div><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Catatan ' + semLabel + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   }
 };
-  </script>
 
+  </script>
 
 
   <!-- ekstrakurikuler.js -->
