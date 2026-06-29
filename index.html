@@ -2364,7 +2364,7 @@ const InputNilai = {
       cols += '<td style="position:sticky;left:40px;background:#fff;z-index:1;white-space:nowrap;">' + escapeHTMLDash(s.nama) + '</td>';
       cols += '<td>' + escapeHTMLDash(s.nis) + '</td>';
       MATA_PELAJARAN.forEach((mp, mi) => {
-        cols += '<td style="padding:2px;text-align:center;"><input type="text" class="input-sm" id="nilai-cell-' + si + '-' + mi + '" value="" style="width:48px;text-align:center;" onchange="InputNilai.onNilaiCellInput(' + si + ',' + mi + ',this.value)"></td>';
+        cols += '<td style="padding:2px;text-align:center;"><input type="text" class="input-sm" id="nilai-cell-' + si + '-' + mi + '" value="" style="width:48px;text-align:center;" onpaste="InputNilai.onCellPaste(event,' + si + ',' + mi + ')" onchange="InputNilai.onNilaiCellInput(' + si + ',' + mi + ',this.value)"></td>';
       });
       rows += '<tr>' + cols + '</tr>';
     });
@@ -2419,6 +2419,45 @@ const InputNilai = {
   onNilaiCellInput(si, mi, value) {
     if (!this.nilaiGrid[si]) this.nilaiGrid[si] = new Array(MATA_PELAJARAN.length).fill('');
     this.nilaiGrid[si][mi] = value.trim();
+  },
+
+  onCellPaste(event, startSi, startMi) {
+    const clip = (event.clipboardData || window.clipboardData);
+    if (!clip) return;
+    const text = clip.getData('text');
+    if (text == null) return;
+    if (!this.nilaiGrid.length) this.initNilaiGrid();
+
+    // Single value (no newline, no tab): fill just the starting cell.
+    if (text.indexOf('\n') === -1 && text.indexOf('\r') === -1 && text.indexOf('\t') === -1) {
+      event.preventDefault();
+      const val = String(text).trim().replace(',', '.');
+      if (!this.nilaiGrid[startSi]) this.nilaiGrid[startSi] = new Array(MATA_PELAJARAN.length).fill('');
+      this.nilaiGrid[startSi][startMi] = val;
+      const el = document.getElementById('nilai-cell-' + startSi + '-' + startMi);
+      if (el) el.value = val;
+      return;
+    }
+
+    event.preventDefault();
+    let lines = text.split(/\r\n|\r|\n/);
+    // Drop a single trailing empty line that Excel often appends.
+    if (lines.length > 0 && lines[lines.length - 1] === '') lines = lines.slice(0, -1);
+
+    for (let r = 0; r < lines.length; r++) {
+      const cells = lines[r].split('\t');
+      for (let c = 0; c < cells.length; c++) {
+        const si = startSi + r;
+        const mi = startMi + c;
+        if (si < 0 || si >= this.studentList.length) continue;
+        if (mi < 0 || mi >= MATA_PELAJARAN.length) continue;
+        const val = String(cells[c]).trim().replace(',', '.');
+        if (!this.nilaiGrid[si]) this.nilaiGrid[si] = new Array(MATA_PELAJARAN.length).fill('');
+        this.nilaiGrid[si][mi] = val;
+        const el = document.getElementById('nilai-cell-' + si + '-' + mi);
+        if (el) el.value = val;
+      }
+    }
   },
 
   applyPaste() {
