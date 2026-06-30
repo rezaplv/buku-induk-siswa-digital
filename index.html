@@ -4379,6 +4379,38 @@ const Kokurikuler = {
     this.catatanValues[index] = value;
   },
 
+  htmlToCleanText(html) {
+    const BREAK = '\u0001';
+    let s = html;
+    const bodyMatch = s.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+    if (bodyMatch) s = bodyMatch[1];
+    s = s.replace(/<br\s*\/?>/gi, BREAK);
+    s = s.replace(/<\/p\s*>/gi, BREAK);
+    s = s.replace(/<\/div\s*>/gi, BREAK);
+    s = s.replace(/<\/tr\s*>/gi, BREAK);
+    s = s.replace(/<[^>]+>/g, '');
+    s = s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ').replace(/&#xa0;/gi, ' ').replace(/&#160;/g, ' ');
+    s = s.replace(/\s+/g, ' ');
+    s = s.split(BREAK).map(function(line) { return line.trim(); }).filter(function(line) { return line !== ''; }).join('\n');
+    return s.trim();
+  },
+
+  onP5Paste(event, index) {
+    const clip = (event.clipboardData || window.clipboardData);
+    if (!clip) return;
+    const html = clip.getData('text/html');
+    if (html && html.trim() !== '') {
+      const clean = this.htmlToCleanText(html);
+      if (clean) {
+        event.preventDefault();
+        this.catatanValues[index] = clean;
+        const ta = document.getElementById('p5-catatan-' + index);
+        if (ta) ta.value = clean;
+        return;
+      }
+    }
+  },
+
   async saveAll() {
     if (!this.selectedTP || !this.selectedKelas || this.studentList.length === 0) return;
 
@@ -4512,7 +4544,7 @@ const Kokurikuler = {
       '<div class="form-group" style="margin-bottom:0;"><textarea id="paste-p5-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Catatan siswa 1;lanjutan catatan\nCatatan siswa 2\nCatatan siswa 3\n..."></textarea></div>' +
       '<button type="button" class="btn btn-outline" onclick="Kokurikuler.applyPaste()" style="margin-top:12px;">Terapkan dari Paste</button></div>' +
       '<div class="card"><h3 class="section-title">Data Catatan P5 - ' + escapeHTMLDash(this.selectedKelas) + ' (' + escapeHTMLDash(semLabel) + ')</h3><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Edit langsung di kolom textarea.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:300px;">Catatan Proyek P5</th></tr></thead><tbody>' +
-      this.studentList.map((s, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea class="input-md" id="p5-catatan-' + i + '" rows="4" style="resize:vertical;min-height:80px;" onchange="Kokurikuler.onManualCatatan(' + i + ', this.value)" placeholder="Catatan proyek P5"></textarea></td></tr>').join('') +
+      this.studentList.map((s, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea class="input-md" id="p5-catatan-' + i + '" rows="4" style="resize:vertical;min-height:80px;" onchange="Kokurikuler.onManualCatatan(' + i + ', this.value)" onpaste="Kokurikuler.onP5Paste(event, ' + i + ')" placeholder="Catatan proyek P5"></textarea></td></tr>').join('') +
       '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="Kokurikuler.saveAll()">Simpan Semua</button><button type="button" class="btn btn-danger" onclick="Kokurikuler.clearAllCatatan()">Hapus Semua Catatan</button></div></div>';
   }
 };
