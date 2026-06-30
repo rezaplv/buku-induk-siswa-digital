@@ -4425,6 +4425,17 @@ const Kokurikuler = {
     }
   },
 
+  clearAllCatatan() {
+    if (!confirm('Hapus semua catatan P5 di tabel untuk semester ini?')) return;
+    this.catatanValues = this.studentList.map(() => '');
+    for (let i = 0; i < this.studentList.length; i++) {
+      const ta = document.getElementById('p5-catatan-' + i);
+      if (ta) ta.value = '';
+    }
+    const pasteTa = document.getElementById('paste-p5-textarea');
+    if (pasteTa) pasteTa.value = '';
+  },
+
   showRekap() {
     this.showingRekap = true;
     this.rekapSelectedNIS = '';
@@ -4502,7 +4513,7 @@ const Kokurikuler = {
       '<button type="button" class="btn btn-outline" onclick="Kokurikuler.applyPaste()" style="margin-top:12px;">Terapkan dari Paste</button></div>' +
       '<div class="card"><h3 class="section-title">Data Catatan P5 - ' + escapeHTMLDash(this.selectedKelas) + ' (' + escapeHTMLDash(semLabel) + ')</h3><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Edit langsung di kolom textarea.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:300px;">Catatan Proyek P5</th></tr></thead><tbody>' +
       this.studentList.map((s, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea class="input-md" id="p5-catatan-' + i + '" rows="4" style="resize:vertical;min-height:80px;" onchange="Kokurikuler.onManualCatatan(' + i + ', this.value)" placeholder="Catatan proyek P5"></textarea></td></tr>').join('') +
-      '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="Kokurikuler.saveAll()">Simpan Semua</button></div></div>';
+      '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="Kokurikuler.saveAll()">Simpan Semua</button><button type="button" class="btn btn-danger" onclick="Kokurikuler.clearAllCatatan()">Hapus Semua Catatan</button></div></div>';
   }
 };
   </script>
