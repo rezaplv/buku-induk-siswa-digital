@@ -2591,8 +2591,17 @@ const InputNilai = {
         '<td><textarea id="desk-mapel-' + mi + '" rows="3" style="width:100%;font-size:13px;padding:8px;border:1px solid var(--border-color);border-radius:6px;resize:vertical;" onpaste="InputNilai.onDeskMapelPaste(event,' + mi + ')" oninput="InputNilai.onDeskMapelInput(' + mi + ',this.value)"></textarea></td></tr>';
     }
 
+    const importExportCard = '<div class="card" style="margin-bottom:16px;">' +
+      '<h3 class="section-title">Import/Export Deskripsi Capaian</h3>' +
+      '<p class="muted" style="margin-bottom:12px;">Download template CSV berisi semua siswa & mapel (format vertikal: 1 baris per siswa per mapel). Isi kolom DESKRIPSI_SEM1 dan DESKRIPSI_SEM2, lalu import kembali untuk mengisi deskripsi secara massal.</p>' +
+      '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">' +
+      '<button type="button" class="btn btn-outline" onclick="InputNilai.downloadDeskTemplate()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Template</button>' +
+      '<label class="btn btn-primary" style="cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Import File<input type="file" accept=".csv,.txt" style="display:none;" onchange="InputNilai.importDeskFile(event)"></label>' +
+      '</div>' +
+      '<div id="desk-import-status" style="margin-top:12px;"></div>' +
+      '</div>';
 
-    return '<div class="card" style="margin-bottom:16px;">' +
+    return importExportCard + '<div class="card" style="margin-bottom:16px;">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">' +
       '<div style="display:flex;align-items:center;gap:12px;">' +
       '<button type="button" class="btn btn-outline btn-sm" onclick="InputNilai.prevDeskStudent()">&laquo; Prev</button>' +
@@ -2935,6 +2944,263 @@ const InputNilai = {
       rows += '<tr><td style="text-align:center;">' + (idx + 1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td>' + desc + '</td></tr>';
     });
     container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Deskripsi Capaian - Kelas ' + escapeHTMLDash(this.selectedKelas) + ' (' + semLabel + ')</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekapDesk()">Tutup Rekap</button></div><div style="margin-bottom:16px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">Pilih Siswa:</label>' + dropdownHTML + '</div><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Catatan ' + semLabel + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+  },
+
+  csvEscape(str) {
+    if (!str) return '';
+    str = String(str);
+    if (str.indexOf(';') !== -1 || str.indexOf('"') !== -1 || str.indexOf('\n') !== -1 || str.indexOf('\r') !== -1) {
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+  },
+
+  parseCsvLineSemicolon(line) {
+    const cells = [];
+    let i = 0;
+    let cell = '';
+    let inQuotes = false;
+    while (i < line.length) {
+      const ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < line.length && line[i + 1] === '"') {
+            cell += '"';
+            i += 2;
+          } else {
+            inQuotes = false;
+            i++;
+          }
+        } else {
+          cell += ch;
+          i++;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+          i++;
+        } else if (ch === ';') {
+          cells.push(cell);
+          cell = '';
+          i++;
+        } else {
+          cell += ch;
+          i++;
+        }
+      }
+    }
+    cells.push(cell);
+    return cells;
+  },
+
+  parseCsvSemicolon(text) {
+    const rows = [];
+    let i = 0;
+    let currentLine = '';
+    let inQuotes = false;
+    while (i < text.length) {
+      const ch = text[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < text.length && text[i + 1] === '"') {
+            currentLine += '""';
+            i += 2;
+          } else {
+            inQuotes = false;
+            currentLine += ch;
+            i++;
+          }
+        } else {
+          currentLine += ch;
+          i++;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+          currentLine += ch;
+          i++;
+        } else if (ch === '\r' || ch === '\n') {
+          rows.push(this.parseCsvLineSemicolon(currentLine));
+          currentLine = '';
+          if (ch === '\r' && i + 1 < text.length && text[i + 1] === '\n') i++;
+          i++;
+        } else {
+          currentLine += ch;
+          i++;
+        }
+      }
+    }
+    if (currentLine.length > 0) {
+      rows.push(this.parseCsvLineSemicolon(currentLine));
+    }
+    return rows;
+  },
+
+  async loadDeskGridFull() {
+    const deskGridFull = [];
+    for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+      deskGridFull.push(new Array(this.studentList.length).fill(null).map(function() { return { sem1: '', sem2: '' }; }));
+    }
+    for (let si = 0; si < this.studentList.length; si++) {
+      const student = this.studentList[si];
+      const nilaiArr = await DB.getNilaiByAkademik(student.id);
+      const map = {};
+      nilaiArr.forEach(function(n) { map[n.mapel] = n; });
+      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+        const mp = MATA_PELAJARAN[mi];
+        const rec = map[mp];
+        deskGridFull[mi][si] = {
+          sem1: (rec && rec.deskSem1) ? String(rec.deskSem1) : '',
+          sem2: (rec && rec.deskSem2) ? String(rec.deskSem2) : ''
+        };
+      }
+    }
+    return deskGridFull;
+  },
+
+  async downloadDeskTemplate() {
+    if (this.studentList.length === 0) return;
+    const statusEl = document.getElementById('desk-import-status');
+    if (statusEl) statusEl.innerHTML = '<p class="muted">Memuat data untuk template...</p>';
+    const deskGridFull = await this.loadDeskGridFull();
+    let csvContent = '\ufeff';
+    csvContent += 'NIS;NAMA;MATA_PELAJARAN;DESKRIPSI_SEM1;DESKRIPSI_SEM2\n';
+    for (let si = 0; si < this.studentList.length; si++) {
+      const student = this.studentList[si];
+      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+        const mp = MATA_PELAJARAN[mi];
+        const deskS1 = deskGridFull[mi][si].sem1;
+        const deskS2 = deskGridFull[mi][si].sem2;
+        csvContent += this.csvEscape(student.nis) + ';' + this.csvEscape(student.nama) + ';' + this.csvEscape(mp) + ';' + this.csvEscape(deskS1) + ';' + this.csvEscape(deskS2) + '\n';
+      }
+    }
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Template_Deskripsi_' + (this.selectedKelas || 'Kelas').replace(/\s/g, '_') + '_' + (this.selectedTP || 'TP').replace(/\//g, '-') + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (statusEl) statusEl.innerHTML = '<p style="color:var(--emerald);font-size:13px;">Template berhasil di-download! (' + this.studentList.length + ' siswa x ' + MATA_PELAJARAN.length + ' mapel = ' + (this.studentList.length * MATA_PELAJARAN.length) + ' baris data)</p>';
+  },
+
+  importDeskFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const statusEl = document.getElementById('desk-import-status');
+    if (statusEl) statusEl.innerHTML = '<p class="muted">Membaca file...</p>';
+    const reader = new FileReader();
+    const self = this;
+    reader.onload = function(e) {
+      let text = e.target.result;
+      if (text.charCodeAt(0) === 0xFEFF) text = text.substring(1);
+      self.processImportDeskCSV(text);
+    };
+    reader.onerror = function() {
+      if (statusEl) statusEl.innerHTML = '<p style="color:#DC2626;font-size:13px;">Gagal membaca file.</p>';
+    };
+    reader.readAsText(file, 'UTF-8');
+    event.target.value = '';
+  },
+
+  async processImportDeskCSV(text) {
+    const statusEl = document.getElementById('desk-import-status');
+    const rows = this.parseCsvSemicolon(text);
+    if (rows.length < 2) {
+      if (statusEl) statusEl.innerHTML = '<p style="color:#DC2626;font-size:13px;">File CSV kosong atau tidak valid (minimal harus ada header + 1 baris data).</p>';
+      return;
+    }
+    const header = rows[0].map(function(h) { return h.trim().toUpperCase(); });
+    const colNIS = header.indexOf('NIS');
+    const colMapel = header.indexOf('MATA_PELAJARAN');
+    const colDS1 = header.indexOf('DESKRIPSI_SEM1');
+    const colDS2 = header.indexOf('DESKRIPSI_SEM2');
+    if (colNIS === -1 || colMapel === -1 || (colDS1 === -1 && colDS2 === -1)) {
+      if (statusEl) statusEl.innerHTML = '<p style="color:#DC2626;font-size:13px;">Header CSV tidak valid. Kolom wajib: NIS, MATA_PELAJARAN, dan minimal salah satu dari DESKRIPSI_SEM1 atau DESKRIPSI_SEM2.</p>';
+      return;
+    }
+    const nisToIndex = {};
+    for (let si = 0; si < this.studentList.length; si++) {
+      nisToIndex[String(this.studentList[si].nis).trim()] = si;
+    }
+    const mapelToIndex = {};
+    for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+      mapelToIndex[MATA_PELAJARAN[mi].trim().toLowerCase()] = mi;
+    }
+    const deskGridFull = [];
+    for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+      deskGridFull.push(new Array(this.studentList.length).fill(null).map(function() { return { sem1: '', sem2: '' }; }));
+    }
+    for (let si = 0; si < this.studentList.length; si++) {
+      const student = this.studentList[si];
+      const nilaiArr = await DB.getNilaiByAkademik(student.id);
+      const map = {};
+      nilaiArr.forEach(function(n) { map[n.mapel] = n; });
+      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+        const mp = MATA_PELAJARAN[mi];
+        const rec = map[mp];
+        deskGridFull[mi][si] = {
+          sem1: (rec && rec.deskSem1) ? String(rec.deskSem1) : '',
+          sem2: (rec && rec.deskSem2) ? String(rec.deskSem2) : ''
+        };
+      }
+    }
+    let imported = 0;
+    let skipped = 0;
+    const errors = [];
+    for (let r = 1; r < rows.length; r++) {
+      const row = rows[r];
+      if (row.length < 3 || row.every(function(c) { return c.trim() === ''; })) { skipped++; continue; }
+      const nis = row[colNIS] ? String(row[colNIS]).trim() : '';
+      const mapelName = row[colMapel] ? String(row[colMapel]).trim() : '';
+      const dS1 = colDS1 !== -1 && row[colDS1] !== undefined ? String(row[colDS1]).trim() : '';
+      const dS2 = colDS2 !== -1 && row[colDS2] !== undefined ? String(row[colDS2]).trim() : '';
+      if (!nis || !mapelName) { skipped++; errors.push('Baris ' + (r + 1) + ': NIS atau MATA_PELAJARAN kosong'); continue; }
+      const si = nisToIndex[nis];
+      if (si === undefined) { skipped++; errors.push('Baris ' + (r + 1) + ': NIS "' + nis + '" tidak ditemukan di kelas ini'); continue; }
+      const mi = mapelToIndex[mapelName.toLowerCase()];
+      if (mi === undefined) { skipped++; errors.push('Baris ' + (r + 1) + ': Mapel "' + mapelName + '" tidak dikenali'); continue; }
+      if (dS1 !== '') deskGridFull[mi][si].sem1 = dS1;
+      if (dS2 !== '') deskGridFull[mi][si].sem2 = dS2;
+      imported++;
+    }
+    if (statusEl) statusEl.innerHTML = '<p class="muted">Menyimpan ke database...</p>';
+    for (let si = 0; si < this.studentList.length; si++) {
+      const student = this.studentList[si];
+      const nilaiArr = await DB.getNilaiByAkademik(student.id);
+      const map = {};
+      nilaiArr.forEach(function(n) { map[n.mapel] = n; });
+      for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
+        const mp = MATA_PELAJARAN[mi];
+        const dS1 = deskGridFull[mi][si].sem1;
+        const dS2 = deskGridFull[mi][si].sem2;
+        const existing = map[mp];
+        if (existing) {
+          const updated = Object.assign({}, existing);
+          updated.deskSem1 = dS1;
+          updated.deskSem2 = dS2;
+          await DB.updateNilai(updated);
+        } else if (dS1 !== '' || dS2 !== '') {
+          const newRecord = { akademikId: student.id, mapel: mp, nilaiSem1: null, nilaiSem2: null, deskSem1: dS1, deskSem2: dS2 };
+          await DB.addNilai(newRecord);
+        }
+      }
+    }
+    await this.loadExistingData();
+    let resultHTML = '<div style="padding:12px;background:var(--emerald-light);border-radius:8px;margin-top:8px;">';
+    resultHTML += '<p style="font-weight:600;color:#065F46;margin-bottom:4px;">Import Selesai!</p>';
+    resultHTML += '<p style="font-size:13px;color:#065F46;">' + imported + ' baris berhasil diimport, ' + skipped + ' baris dilewati.</p>';
+    if (errors.length > 0) {
+      resultHTML += '<details style="margin-top:8px;"><summary style="font-size:12px;color:#991B1B;cursor:pointer;">Lihat ' + errors.length + ' error</summary><ul style="font-size:12px;color:#991B1B;margin-top:4px;padding-left:16px;">';
+      errors.slice(0, 20).forEach(function(err) { resultHTML += '<li>' + escapeHTMLDash(err) + '</li>'; });
+      if (errors.length > 20) resultHTML += '<li>... dan ' + (errors.length - 20) + ' error lainnya</li>';
+      resultHTML += '</ul></details>';
+    }
+    resultHTML += '</div>';
+    if (statusEl) statusEl.innerHTML = resultHTML;
+    alert('Import deskripsi selesai! ' + imported + ' baris berhasil diimport' + (skipped > 0 ? ', ' + skipped + ' dilewati.' : '.'));
   }
 };
 
