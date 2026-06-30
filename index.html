@@ -2201,24 +2201,32 @@ const InputNilai = {
 
 
   getMapelShortNames() {
-    return {
-      'Pendidikan Agama dan Budi Pekerti': 'PAI',
-      'Pendidikan Pancasila': 'P.Pancasila',
-      'Bahasa Indonesia': 'B.Indo',
-      'Matematika': 'MTK',
-      'IPA': 'IPA',
-      'Ilmu Pengetahuan Alam': 'IPA',
-      'IPS': 'IPS',
-      'Ilmu Pengetahuan Sosial': 'IPS',
-      'Bahasa Inggris': 'B.Ing',
-      'PJOK': 'PJOK',
-      'Pendidikan Jasmani, Olahraga, dan Kesehatan': 'PJOK',
-      'Pendidikan Jasmani Olahraga dan Kesehatan': 'PJOK',
-      'Informatika': 'Informtka',
-      'Seni Budaya dan Prakarya': 'S.Bud Prakarya',
-      'Seni Budaya': 'S.Bud Prakarya',
-      'Bahasa Jawa': 'B.Jwa'
-    };
+    // Build short-name map dynamically from the current MATA_PELAJARAN list,
+    // detecting acronyms by keyword so it works regardless of exact full names.
+    const map = {};
+    MATA_PELAJARAN.forEach(function(mp) {
+      const lower = mp.toLowerCase();
+      let short;
+      if (lower.indexOf('agama') !== -1 || lower.indexOf('budi pekerti') !== -1) short = 'PAI';
+      else if (lower.indexOf('pancasila') !== -1 || lower.indexOf('ppkn') !== -1 || lower.indexOf('pkn') !== -1 || lower.indexOf('kewarganegaraan') !== -1) short = 'P.Pancasila';
+      else if (lower.indexOf('indonesia') !== -1) short = 'B.Indo';
+      else if (lower.indexOf('matematika') !== -1 || lower.indexOf('mtk') !== -1) short = 'MTK';
+      else if (lower.indexOf('pengetahuan alam') !== -1 || lower === 'ipa' || lower.indexOf('(ipa)') !== -1 || /\bipa\b/.test(lower)) short = 'IPA';
+      else if (lower.indexOf('pengetahuan sosial') !== -1 || lower === 'ips' || lower.indexOf('(ips)') !== -1 || /\bips\b/.test(lower)) short = 'IPS';
+      else if (lower.indexOf('inggris') !== -1) short = 'B.Ing';
+      else if (lower.indexOf('jasmani') !== -1 || lower.indexOf('pjok') !== -1 || lower.indexOf('olahraga') !== -1) short = 'PJOK';
+      else if (lower.indexOf('informa') !== -1 || lower.indexOf('tik') !== -1) short = 'Informtka';
+      else if (lower.indexOf('seni') !== -1 || lower.indexOf('prakarya') !== -1) short = 'S.Bud Prakarya';
+      else if (lower.indexOf('jawa') !== -1) short = 'B.Jwa';
+      else {
+        // Fallback: take first letters of up to 3 words, uppercase
+        const words = mp.trim().split(/\s+/);
+        if (words.length === 1) short = mp.substring(0, 5);
+        else short = words.slice(0, 3).map(function(w) { return w.charAt(0).toUpperCase(); }).join('');
+      }
+      map[mp] = short;
+    });
+    return map;
   },
 
 
