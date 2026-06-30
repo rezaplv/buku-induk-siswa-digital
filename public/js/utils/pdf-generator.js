@@ -27,19 +27,23 @@ const PDFGenerator = {
   buildEkskulRows(kegiatan, keterangan, semester, minRows) {
     const kegiatanList = this.parseNewlineSeparated(kegiatan);
     const keteranganList = this.parseNewlineSeparated(keterangan);
-    const maxLen = Math.max(kegiatanList.length, keteranganList.length, minRows);
     const esc = this.escapeHTML;
-    let rows = '';
+    const maxLen = Math.max(kegiatanList.length, keteranganList.length);
+    const kegHtml = [];
+    const ketHtml = [];
     for (let i = 0; i < maxLen; i++) {
-      rows += '<tr>';
-      if (i === 0) {
-        rows += '<td class="center" rowspan="' + maxLen + '">' + semester + '</td>';
-      }
-      rows += '<td>' + esc(kegiatanList[i] || '') + '</td>';
-      rows += '<td>' + esc(keteranganList[i] || '') + '</td>';
-      rows += '</tr>';
+      kegHtml.push(esc(kegiatanList[i] || ''));
+      ketHtml.push(esc(keteranganList[i] || ''));
     }
-    return rows;
+    // One single row per semester; activities stacked with <br> inside one cell.
+    // Add a min-height so empty cells keep a reasonable row height.
+    const kegCell = kegHtml.length > 0 ? kegHtml.join('<br>') : '&nbsp;';
+    const ketCell = ketHtml.length > 0 ? ketHtml.join('<br>') : '&nbsp;';
+    return '<tr>' +
+      '<td class="center" style="vertical-align:middle;">' + semester + '</td>' +
+      '<td style="vertical-align:top;">' + kegCell + '</td>' +
+      '<td style="vertical-align:top;">' + ketCell + '</td>' +
+      '</tr>';
   },
 
   buildHTML(studentData, akademikData) {
