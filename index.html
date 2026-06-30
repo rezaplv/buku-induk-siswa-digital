@@ -3326,11 +3326,17 @@ const Ekstrakurikuler = {
   selectedKelas: '',
   selectedSemester: '1',
   studentList: [],
-  kegiatanValues: [],
-  keteranganValues: [],
+  ekskulList: [],
   showingRekap: false,
 
-  async init() { await this.loadData(); this.render(); },
+  async init() {
+    await this.loadData();
+    if (this.selectedTP && this.selectedKelas) {
+      this.studentList = this.getStudentsInClass();
+      await this.loadEkskulMaster();
+    }
+    this.render();
+  },
 
   async loadData() {
     this.students = await DB.getAllSiswa();
@@ -3365,116 +3371,172 @@ const Ekstrakurikuler = {
     this.selectedTP = val;
     this.selectedKelas = '';
     this.studentList = [];
-    this.kegiatanValues = [];
-    this.keteranganValues = [];
+    this.ekskulList = [];
     this.showingRekap = false;
     this.render();
   },
 
-  onKelasChange(val) {
+  async onKelasChange(val) {
     this.selectedKelas = val;
     this.studentList = this.getStudentsInClass();
-    this.kegiatanValues = this.studentList.map(() => '');
-    this.keteranganValues = this.studentList.map(() => '');
     this.showingRekap = false;
+    await this.loadEkskulMaster();
     this.render();
-    if (this.studentList.length > 0) this.loadExisting();
   },
 
-  onSemesterChange(val) {
+  async onSemesterChange(val) {
     this.selectedSemester = val;
-    this.kegiatanValues = this.studentList.map(() => '');
-    this.keteranganValues = this.studentList.map(() => '');
+    this.studentList = this.getStudentsInClass();
     this.showingRekap = false;
+    await this.loadEkskulMaster();
     this.render();
-    if (this.studentList.length > 0) this.loadExisting();
   },
 
-  async loadExisting() {
-    if (!this.selectedTP || !this.selectedKelas || this.studentList.length === 0) return;
+  // ===== Master list (localStorage) =====
+  getEkskulStorageKey() {
+    return 'ekskulMaster_' + this.selectedTP + '_' + this.selectedKelas + '_' + this.selectedSemester;
+  },
+
+  async loadEkskulMaster() {
+    if (!this.selectedTP || !this.selectedKelas) { this.ekskulList = []; return; }
+    const raw = localStorage.getItem(this.getEkskulStorageKey());
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        this.ekskulList = Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        this.ekskulList = [];
+      }
+    } else {
+      this.ekskulList = [];
+    }
+    // Make sure every ekskul has a participants array
+    this.ekskulList.forEach(ek => { if (!Array.isArray(ek.participants)) ek.participants = []; });
+    // If nothing stored locally, try to reconstruct from existing DB data
+    if (this.ekskulList.length === 0 && this.studentList.length > 0) {
+      await this.reconstructMasterFromDB();
+    }
+  },
+
+  saveEkskulMaster() {
+    if (!this.selectedTP || !this.selectedKelas) return;
+    localStorage.setItem(this.getEkskulStorageKey(), JSON.stringify(this.ekskulList));
+  },
+
+  async reconstructMasterFromDB() {
     const kegField = this.selectedSemester === '1' ? 'ekskulKegiatan1' : 'ekskulKegiatan2';
     const ketField = this.selectedSemester === '1' ? 'ekskulKet1' : 'ekskulKet2';
+    const map = {};
+    const order = [];
 
-    for (let i = 0; i < this.studentList.length; i++) {
-      const student = this.studentList[i];
+    for (const student of this.studentList) {
       const nonAkademikArr = await DB.getNonAkademikByAkademik(student.id);
       const na = nonAkademikArr.length > 0 ? nonAkademikArr[0] : null;
-      this.kegiatanValues[i] = na ? (na[kegField] || '') : '';
-      this.keteranganValues[i] = na ? (na[ketField] || '') : '';
+      if (!na) continue;
+      const kegArr = (na[kegField] || '').split('\n').map(k => k.trim());
+      const ketArr = (na[ketField] || '').split('\n').map(k => k.trim());
+      for (let idx = 0; idx < kegArr.length; idx++) {
+        const nama = kegArr[idx];
+        if (!nama) continue;
+        const ket = ketArr[idx] || '';
+        const mapKey = nama.toLowerCase();
+        if (!map[mapKey]) {
+          map[mapKey] = { nama: nama, keterangan: ket, participants: [] };
+          order.push(mapKey);
+        } else if (!map[mapKey].keterangan && ket) {
+          map[mapKey].keterangan = ket;
+        }
+        if (map[mapKey].participants.indexOf(student.nis) === -1) {
+          map[mapKey].participants.push(student.nis);
+        }
+      }
     }
-    this.updateTableInputs();
-    this.updateTextareasFromValues();
+
+    this.ekskulList = order.map(k => map[k]);
+    if (this.ekskulList.length > 0) this.saveEkskulMaster();
   },
 
-  updateTableInputs() {
-    for (let i = 0; i < this.studentList.length; i++) {
-      const kegInput = document.getElementById('ekskul-kegiatan-' + i);
-      const ketInput = document.getElementById('ekskul-ket-' + i);
-      if (kegInput) kegInput.value = this.kegiatanValues[i] || '';
-      if (ketInput) ketInput.value = this.keteranganValues[i] || '';
+  // ===== Manage ekskul list =====
+  addEkskul(event) {
+    if (event) event.preventDefault();
+    const namaInput = document.getElementById('ekskul-nama-input');
+    const ketInput = document.getElementById('ekskul-ket-input');
+    const nama = (namaInput ? namaInput.value : '').trim();
+    const keterangan = (ketInput ? ketInput.value : '').trim();
+    if (!nama) { alert('Nama ekstrakurikuler tidak boleh kosong.'); return; }
+    if (this.ekskulList.some(ek => ek.nama.toLowerCase() === nama.toLowerCase())) {
+      alert('Ekstrakurikuler "' + nama + '" sudah ada.');
+      return;
+    }
+    this.ekskulList.push({ nama: nama, keterangan: keterangan, participants: [] });
+    this.saveEkskulMaster();
+    if (namaInput) namaInput.value = '';
+    if (ketInput) ketInput.value = '';
+    this.render();
+  },
+
+  deleteEkskul(index) {
+    const ekskul = this.ekskulList[index];
+    if (!ekskul) return;
+    if (!confirm('Hapus ekstrakurikuler "' + ekskul.nama + '"? Peserta yang dipilih juga akan dihapus.')) return;
+    this.ekskulList.splice(index, 1);
+    this.saveEkskulMaster();
+    this.render();
+  },
+
+  // ===== Participant selection =====
+  toggleParticipant(ekskulIndex, nis) {
+    const ekskul = this.ekskulList[ekskulIndex];
+    if (!ekskul) return;
+    const key = String(nis);
+    const pos = ekskul.participants.map(String).indexOf(key);
+    if (pos === -1) ekskul.participants.push(nis);
+    else ekskul.participants.splice(pos, 1);
+    this.saveEkskulMaster();
+    const selectAll = document.getElementById('ekskul-selectall-' + ekskulIndex);
+    if (selectAll) {
+      selectAll.checked = this.studentList.length > 0 && ekskul.participants.length === this.studentList.length;
     }
   },
 
-  updateTextareasFromValues() {
-    const taKeg = document.getElementById('paste-kegiatan-textarea');
-    const taKet = document.getElementById('paste-keterangan-textarea');
-    // Convert internal newline format to semicolon for paste display (one line per student)
-    if (taKeg) taKeg.value = this.kegiatanValues.map(v => (v || '').replace(/\n/g, ';')).join('\n');
-    if (taKet) taKet.value = this.keteranganValues.map(v => (v || '').replace(/\n/g, ';')).join('\n');
+  toggleAllParticipants(ekskulIndex, checked) {
+    const ekskul = this.ekskulList[ekskulIndex];
+    if (!ekskul) return;
+    ekskul.participants = checked ? this.studentList.map(s => s.nis) : [];
+    this.saveEkskulMaster();
+    this.studentList.forEach((s, si) => {
+      const cb = document.getElementById('ekskul-cb-' + ekskulIndex + '-' + si);
+      if (cb) cb.checked = checked;
+    });
   },
 
-  applyPaste() {
-    const taKeg = document.getElementById('paste-kegiatan-textarea');
-    const taKet = document.getElementById('paste-keterangan-textarea');
-    if (!taKeg || !taKet) return;
-
-    const kegLines = taKeg.value.split('\n');
-    const ketLines = taKet.value.split('\n');
-
-    for (let i = 0; i < this.studentList.length; i++) {
-      // Convert semicolons to newlines for internal storage
-      this.kegiatanValues[i] = (kegLines[i] || '').trim().replace(/;/g, '\n');
-      this.keteranganValues[i] = (ketLines[i] || '').trim().replace(/;/g, '\n');
-    }
-    this.updateTableInputs();
-
-    const filledKeg = kegLines.filter(l => l.trim() !== '').length;
-    if (filledKeg > 0 && filledKeg < this.studentList.length) {
-      alert('Perhatian: jumlah baris paste kegiatan (' + filledKeg + ') kurang dari jumlah siswa (' + this.studentList.length + '). Baris kosong tidak diisi.');
-    }
-  },
-
-  onManualKegiatan(index, value) {
-    this.kegiatanValues[index] = value;
-  },
-
-  onManualKeterangan(index, value) {
-    this.keteranganValues[index] = value;
-  },
-
-  async saveAll() {
+  // ===== Final save to IndexedDB (nonAkademik) =====
+  async saveToDatabase() {
     if (!this.selectedTP || !this.selectedKelas || this.studentList.length === 0) return;
-
-    for (let i = 0; i < this.studentList.length; i++) {
-      const kegInput = document.getElementById('ekskul-kegiatan-' + i);
-      const ketInput = document.getElementById('ekskul-ket-' + i);
-      if (kegInput) this.kegiatanValues[i] = kegInput.value.trim();
-      if (ketInput) this.keteranganValues[i] = ketInput.value.trim();
-    }
-
     const kegField = this.selectedSemester === '1' ? 'ekskulKegiatan1' : 'ekskulKegiatan2';
     const ketField = this.selectedSemester === '1' ? 'ekskulKet1' : 'ekskulKet2';
     let savedCount = 0;
 
-    for (let i = 0; i < this.studentList.length; i++) {
-      const student = this.studentList[i];
+    for (const student of this.studentList) {
+      const kegLines = [];
+      const ketLines = [];
+      this.ekskulList.forEach(ek => {
+        const participants = (ek.participants || []).map(String);
+        if (participants.indexOf(String(student.nis)) !== -1) {
+          kegLines.push(ek.nama);
+          ketLines.push(ek.keterangan || '');
+        }
+      });
+      const kegValue = kegLines.join('\n');
+      const ketValue = ketLines.join('\n');
+
       const nonAkademikArr = await DB.getNonAkademikByAkademik(student.id);
       const existing = nonAkademikArr.length > 0 ? nonAkademikArr[0] : null;
 
       if (existing) {
         const updated = { ...existing };
-        updated[kegField] = this.kegiatanValues[i] || '';
-        updated[ketField] = this.keteranganValues[i] || '';
+        updated[kegField] = kegValue;
+        updated[ketField] = ketValue;
         await DB.updateNonAkademik(updated);
       } else {
         const newRecord = {
@@ -3486,29 +3548,14 @@ const Ekstrakurikuler = {
           sakit1: 0, izin1: 0, alpha1: 0,
           sakit2: 0, izin2: 0, alpha2: 0
         };
-        newRecord[kegField] = this.kegiatanValues[i] || '';
-        newRecord[ketField] = this.keteranganValues[i] || '';
+        newRecord[kegField] = kegValue;
+        newRecord[ketField] = ketValue;
         await DB.addNonAkademik(newRecord);
       }
       savedCount++;
     }
 
     alert('Berhasil menyimpan data ekstrakurikuler Semester ' + this.selectedSemester + ' untuk ' + savedCount + ' siswa!');
-    await this.loadExisting();
-    this.markSavedIndicators();
-  },
-
-  markSavedIndicators() {
-    for (let i = 0; i < this.studentList.length; i++) {
-      const kegInput = document.getElementById('ekskul-kegiatan-' + i);
-      const ketInput = document.getElementById('ekskul-ket-' + i);
-      if (kegInput && kegInput.value.trim() !== '') {
-        kegInput.style.backgroundColor = 'var(--emerald-light)';
-      }
-      if (ketInput && ketInput.value.trim() !== '') {
-        ketInput.style.backgroundColor = 'var(--emerald-light)';
-      }
-    }
   },
 
   showRekap() {
@@ -3520,7 +3567,6 @@ const Ekstrakurikuler = {
   hideRekap() {
     this.showingRekap = false;
     this.render();
-    if (this.studentList.length > 0) this.loadExisting();
   },
 
   formatEkskulBullet(kegiatan, keterangan) {
@@ -3573,11 +3619,6 @@ const Ekstrakurikuler = {
       (showRekapBtn ? '<div style="margin-bottom:0;"><button type="button" class="btn btn-outline" onclick="Ekstrakurikuler.showRekap()" style="margin-top:20px;">Lihat Rekap Ekskul</button></div>' : '') +
       '</div></div>' +
       (this.showingRekap ? this.renderRekapTable() : (allSelected && this.studentList.length > 0 ? this.renderInputArea() : this.renderPlaceholder()));
-
-    if (!this.showingRekap && allSelected && this.studentList.length > 0) {
-      this.updateTableInputs();
-      this.updateTextareasFromValues();
-    }
   },
 
   renderPlaceholder() {
@@ -3589,8 +3630,49 @@ const Ekstrakurikuler = {
 
   renderInputArea() {
     const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
-    return '<div class="card" style="margin-bottom:16px;"><h3 class="section-title">Paste Batch - ' + escapeHTMLDash(semLabel) + '</h3><p class="muted" style="margin-bottom:12px;">Paste daftar kegiatan dan keterangan (satu baris per siswa, ' + this.studentList.length + ' baris urut alfabet). Jika siswa punya lebih dari 1 ekskul, pisahkan dengan titik koma (;).</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div class="form-group" style="margin-bottom:0;"><label>Paste Kegiatan</label><textarea id="paste-kegiatan-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Pramuka;Volly\nPMR\nPaskibra;Futsal\n..."></textarea></div><div class="form-group" style="margin-bottom:0;"><label>Paste Keterangan</label><textarea id="paste-keterangan-textarea" rows="6" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;" placeholder="Mampu baris-berbaris;Teknik dasar voli\nTerampil P3K\nDisiplin gerak;Teknik passing\n..."></textarea></div></div><button type="button" class="btn btn-outline" onclick="Ekstrakurikuler.applyPaste()" style="margin-top:12px;">Terapkan dari Paste</button></div>' +
-    '<div class="card"><h3 class="section-title">Data Ekstrakurikuler - ' + escapeHTMLDash(this.selectedKelas) + ' (' + escapeHTMLDash(semLabel) + ')</h3><p class="muted" style="margin-bottom:12px;">' + this.studentList.length + ' siswa (urut alfabet). Edit langsung di kolom tabel, satu kegiatan per baris.</p><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama Siswa</th><th style="min-width:200px;">Kegiatan Ekstrakurikuler</th><th style="min-width:200px;">Keterangan</th></tr></thead><tbody>' + this.studentList.map((s, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(s.nama) + '</td><td><textarea class="input-md" id="ekskul-kegiatan-' + i + '" rows="3" style="resize:vertical;min-height:50px;" onchange="Ekstrakurikuler.onManualKegiatan(' + i + ', this.value)" placeholder="Satu per baris"></textarea></td><td><textarea class="input-md" id="ekskul-ket-' + i + '" rows="3" style="resize:vertical;min-height:50px;" onchange="Ekstrakurikuler.onManualKeterangan(' + i + ', this.value)" placeholder="Satu per baris"></textarea></td></tr>').join('') + '</tbody></table></div><div class="form-actions" style="margin-top:16px;"><button type="button" class="btn btn-primary" onclick="Ekstrakurikuler.saveAll()">Simpan Semua</button></div></div>';
+
+    // Section A - Tambah Ekstrakurikuler
+    let html = '<div class="card" style="margin-bottom:16px;"><h3 class="section-title">Tambah Ekstrakurikuler - ' + escapeHTMLDash(semLabel) + '</h3>' +
+      '<p class="muted" style="margin-bottom:12px;">Tambahkan daftar ekstrakurikuler terlebih dahulu, lalu pilih peserta pada bagian di bawah.</p>' +
+      '<form onsubmit="Ekstrakurikuler.addEkskul(event)"><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">' +
+      '<div class="form-group" style="margin-bottom:0;"><label>Nama Ekskul</label><input type="text" id="ekskul-nama-input" placeholder="Contoh: Pramuka"></div>' +
+      '<div class="form-group" style="margin-bottom:0;"><label>Keterangan</label><textarea id="ekskul-ket-input" rows="2" style="resize:vertical;min-height:40px;" placeholder="Contoh: Mampu baris-berbaris"></textarea></div>' +
+      '</div><div class="form-actions" style="margin-top:12px;"><button type="submit" class="btn btn-primary">+ Tambah Ekskul</button></div></form>';
+
+    if (this.ekskulList.length > 0) {
+      html += '<div class="table-container" style="margin-top:16px;"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama</th><th style="min-width:200px;">Keterangan</th><th style="width:90px;">Aksi</th></tr></thead><tbody>' +
+        this.ekskulList.map((ek, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(ek.nama) + '</td><td>' + escapeHTMLDash(ek.keterangan || '-') + '</td><td><button type="button" class="btn btn-danger" onclick="Ekstrakurikuler.deleteEkskul(' + i + ')">Hapus</button></td></tr>').join('') +
+        '</tbody></table></div>';
+    } else {
+      html += '<p class="muted" style="margin-top:16px;">Belum ada ekstrakurikuler ditambahkan.</p>';
+    }
+    html += '</div>';
+
+    // Section B - Pilih Peserta
+    if (this.ekskulList.length > 0) {
+      html += '<div class="card"><h3 class="section-title">Pilih Peserta - ' + escapeHTMLDash(this.selectedKelas) + ' (' + escapeHTMLDash(semLabel) + ')</h3>' +
+        '<p class="muted" style="margin-bottom:12px;">Centang siswa yang mengikuti tiap ekstrakurikuler. ' + this.studentList.length + ' siswa (urut alfabet).</p>';
+
+      html += this.ekskulList.map((ek, ei) => {
+        const allChecked = this.studentList.length > 0 && (ek.participants || []).length === this.studentList.length;
+        const participantStr = (ek.participants || []).map(String);
+        let block = '<div class="card" style="margin-bottom:16px;background:var(--bg-primary);">' +
+          '<h4 style="margin-bottom:4px;">' + escapeHTMLDash(ek.nama) + '</h4>' +
+          '<p class="muted" style="margin-bottom:8px;">' + escapeHTMLDash(ek.keterangan || '-') + '</p>' +
+          '<label style="display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:6px;cursor:pointer;"><input type="checkbox" id="ekskul-selectall-' + ei + '"' + (allChecked ? ' checked' : '') + ' onchange="Ekstrakurikuler.toggleAllParticipants(' + ei + ', this.checked)"> Pilih Semua</label>' +
+          '<div class="checkbox-list">' +
+          this.studentList.map((s, si) => {
+            const checked = participantStr.indexOf(String(s.nis)) !== -1;
+            return '<label><input type="checkbox" id="ekskul-cb-' + ei + '-' + si + '"' + (checked ? ' checked' : '') + ' onchange="Ekstrakurikuler.toggleParticipant(' + ei + ', \'' + s.nis + '\')"> ' + escapeHTMLDash(s.nama) + '</label>';
+          }).join('') +
+          '</div></div>';
+        return block;
+      }).join('');
+
+      html += '<div class="form-actions" style="margin-top:8px;"><button type="button" class="btn btn-primary" onclick="Ekstrakurikuler.saveToDatabase()">Simpan Semua ke Data Siswa</button></div></div>';
+    }
+
+    return html;
   }
 };
   </script>
