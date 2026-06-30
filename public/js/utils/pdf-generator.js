@@ -251,8 +251,10 @@ const PDFGenerator = {
         .print-info-table .col-sem { text-align: center; font-weight: bold; }
         .print-table { margin-bottom: 0; }
         .print-section { margin-top: 20px; }
-        .print-section-title { font-weight: bold; margin-bottom: 8px; }
-        .print-section-title-no-underline { font-weight: bold; margin-bottom: 8px; }
+        .print-table thead { display: table-header-group; }
+        tr { page-break-inside: avoid; break-inside: avoid; }
+        .print-section-title { font-weight: bold; margin-bottom: 8px; page-break-after: avoid; break-after: avoid; }
+        .print-section-title-no-underline { font-weight: bold; margin-bottom: 8px; page-break-after: avoid; break-after: avoid; }
         .desc-cell { text-align: justify; font-size: 11pt; }
         .signature-cell { width: 120px; height: 80px; vertical-align: bottom; }
         .kokurikuler-header { border: 1px solid #000; text-align: center; font-weight: bold; padding: 10px; margin-bottom: 24px; font-size: 11pt; }
