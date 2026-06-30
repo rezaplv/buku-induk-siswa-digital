@@ -2447,13 +2447,15 @@ const InputNilai = {
     if (rawText.indexOf('\t') !== -1) {
       // TAB-separated (horizontal Excel paste)
       items = rawText.split('\t').map(function(s) { return s.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/^"|"$/g, '').trim(); });
-    } else if (rawText.indexOf('"') !== -1) {
+    } else if (rawText.indexOf('"') !== -1 && rawText.trim().charAt(0) === '"') {
       // Quoted cells (vertical Excel paste)
       items = this.parseExcelVerticalPaste(rawText);
     } else {
-      // Plain newline-separated (simple one-line-per-mapel)
-      items = rawText.split(/\r\n|\r|\n/);
-      if (items.length > 0 && items[items.length - 1].trim() === '') items.pop();
+      // Split by blank line (double newline) — each block = one mapel
+      const normalized = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+      items = normalized.split(/\n\s*\n/).map(function(s) { return s.trim(); });
+      // Remove trailing empty item if any
+      if (items.length > 0 && items[items.length - 1] === '') items.pop();
     }
     for (let mi = 0; mi < MATA_PELAJARAN.length; mi++) {
       const val = mi < items.length ? items[mi] : '';
@@ -2464,7 +2466,7 @@ const InputNilai = {
     }
     const filled = items.filter(function(v) { return v !== ''; }).length;
     if (filled > 0 && filled < MATA_PELAJARAN.length) {
-      alert('Perhatian: hanya ' + filled + ' mapel terisi dari ' + MATA_PELAJARAN.length + ' mapel. Mapel sisanya dikosongkan.');
+      alert('Terisi ' + filled + ' dari ' + MATA_PELAJARAN.length + ' mapel. Mapel sisanya dikosongkan.');
     }
   },
 
@@ -2600,8 +2602,8 @@ const InputNilai = {
       '<span class="muted">Siswa ' + (si + 1) + ' dari ' + this.studentList.length + ' | ' + escapeHTMLDash(semLabel) + '</span>' +
       '</div>' +
       '<h3 class="section-title">Paste dari Excel (semua mapel sekaligus)</h3>' +
-      '<p class="muted" style="margin-bottom:8px;">Copy satu kolom deskripsi dari Excel (' + MATA_PELAJARAN.length + ' baris, satu per mapel urut). Paste di bawah lalu klik "Terapkan dari Paste".</p>' +
-      '<textarea id="paste-desk-textarea" rows="5" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Pisahkan antar mapel dengan TAB (copy horizontal dari Excel) atau satu deskripsi per baris."></textarea>' +
+      '<p class="muted" style="margin-bottom:8px;">Paste semua deskripsi di sini. Pisahkan antar mapel dengan satu baris kosong (tekan Enter 2x). Klik "Terapkan dari Paste" untuk mengisi otomatis.</p>' +
+      '<textarea id="paste-desk-textarea" rows="5" style="width:100%;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--border-color);border-radius:8px;resize:vertical;margin-bottom:12px;" placeholder="Deskripsi mapel 1...\n\nDeskripsi mapel 2...\n\nDeskripsi mapel 3..."></textarea>' +
       '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPasteDeskripsi()">Terapkan dari Paste</button>' +
       '</div>' +
       '<div class="card">' +
