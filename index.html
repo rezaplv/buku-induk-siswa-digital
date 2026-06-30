@@ -1546,6 +1546,7 @@ const InputData = {
   students: [],
   akademikMap: {},
   editAkademikId: null,
+  editOriginalNIS: '',
   async init() { await this.loadData(); this.render(); },
   async loadData() {
     this.students = await DB.getAllSiswa();
@@ -1670,13 +1671,15 @@ const InputData = {
     document.getElementById('inputdata-input-status').value = '';
     document.getElementById('inputdata-akademik-section').style.display = 'block';
     this.editAkademikId = null;
+    this.editOriginalNIS = '';
   },
   async editStudent(nis) {
     const siswa = await DB.getSiswa(nis); if (!siswa) return;
     document.getElementById('inputdata-student-modal').style.display = 'flex';
     document.getElementById('inputdata-modal-title').textContent = 'Edit Siswa';
     document.getElementById('inputdata-input-nama').value = siswa.nama;
-    document.getElementById('inputdata-input-nis').value = siswa.nis; document.getElementById('inputdata-input-nis').disabled = true;
+    document.getElementById('inputdata-input-nis').value = siswa.nis; document.getElementById('inputdata-input-nis').disabled = false;
+    this.editOriginalNIS = siswa.nis;
     document.getElementById('inputdata-input-nisn').value = siswa.nisn || '';
     document.getElementById('inputdata-input-edit-mode').value = 'edit';
     const akademikRecords = await DB.getAkademikBySiswa(nis);
@@ -1717,7 +1720,26 @@ const InputData = {
 
     try {
       if (mode === 'edit') {
-        await DB.updateSiswa({ nama, nis, nisn });
+        const originalNIS = InputData.editOriginalNIS;
+        if (nis !== originalNIS) {
+          // NIS changed — check if new NIS already exists
+          const existingByNIS = await DB.getSiswa(nis);
+          if (existingByNIS) {
+            alert('GAGAL: NIS "' + nis + '" sudah digunakan oleh siswa "' + existingByNIS.nama + '". Tidak bisa menyimpan data duplikat.');
+            return;
+          }
+          // Delete old record and create new one
+          await DB.deleteSiswa(originalNIS);
+          await DB.addSiswa({ nama, nis, nisn });
+          // Update all akademik records from old NIS to new NIS
+          const akademikRecords = await DB.getAkademikBySiswa(originalNIS);
+          for (const akad of akademikRecords) {
+            akad.nis = nis;
+            await DB.updateAkademik(akad);
+          }
+        } else {
+          await DB.updateSiswa({ nama, nis, nisn });
+        }
         if (InputData.editAkademikId) {
           const tp = document.getElementById('inputdata-input-tp').value.trim();
           const kelas = document.getElementById('inputdata-input-kelas').value.trim();
