@@ -85,8 +85,8 @@ const PDFGenerator = {
         <table class="print-table">
           <tbody>
             <tr>
-              <td rowspan="4" style="width:40px;text-align:center;vertical-align:middle;"><strong>NO</strong></td>
-              <td style="width:250px;"><strong>TAHUN PELAJARAN</strong></td>
+              <td rowspan="4" style="width:6%;text-align:center;vertical-align:middle;"><strong>NO</strong></td>
+              <td style="width:44%;"><strong>TAHUN PELAJARAN</strong></td>
               <td colspan="2">${esc(akad.tahunPelajaran || '-')}</td>
             </tr>
             <tr>
@@ -107,10 +107,10 @@ const PDFGenerator = {
               const n = nilaiMap[mp] || {};
               return `
                 <tr>
-                  <td class="center" style="width:40px;">${i + 1}</td>
+                  <td class="center" style="width:6%;">${i + 1}</td>
                   <td>${esc(mp)}</td>
-                  <td class="center" style="width:80px;">${esc(n.nilaiSem1 || '-')}</td>
-                  <td class="center" style="width:80px;">${esc(n.nilaiSem2 || '-')}</td>
+                  <td class="center" style="width:25%;">${esc(n.nilaiSem1 || '-')}</td>
+                  <td class="center" style="width:25%;">${esc(n.nilaiSem2 || '-')}</td>
                 </tr>
               `;
             }).join('')}
@@ -121,7 +121,7 @@ const PDFGenerator = {
           <div class="print-section-title">Ekstrakurikuler</div>
           <table class="print-table">
             <thead>
-              <tr><th>Semester</th><th>Kegiatan Ekstrakurikuler</th><th>Keterangan</th></tr>
+              <tr><th style="width:14%;">Semester</th><th style="width:43%;">Kegiatan Ekstrakurikuler</th><th style="width:43%;">Keterangan</th></tr>
             </thead>
             <tbody>
               ${ekskulRows1}
@@ -134,8 +134,8 @@ const PDFGenerator = {
           <div class="print-section-title">Ketidakhadiran</div>
           <table class="print-table">
             <thead>
-              <tr><th rowspan="2">Semester</th><th colspan="3">Ketidakhadiran</th></tr>
-<tr><th>Sakit (Hari)</th><th>Izin (Hari)</th><th>Tanpa Keterangan (Hari)</th></tr>
+              <tr><th rowspan="2" style="width:16%;">Semester</th><th colspan="3">Ketidakhadiran</th></tr>
+<tr><th style="width:28%;">Sakit (Hari)</th><th style="width:28%;">Izin (Hari)</th><th style="width:28%;">Tanpa Keterangan (Hari)</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -158,7 +158,7 @@ const PDFGenerator = {
           <div class="print-section-title-no-underline">Status Akhir Tahun Pelajaran</div>
           <table class="print-table">
             <thead>
-              <tr><th>Kelas</th><th>Status Akhir Tahun Pelajaran</th><th>Nama Wali Kelas</th><th>Tanda Tangan</th></tr>
+              <tr><th style="width:15%;">Kelas</th><th style="width:35%;">Status Akhir Tahun Pelajaran</th><th style="width:30%;">Nama Wali Kelas</th><th style="width:20%;">Tanda Tangan</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -179,7 +179,7 @@ const PDFGenerator = {
           <div class="print-section-title">Deskripsi Capaian Kompetensi</div>
           <table class="print-table">
             <thead>
-              <tr><th style="width:30px;">No</th><th>Mata Pelajaran</th><th>Catatan Semester 1</th><th>Catatan Semester 2</th></tr>
+              <tr><th style="width:6%;">No</th><th style="width:24%;">Mata Pelajaran</th><th style="width:35%;">Catatan Semester 1</th><th style="width:35%;">Catatan Semester 2</th></tr>
             </thead>
             <tbody>
               ${MATA_PELAJARAN.map((mp, i) => {
@@ -232,7 +232,7 @@ const PDFGenerator = {
         @page { size: A4; margin: 15mm; }
         body { font-family: 'Arial Narrow', Arial, sans-serif; font-size: 11pt; }
         table { border-collapse: collapse; width: 100%; }
-        td, th { border: 1px solid #000; padding: 4px 6px; vertical-align: top; }
+        td, th { border: 1px solid #000; padding: 4px 6px; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
         th { text-align: center; font-weight: bold; }
         .center { text-align: center; }
         .bold { font-weight: bold; }
@@ -249,7 +249,7 @@ const PDFGenerator = {
         .print-info-table .col-no { width: 40px; text-align: center; vertical-align: middle; font-weight: bold; }
         .print-info-table .col-label { font-weight: bold; width: 250px; }
         .print-info-table .col-sem { text-align: center; font-weight: bold; }
-        .print-table { margin-bottom: 0; }
+        .print-table { width: 100%; margin-bottom: 0; table-layout: fixed; }
         .print-section { margin-top: 20px; }
         .print-table thead { display: table-header-group; }
         tr { page-break-inside: avoid; break-inside: avoid; }
