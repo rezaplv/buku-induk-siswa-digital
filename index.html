@@ -3410,8 +3410,28 @@ const Ekstrakurikuler = {
     } else {
       this.ekskulList = [];
     }
-    // Make sure every ekskul has a participants array
-    this.ekskulList.forEach(ek => { if (!Array.isArray(ek.participants)) ek.participants = []; });
+    // Backward-compatible migration to new data model
+    this.ekskulList.forEach(ek => {
+      // keteranganList migration
+      if (!Array.isArray(ek.keteranganList)) {
+        if (typeof ek.keterangan === 'string' && ek.keterangan.trim() !== '') {
+          ek.keteranganList = [ek.keterangan];
+        } else if (typeof ek.keterangan === 'string') {
+          ek.keteranganList = [''];
+        } else {
+          ek.keteranganList = [''];
+        }
+      }
+      if (ek.keteranganList.length === 0) ek.keteranganList = [''];
+      // participants migration: array (old) -> object, missing -> {}
+      if (Array.isArray(ek.participants)) {
+        const obj = {};
+        ek.participants.forEach(nis => { obj[String(nis)] = 0; });
+        ek.participants = obj;
+      } else if (!ek.participants || typeof ek.participants !== 'object') {
+        ek.participants = {};
+      }
+    });
     // If nothing stored locally, try to reconstruct from existing DB data
     if (this.ekskulList.length === 0 && this.studentList.length > 0) {
       await this.reconstructMasterFromDB();
@@ -3441,16 +3461,26 @@ const Ekstrakurikuler = {
         const ket = ketArr[idx] || '';
         const mapKey = nama.toLowerCase();
         if (!map[mapKey]) {
-          map[mapKey] = { nama: nama, keterangan: ket, participants: [] };
+          map[mapKey] = { nama: nama, keteranganList: [], participants: {} };
           order.push(mapKey);
-        } else if (!map[mapKey].keterangan && ket) {
-          map[mapKey].keterangan = ket;
         }
-        if (map[mapKey].participants.indexOf(student.nis) === -1) {
-          map[mapKey].participants.push(student.nis);
+        const ekObj = map[mapKey];
+        // Find the index of this student's keterangan within keteranganList, dedupe
+        let ketIndex = ekObj.keteranganList.indexOf(ket);
+        if (ketIndex === -1) {
+          ekObj.keteranganList.push(ket);
+          ketIndex = ekObj.keteranganList.length - 1;
         }
+        ekObj.participants[String(student.nis)] = ketIndex;
       }
     }
+
+    // Ensure every ekskul has at least one keterangan option
+    Object.keys(map).forEach(k => {
+      if (!map[k].keteranganList || map[k].keteranganList.length === 0) {
+        map[k].keteranganList = [''];
+      }
+    });
 
     this.ekskulList = order.map(k => map[k]);
     if (this.ekskulList.length > 0) this.saveEkskulMaster();
@@ -3462,13 +3492,15 @@ const Ekstrakurikuler = {
     const namaInput = document.getElementById('ekskul-nama-input');
     const ketInput = document.getElementById('ekskul-ket-input');
     const nama = (namaInput ? namaInput.value : '').trim();
-    const keterangan = (ketInput ? ketInput.value : '').trim();
+    const rawKet = ketInput ? ketInput.value : '';
     if (!nama) { alert('Nama ekstrakurikuler tidak boleh kosong.'); return; }
     if (this.ekskulList.some(ek => ek.nama.toLowerCase() === nama.toLowerCase())) {
       alert('Ekstrakurikuler "' + nama + '" sudah ada.');
       return;
     }
-    this.ekskulList.push({ nama: nama, keterangan: keterangan, participants: [] });
+    let keteranganList = rawKet.split('\n').map(k => k.trim()).filter(k => k !== '');
+    if (keteranganList.length === 0) keteranganList = [''];
+    this.ekskulList.push({ nama: nama, keteranganList: keteranganList, participants: {} });
     this.saveEkskulMaster();
     if (namaInput) namaInput.value = '';
     if (ketInput) ketInput.value = '';
@@ -3485,29 +3517,41 @@ const Ekstrakurikuler = {
   },
 
   // ===== Participant selection =====
-  toggleParticipant(ekskulIndex, nis) {
+  toggleParticipant(ekskulIndex, nis, checked) {
     const ekskul = this.ekskulList[ekskulIndex];
     if (!ekskul) return;
     const key = String(nis);
-    const pos = ekskul.participants.map(String).indexOf(key);
-    if (pos === -1) ekskul.participants.push(nis);
-    else ekskul.participants.splice(pos, 1);
-    this.saveEkskulMaster();
-    const selectAll = document.getElementById('ekskul-selectall-' + ekskulIndex);
-    if (selectAll) {
-      selectAll.checked = this.studentList.length > 0 && ekskul.participants.length === this.studentList.length;
+    if (checked) {
+      ekskul.participants[key] = 0;
+    } else {
+      delete ekskul.participants[key];
     }
+    this.saveEkskulMaster();
+    // Re-render so the keterangan dropdown appears/disappears correctly
+    this.render();
+  },
+
+  setParticipantKet(ekskulIndex, nis, ketIndex) {
+    const ekskul = this.ekskulList[ekskulIndex];
+    if (!ekskul) return;
+    const key = String(nis);
+    if (!(key in ekskul.participants)) return;
+    ekskul.participants[key] = parseInt(ketIndex) || 0;
+    this.saveEkskulMaster();
   },
 
   toggleAllParticipants(ekskulIndex, checked) {
     const ekskul = this.ekskulList[ekskulIndex];
     if (!ekskul) return;
-    ekskul.participants = checked ? this.studentList.map(s => s.nis) : [];
+    if (checked) {
+      const obj = {};
+      this.studentList.forEach(s => { obj[String(s.nis)] = 0; });
+      ekskul.participants = obj;
+    } else {
+      ekskul.participants = {};
+    }
     this.saveEkskulMaster();
-    this.studentList.forEach((s, si) => {
-      const cb = document.getElementById('ekskul-cb-' + ekskulIndex + '-' + si);
-      if (cb) cb.checked = checked;
-    });
+    this.render();
   },
 
   // ===== Final save to IndexedDB (nonAkademik) =====
@@ -3521,10 +3565,13 @@ const Ekstrakurikuler = {
       const kegLines = [];
       const ketLines = [];
       this.ekskulList.forEach(ek => {
-        const participants = (ek.participants || []).map(String);
-        if (participants.indexOf(String(student.nis)) !== -1) {
+        const participants = ek.participants || {};
+        const key = String(student.nis);
+        if (key in participants) {
           kegLines.push(ek.nama);
-          ketLines.push(ek.keterangan || '');
+          const ketList = ek.keteranganList || [''];
+          const idx = participants[key];
+          ketLines.push(ketList[idx] || ketList[0] || '');
         }
       });
       const kegValue = kegLines.join('\n');
@@ -3636,12 +3683,24 @@ const Ekstrakurikuler = {
       '<p class="muted" style="margin-bottom:12px;">Tambahkan daftar ekstrakurikuler terlebih dahulu, lalu pilih peserta pada bagian di bawah.</p>' +
       '<form onsubmit="Ekstrakurikuler.addEkskul(event)"><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">' +
       '<div class="form-group" style="margin-bottom:0;"><label>Nama Ekskul</label><input type="text" id="ekskul-nama-input" placeholder="Contoh: Pramuka"></div>' +
-      '<div class="form-group" style="margin-bottom:0;"><label>Keterangan</label><textarea id="ekskul-ket-input" rows="2" style="resize:vertical;min-height:40px;" placeholder="Contoh: Mampu baris-berbaris"></textarea></div>' +
+      '<div class="form-group" style="margin-bottom:0;"><label>Keterangan (boleh lebih dari satu, satu per baris)</label><textarea id="ekskul-ket-input" rows="3" style="resize:vertical;min-height:60px;" placeholder="Satu keterangan per baris. Contoh:&#10;Mampu baris-berbaris&#10;Mampu tali-temali"></textarea></div>' +
       '</div><div class="form-actions" style="margin-top:12px;"><button type="submit" class="btn btn-primary">+ Tambah Ekskul</button></div></form>';
 
     if (this.ekskulList.length > 0) {
       html += '<div class="table-container" style="margin-top:16px;"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="min-width:150px;">Nama</th><th style="min-width:200px;">Keterangan</th><th style="width:90px;">Aksi</th></tr></thead><tbody>' +
-        this.ekskulList.map((ek, i) => '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(ek.nama) + '</td><td>' + escapeHTMLDash(ek.keterangan || '-') + '</td><td><button type="button" class="btn btn-danger" onclick="Ekstrakurikuler.deleteEkskul(' + i + ')">Hapus</button></td></tr>').join('') +
+        this.ekskulList.map((ek, i) => {
+          const ketList = ek.keteranganList || [''];
+          const nonEmpty = ketList.filter(k => k && k.trim() !== '');
+          let ketDisplay;
+          if (nonEmpty.length === 0) {
+            ketDisplay = '-';
+          } else if (nonEmpty.length === 1) {
+            ketDisplay = escapeHTMLDash(nonEmpty[0]);
+          } else {
+            ketDisplay = nonEmpty.map(k => '\u2022 ' + escapeHTMLDash(k)).join('<br>');
+          }
+          return '<tr><td>' + (i + 1) + '</td><td>' + escapeHTMLDash(ek.nama) + '</td><td>' + ketDisplay + '</td><td><button type="button" class="btn btn-danger" onclick="Ekstrakurikuler.deleteEkskul(' + i + ')">Hapus</button></td></tr>';
+        }).join('') +
         '</tbody></table></div>';
     } else {
       html += '<p class="muted" style="margin-top:16px;">Belum ada ekstrakurikuler ditambahkan.</p>';
@@ -3654,16 +3713,33 @@ const Ekstrakurikuler = {
         '<p class="muted" style="margin-bottom:12px;">Centang siswa yang mengikuti tiap ekstrakurikuler. ' + this.studentList.length + ' siswa (urut alfabet).</p>';
 
       html += this.ekskulList.map((ek, ei) => {
-        const allChecked = this.studentList.length > 0 && (ek.participants || []).length === this.studentList.length;
-        const participantStr = (ek.participants || []).map(String);
+        const participants = ek.participants || {};
+        const participantKeys = Object.keys(participants);
+        const allChecked = this.studentList.length > 0 && participantKeys.length === this.studentList.length;
+        const ketList = ek.keteranganList || [''];
+        const hasMultiKet = ketList.length > 1;
+        const ketSummary = ketList.filter(k => k && k.trim() !== '');
         let block = '<div class="card" style="margin-bottom:16px;background:var(--bg-primary);">' +
           '<h4 style="margin-bottom:4px;">' + escapeHTMLDash(ek.nama) + '</h4>' +
-          '<p class="muted" style="margin-bottom:8px;">' + escapeHTMLDash(ek.keterangan || '-') + '</p>' +
+          '<p class="muted" style="margin-bottom:8px;">' + (ketSummary.length > 0 ? ketSummary.map(k => escapeHTMLDash(k)).join(' &bull; ') : '-') + '</p>' +
           '<label style="display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:6px;cursor:pointer;"><input type="checkbox" id="ekskul-selectall-' + ei + '"' + (allChecked ? ' checked' : '') + ' onchange="Ekstrakurikuler.toggleAllParticipants(' + ei + ', this.checked)"> Pilih Semua</label>' +
           '<div class="checkbox-list">' +
           this.studentList.map((s, si) => {
-            const checked = participantStr.indexOf(String(s.nis)) !== -1;
-            return '<label><input type="checkbox" id="ekskul-cb-' + ei + '-' + si + '"' + (checked ? ' checked' : '') + ' onchange="Ekstrakurikuler.toggleParticipant(' + ei + ', \'' + s.nis + '\')"> ' + escapeHTMLDash(s.nama) + '</label>';
+            const key = String(s.nis);
+            const checked = key in participants;
+            let row = '<label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="ekskul-cb-' + ei + '-' + si + '"' + (checked ? ' checked' : '') + ' onchange="Ekstrakurikuler.toggleParticipant(' + ei + ', \'' + s.nis + '\', this.checked)"> ' + escapeHTMLDash(s.nama);
+            if (hasMultiKet && checked) {
+              const selectedIdx = participants[key] || 0;
+              const options = ketList.map((kt, ki) => {
+                const full = kt || '';
+                let display = full;
+                if (display.length > 50) display = display.substring(0, 50) + '\u2026';
+                return '<option value="' + ki + '"' + (ki === selectedIdx ? ' selected' : '') + ' title="' + escapeHTMLDash(full) + '">' + escapeHTMLDash(display) + '</option>';
+              }).join('');
+              row += '<select style="width:auto;max-width:260px;margin-left:4px;" onchange="Ekstrakurikuler.setParticipantKet(' + ei + ', \'' + s.nis + '\', this.value)">' + options + '</select>';
+            }
+            row += '</label>';
+            return row;
           }).join('') +
           '</div></div>';
         return block;
