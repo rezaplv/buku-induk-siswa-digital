@@ -11,6 +11,14 @@ const PDFGenerator = {
       .replace(/'/g, '&#039;');
   },
 
+  escapeHTMLWithBreaks(str) {
+    if (str == null) return '';
+    var escaped = this.escapeHTML(str);
+    // Normalize line endings then convert newlines to <br>
+    escaped = escaped.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>');
+    return escaped;
+  },
+
   parseNewlineSeparated(str) {
     if (!str) return [];
     return str.split('\n').map(s => s.trim()).filter(s => s.length > 0);
@@ -41,6 +49,7 @@ const PDFGenerator = {
     const nonAkad = akad.nonAkademik || {};
     const p5 = akad.p5 || {};
     const esc = this.escapeHTML;
+    const escBr = this.escapeHTMLWithBreaks.bind(this);
 
     // Build nilai map
     const nilaiMap = {};
@@ -187,9 +196,9 @@ const PDFGenerator = {
         <div class="print-section page-break">
           <div class="kokurikuler-header">KOKURIKULER</div>
           <div class="kokurikuler-semester">SEMESTER 1 :</div>
-          <div class="kokurikuler-box">${esc(p5.catatanSem1 || '-')}</div>
+          <div class="kokurikuler-box">${p5.catatanSem1 ? escBr(p5.catatanSem1) : '-'}</div>
           <div class="kokurikuler-semester">SEMESTER 2 :</div>
-          <div class="kokurikuler-box">${esc(p5.catatanSem2 || '-')}</div>
+          <div class="kokurikuler-box">${p5.catatanSem2 ? escBr(p5.catatanSem2) : '-'}</div>
         </div>
       </div>
     `;
