@@ -2372,10 +2372,20 @@ const InputNilai = {
   updateDeskStudentDisplay() {
     const sel = document.getElementById('in-siswa');
     if (sel) sel.value = this.selectedDeskStudent;
+    const student = this.studentList[this.selectedDeskStudent];
+    if (!student) return;
+    const semLabel = this.selectedSemester === '1' ? 'Semester 1' : 'Semester 2';
     const nameEl = document.getElementById('desk-student-name');
-    if (nameEl && this.studentList[this.selectedDeskStudent]) {
-      const s = this.studentList[this.selectedDeskStudent];
-      nameEl.textContent = (this.selectedDeskStudent + 1) + '. ' + s.nama + ' (' + s.nis + ')';
+    if (nameEl) {
+      nameEl.textContent = (this.selectedDeskStudent + 1) + '. ' + student.nama + ' (' + student.nis + ')';
+    }
+    const titleEl = document.getElementById('desk-section-title');
+    if (titleEl) {
+      titleEl.textContent = 'Capaian Kompetensi - ' + student.nama + ' (' + semLabel + ')';
+    }
+    const counterEl = document.getElementById('desk-student-counter');
+    if (counterEl) {
+      counterEl.textContent = 'Siswa ' + (this.selectedDeskStudent + 1) + ' dari ' + this.studentList.length + ' | ' + semLabel;
     }
   },
 
@@ -2707,7 +2717,7 @@ const InputNilai = {
       '<span id="desk-student-name" style="font-size:16px;font-weight:700;color:var(--navy);">' + (si + 1) + '. ' + escapeHTMLDash(student.nama) + ' (' + escapeHTMLDash(student.nis) + ')</span>' +
       '<button type="button" class="btn btn-outline btn-sm" onclick="InputNilai.nextDeskStudent()">Next &raquo;</button>' +
       '</div>' +
-      '<span class="muted">Siswa ' + (si + 1) + ' dari ' + this.studentList.length + ' | ' + escapeHTMLDash(semLabel) + '</span>' +
+      '<span class="muted" id="desk-student-counter">Siswa ' + (si + 1) + ' dari ' + this.studentList.length + ' | ' + escapeHTMLDash(semLabel) + '</span>' +
       '</div>' +
       '<h3 class="section-title">Paste dari Excel (semua mapel sekaligus)</h3>' +
       '<p class="muted" style="margin-bottom:8px;">Paste semua deskripsi di sini. Pisahkan antar mapel dengan satu baris kosong (tekan Enter 2x). Klik "Terapkan dari Paste" untuk mengisi otomatis.</p>' +
@@ -2715,7 +2725,7 @@ const InputNilai = {
       '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPasteDeskripsi()">Terapkan dari Paste</button>' +
       '</div>' +
       '<div class="card">' +
-      '<h3 class="section-title">Capaian Kompetensi - ' + escapeHTMLDash(student.nama) + ' (' + escapeHTMLDash(semLabel) + ')</h3>' +
+      '<h3 class="section-title" id="desk-section-title">Capaian Kompetensi - ' + escapeHTMLDash(student.nama) + ' (' + escapeHTMLDash(semLabel) + ')</h3>' +
       '<p class="muted" style="margin-bottom:12px;">' + MATA_PELAJARAN.length + ' mata pelajaran. Anda juga bisa paste multi-baris langsung di textarea mapel pertama — otomatis terisi ke bawah.</p>' +
       '<div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Capaian Kompetensi</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
       '<div class="form-actions" style="margin-top:16px;">' +
