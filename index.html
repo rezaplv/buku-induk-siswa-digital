@@ -2611,7 +2611,7 @@ const InputNilai = {
       semesterDropdown +
       siswaDropdown +
       '</div>' +
-      '<div style="display:flex;gap:8px;align-items:center;margin-top:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);">Mode:</label><button class="btn btn-sm ' + (this.mode === 'nilai' ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.setMode(\'nilai\')">Nilai Angka</button><button class="btn btn-sm ' + (this.mode === 'deskripsi' ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.setMode(\'deskripsi\')">Deskripsi Capaian</button></div></div>' +
+      '<div style="display:flex;gap:8px;align-items:center;margin-top:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);">Mode:</label><button class="btn btn-sm ' + (this.mode === 'nilai' ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.setMode(\'nilai\')">Nilai Angka</button><button class="btn btn-sm ' + (this.mode === 'deskripsi' ? 'btn-primary' : 'btn-outline') + '" onclick="InputNilai.setMode(\'deskripsi\')">Capaian Kompetensi</button></div></div>' +
       (canShowRekap && this.mode === 'nilai' && !this.showingRekap ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekap()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Kelas</button></div>' : '') +
       (canShowRekap && this.mode === 'deskripsi' && !this.showingRekapDesk ? '<div style="margin-bottom:16px;"><button type="button" class="btn btn-outline" onclick="InputNilai.showRekapDesk()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>Lihat Rekap Deskripsi</button></div>' : '') +
       (this.showingRekap ? '<div id="rekap-kelas-container"></div>' : (this.showingRekapDesk ? '<div id="rekap-desk-container"></div>' : (this.mode === 'nilai' ? (readyNilai ? this.renderInputArea() : this.renderPlaceholder()) : (readyDesk ? this.renderDeskripsiArea() : this.renderPlaceholder()))));
@@ -2691,7 +2691,7 @@ const InputNilai = {
     }
 
     const importExportCard = '<div class="card" style="margin-bottom:16px;">' +
-      '<h3 class="section-title">Import/Export Deskripsi Capaian</h3>' +
+      '<h3 class="section-title">Import/Export Capaian Kompetensi</h3>' +
       '<p class="muted" style="margin-bottom:12px;">Download template CSV berisi semua siswa & mapel (format vertikal: 1 baris per siswa per mapel). Isi kolom DESKRIPSI_SEM1 dan DESKRIPSI_SEM2, lalu import kembali untuk mengisi deskripsi secara massal.</p>' +
       '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">' +
       '<button type="button" class="btn btn-outline" onclick="InputNilai.downloadDeskTemplate()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Template</button>' +
@@ -2715,9 +2715,9 @@ const InputNilai = {
       '<button type="button" class="btn btn-outline" onclick="InputNilai.applyPasteDeskripsi()">Terapkan dari Paste</button>' +
       '</div>' +
       '<div class="card">' +
-      '<h3 class="section-title">Deskripsi Capaian - ' + escapeHTMLDash(student.nama) + ' (' + escapeHTMLDash(semLabel) + ')</h3>' +
+      '<h3 class="section-title">Capaian Kompetensi - ' + escapeHTMLDash(student.nama) + ' (' + escapeHTMLDash(semLabel) + ')</h3>' +
       '<p class="muted" style="margin-bottom:12px;">' + MATA_PELAJARAN.length + ' mata pelajaran. Anda juga bisa paste multi-baris langsung di textarea mapel pertama — otomatis terisi ke bawah.</p>' +
-      '<div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Deskripsi Capaian</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Capaian Kompetensi</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
       '<div class="form-actions" style="margin-top:16px;">' +
       '<button type="button" class="btn btn-primary" onclick="InputNilai.saveSingleStudent()">Simpan Siswa Ini</button>' +
       '<button type="button" class="btn btn-outline" onclick="InputNilai.clearDeskCurrentStudent()" style="margin-left:8px;">Hapus Deskripsi Siswa Ini</button>' +
@@ -3042,7 +3042,7 @@ const InputNilai = {
       var desc = n && n[field] ? escapeHTMLDash(n[field]) : '-';
       rows += '<tr><td style="text-align:center;">' + (idx + 1) + '</td><td>' + escapeHTMLDash(mp) + '</td><td>' + desc + '</td></tr>';
     });
-    container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Deskripsi Capaian - Kelas ' + escapeHTMLDash(this.selectedKelas) + ' (' + semLabel + ')</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekapDesk()">Tutup Rekap</button></div><div style="margin-bottom:16px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">Pilih Siswa:</label>' + dropdownHTML + '</div><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Catatan ' + semLabel + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+    container.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 class="section-title" style="margin-bottom:0;">Rekap Capaian Kompetensi - Kelas ' + escapeHTMLDash(this.selectedKelas) + ' (' + semLabel + ')</h3><button type="button" class="btn btn-outline" onclick="InputNilai.hideRekapDesk()">Tutup Rekap</button></div><div style="margin-bottom:16px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;">Pilih Siswa:</label>' + dropdownHTML + '</div><div class="table-container"><table class="data-table"><thead><tr><th style="width:50px;">No</th><th style="width:250px;">Mata Pelajaran</th><th>Catatan ' + semLabel + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   },
 
   csvEscape(str) {
