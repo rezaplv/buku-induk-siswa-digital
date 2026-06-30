@@ -1545,6 +1545,7 @@ const InputData = {
   searchTerm: '',
   students: [],
   akademikMap: {},
+  editAkademikId: null,
   async init() { await this.loadData(); this.render(); },
   async loadData() {
     this.students = await DB.getAllSiswa();
@@ -1668,6 +1669,7 @@ const InputData = {
     document.getElementById('inputdata-input-kelas').value = '';
     document.getElementById('inputdata-input-status').value = '';
     document.getElementById('inputdata-akademik-section').style.display = 'block';
+    this.editAkademikId = null;
   },
   async editStudent(nis) {
     const siswa = await DB.getSiswa(nis); if (!siswa) return;
@@ -1677,7 +1679,13 @@ const InputData = {
     document.getElementById('inputdata-input-nis').value = siswa.nis; document.getElementById('inputdata-input-nis').disabled = true;
     document.getElementById('inputdata-input-nisn').value = siswa.nisn || '';
     document.getElementById('inputdata-input-edit-mode').value = 'edit';
-    document.getElementById('inputdata-akademik-section').style.display = 'none';
+    const akademikRecords = await DB.getAkademikBySiswa(nis);
+    const latest = akademikRecords.length > 0 ? akademikRecords[akademikRecords.length - 1] : null;
+    document.getElementById('inputdata-akademik-section').style.display = 'block';
+    document.getElementById('inputdata-input-tp').value = latest ? latest.tahunPelajaran || '' : '';
+    document.getElementById('inputdata-input-kelas').value = latest ? latest.kelas || '' : '';
+    document.getElementById('inputdata-input-status').value = latest ? latest.status || '' : '';
+    this.editAkademikId = latest ? latest.id : null;
   },
   closeModal() { document.getElementById('inputdata-student-modal').style.display = 'none'; },
   async saveStudent(event) {
@@ -1708,7 +1716,21 @@ const InputData = {
     }
 
     try {
-      if (mode === 'edit') await DB.updateSiswa({ nama, nis, nisn });
+      if (mode === 'edit') {
+        await DB.updateSiswa({ nama, nis, nisn });
+        if (InputData.editAkademikId) {
+          const tp = document.getElementById('inputdata-input-tp').value.trim();
+          const kelas = document.getElementById('inputdata-input-kelas').value.trim();
+          const status = document.getElementById('inputdata-input-status').value;
+          const akad = await DB.getAkademik(InputData.editAkademikId);
+          if (akad) {
+            akad.tahunPelajaran = tp || akad.tahunPelajaran;
+            akad.kelas = kelas || akad.kelas;
+            akad.status = status;
+            await DB.updateAkademik(akad);
+          }
+        }
+      }
       else {
         await DB.addSiswa({ nama, nis, nisn });
         const tp = document.getElementById('inputdata-input-tp').value.trim();
