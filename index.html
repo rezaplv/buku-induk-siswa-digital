@@ -2463,21 +2463,24 @@ const InputNilai = {
     const cells = [];
     const tdRegex = /<td[^>]*>([\s\S]*?)<\/td>/gi;
     let match;
+    const BREAK = '\u0001'; // unique placeholder for real line breaks
     while ((match = tdRegex.exec(html)) !== null) {
       let cellHtml = match[1];
-      // Replace <br> with newline
-      cellHtml = cellHtml.replace(/<br\s*\/?>/gi, '\n');
-      // Replace </p><p> with newline (paragraph breaks)
-      cellHtml = cellHtml.replace(/<\/p>\s*<p[^>]*>/gi, '\n');
+      // Mark real line breaks with placeholder
+      cellHtml = cellHtml.replace(/<br\s*\/?>/gi, BREAK);
+      // Paragraph boundaries become breaks
+      cellHtml = cellHtml.replace(/<\/p\s*>/gi, BREAK);
+      cellHtml = cellHtml.replace(/<p[^>]*>/gi, '');
       // Remove all remaining HTML tags
       cellHtml = cellHtml.replace(/<[^>]+>/g, '');
       // Decode HTML entities
-      cellHtml = cellHtml.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ').replace(/&#xa0;/g, ' ');
-      // Clean up: replace multiple spaces/tabs with single space
-      cellHtml = cellHtml.replace(/[ \t]+/g, ' ');
-      // Clean up each line: trim leading/trailing spaces per line
-      cellHtml = cellHtml.split('\n').map(function(line) { return line.trim(); }).filter(function(line) { return line !== ''; }).join('\n');
-      cells.push(cellHtml);
+      cellHtml = cellHtml.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ').replace(/&#xa0;/gi, ' ').replace(/&#160;/g, ' ');
+      // Collapse ALL whitespace (spaces, tabs, source newlines) into single spaces
+      // This removes word-wrap line breaks that come from HTML source formatting
+      cellHtml = cellHtml.replace(/\s+/g, ' ');
+      // Restore real line breaks
+      cellHtml = cellHtml.split(BREAK).map(function(line) { return line.trim(); }).filter(function(line) { return line !== ''; }).join('\n');
+      cells.push(cellHtml.trim());
     }
     return cells;
   },
