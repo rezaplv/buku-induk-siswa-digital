@@ -142,18 +142,21 @@ const Kokurikuler = {
   onP5Paste(event, index) {
     const clip = (event.clipboardData || window.clipboardData);
     if (!clip) return;
-    const html = clip.getData('text/html');
-    if (html && html.trim() !== '') {
-      const clean = this.htmlToCleanText(html);
-      if (clean) {
-        event.preventDefault();
-        this.catatanValues[index] = clean;
-        const ta = document.getElementById('p5-catatan-' + index);
-        if (ta) ta.value = clean;
-        return;
-      }
+    let text = clip.getData('text');
+    // If plain text is empty, fall back to extracting from HTML
+    if ((!text || text.trim() === '')) {
+      const html = clip.getData('text/html');
+      if (html && html.trim() !== '') text = this.htmlToCleanText(html);
     }
-    // No HTML clipboard — let browser handle plain text normally
+    if (text == null) return;
+    // Normalize line endings and trim trailing whitespace per line; collapse 3+ blank lines
+    let clean = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    clean = clean.split('\n').map(function(line) { return line.replace(/[ \t]+$/,''); }).join('\n');
+    clean = clean.replace(/\n{3,}/g, '\n\n').replace(/^\n+/, '').replace(/\n+$/, '');
+    event.preventDefault();
+    this.catatanValues[index] = clean;
+    const ta = document.getElementById('p5-catatan-' + index);
+    if (ta) ta.value = clean;
   },
 
   async saveAll() {
