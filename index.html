@@ -1243,8 +1243,9 @@ const PDFGenerator = {
         .status-active { font-weight: bold; }
         .status-inactive { text-decoration: line-through; color: #666; }
         .print-document { line-height: 1.4; }
-        .print-header h1 { font-size: 11pt; font-weight: bold; margin-bottom: 16px; }
-        .print-student-info { margin-bottom: 16px; font-weight: bold; }
+        .print-header { page-break-after: avoid; break-after: avoid; }
+        .print-header h1 { font-size: 11pt; font-weight: bold; margin-bottom: 16px; page-break-after: avoid; break-after: avoid; }
+        .print-student-info { margin-bottom: 16px; font-weight: bold; page-break-after: avoid; break-after: avoid; }
         .label-underline { font-weight: bold; }
         .print-info-table { margin-bottom: 0; }
         .print-info-table td { padding: 4px 8px; }
