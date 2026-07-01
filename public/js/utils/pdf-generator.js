@@ -227,7 +227,7 @@ const PDFGenerator = {
           xmlns="http://www.w3.org/TR/REC-html40">
     <head>
       <meta charset="UTF-8">
-      <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+      <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:AutoHyphenation/><w:HyphenationZone>360</w:HyphenationZone></w:WordDocument></xml><![endif]-->
       <style>
         @page { size: A4; margin: 15mm; }
         body { font-family: 'Arial Narrow', Arial, sans-serif; font-size: 11pt; }
@@ -255,7 +255,7 @@ const PDFGenerator = {
         tr { page-break-inside: avoid; break-inside: avoid; }
         .print-section-title { font-weight: bold; margin-bottom: 8px; page-break-after: avoid; break-after: avoid; }
         .print-section-title-no-underline { font-weight: bold; margin-bottom: 8px; page-break-after: avoid; break-after: avoid; }
-        .desc-cell { text-align: left; font-size: 11pt; }
+        .desc-cell { text-align: justify; text-justify: inter-word; font-size: 11pt; }
         .signature-cell { width: 120px; height: 80px; vertical-align: bottom; }
         .kokurikuler-header { border: 1px solid #000; text-align: center; font-weight: bold; padding: 10px; margin-bottom: 24px; font-size: 11pt; }
         .kokurikuler-semester { font-weight: bold; margin-bottom: 8px; margin-top: 20px; }
