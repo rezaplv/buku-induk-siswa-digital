@@ -142,14 +142,7 @@ const StudentDetail = {
               <label>Wali Kelas</label>
               <input type="text" id="akad-wali" placeholder="Nama wali kelas">
             </div>
-            <div class="form-group">
-              <label>Status Akhir Tahun</label>
-              <select id="akad-status">
-                <option value="">-- Pilih --</option>
-                <option value="Naik">Naik</option>
-                <option value="Tidak Naik">Tidak Naik</option>
-              </select>
-            </div>
+
             <div class="form-actions">
               <button type="button" class="btn btn-outline" onclick="StudentDetail.closeAkademikModal()">Batal</button>
               <button type="submit" class="btn btn-primary">Simpan</button>
@@ -372,7 +365,6 @@ const StudentDetail = {
       tahunPelajaran: document.getElementById('akad-tp').value.trim(),
       kelas: document.getElementById('akad-kelas').value.trim(),
       waliKelas: document.getElementById('akad-wali').value.trim(),
-      status: document.getElementById('akad-status').value,
     };
 
     try {
@@ -396,9 +388,6 @@ const StudentDetail = {
     if (kelas === null) return;
     const wali = prompt('Wali Kelas:', akad.waliKelas || '');
     if (wali === null) return;
-    const status = prompt('Status (Naik/Tidak Naik):', akad.status || '');
-    if (status === null) return;
-
     try {
       await DB.updateAkademik({
         id: akad.id,
@@ -406,7 +395,7 @@ const StudentDetail = {
         tahunPelajaran: tp,
         kelas: kelas,
         waliKelas: wali,
-        status: status,
+        status: akad.status || '',
       });
       await this.loadData();
       this.render();
