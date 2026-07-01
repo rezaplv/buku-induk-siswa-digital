@@ -4704,7 +4704,7 @@ const CetakBukuInduk = {
       if (!akad) continue;
       var html = PDFGenerator.buildHTML(completeData, akad);
       if (i > 0) {
-        html = html.replace('<div class="print-document">', '<div class="print-document" style="page-break-before:always;">');
+        allHTML += '<br clear="all" style="mso-special-character:line-break;page-break-before:always;">';
       }
       allHTML += html;
     }
